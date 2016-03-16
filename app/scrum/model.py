@@ -198,6 +198,9 @@ class clsUserHistory(db.Model):
     UH_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refTareaUserHist  = db.relationship('clsTask', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
+    UH_resume            = db.Column(db.String(200), nullable=True)
+    UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale):
         self.UH_codeUserHistory = codeUserHistory
@@ -206,10 +209,13 @@ class clsUserHistory(db.Model):
         self.UH_idAccion        = idAccion
         self.UH_idBacklog       = idBacklog
         self.UH_scale           = scale
+        self.UH_idSprint        = None
+        self.UH_resume          = None
+
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
+        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume)
 
 
 class clsAcceptanceTest(db.Model):
@@ -276,16 +282,18 @@ class clsTask(db.Model):
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
     HW_idEquipo   = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
+    HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description   = description
         self.HW_idCategory    = idCategory
         self.HW_weight        = weight
         self.HW_idUserHistory = idUserHistory
+        self.HW_idSprint      = None
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint)
 
 
 class clsCategory(db.Model):
@@ -313,6 +321,8 @@ class clsSprint(db.Model):
     S_numero            = db.Column(db.Integer)
     S_sprintDescription = db.Column(db.String(140))
     S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
+    S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __init__(self, numero, sprintDescription, idBacklog):
         self.S_numero            = numero

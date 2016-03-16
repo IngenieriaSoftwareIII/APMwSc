@@ -65,21 +65,11 @@ scrumModule.controller('VPruebaController',
       $scope.fPrueba = {};
       $scope.idHistoria = $routeParams.idHistoria;
 
-      pruebasService.VPrueba({"idPrueba":$routeParams.idPrueba, "idHistoria": 7}).then(function (object) {
+      pruebasService.VPrueba({"idPrueba":$routeParams.idPrueba, "idHistoria": $routeParams.idHistoria}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
-        equipoService.VEquipo({"idPila":1}).then(function (object) {
-            var miembros = object.data.fEquipo.lista;
-
-            for (var i = 0; i < miembros.length; i++) {
-                if (miembros[i].id == $scope.res.fPrueba.asignado){
-                    $scope.miembroAsignado = miembros[i].miembro;
-                }
-            }
-        });
-
 
         if ($scope.logout) {
             $location.path('/');

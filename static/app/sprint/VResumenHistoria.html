@@ -1,0 +1,38 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Agregar Resumen a Historias</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VSprint1(idSprint)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fResumenHistoriaForm" ng-submit="AResumenHistoria0(fResumenHistoriaForm.$valid)" novalidate>
+            <input id="fResumenHistoria_idPila" type="hidden" name="idPila" ng-model="fResumenHistoria.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fResumenHistoriaSubmitted && fResumenHistoriaForm.Historia.$invalid && fResumenHistoriaForm.Historia.$pristine && fResumenHistoriaSubmitted}"><label for="fResumenHistoria_Historia">Historia</label>:&nbsp;<select id="fResumenHistoria_Historia" ng-model="fResumenHistoria.Historia" required ng-options="item.key as item.value for item in fResumenHistoria_opcionesHistoria"></select><p ng-show="fResumenHistoriaSubmitted && fResumenHistoriaForm.Historia.$invalid" class="help-block">Error en campo Historia.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fResumenHistoriaSubmitted && fResumenHistoriaForm.Resumen.$invalid && fResumenHistoriaForm.Resumen.$pristine && fResumenHistoriaSubmitted}"><label for="fResumenHistoria_Resumen">Resumen</label><textarea id="fResumenHistoria_Resumen" name="Resumen" class="form-control" ng-model="fResumenHistoria.Resumen" placeholder="Resumen" required></textarea><p ng-show="fResumenHistoriaSubmitted && fResumenHistoriaForm.Resumen.$invalid" class="help-block">Error en campo Resumen.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Agregar Resumen
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

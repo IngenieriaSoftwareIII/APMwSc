@@ -170,6 +170,9 @@ class task(object):
                             return tupla[1]
         return ('')
 
+    def getTaskById(self, taskID):
+        ''' Permite obtener una tarea dado su ID'''
+        return clsTask.query.filter_by(HW_idTask = taskID).first()
 
     def findIdTask(self, idTask):
         checkTypeId = type(idTask) == int
@@ -214,5 +217,5 @@ class task(object):
                 return True
         return False
 
-    
+
 #Fin clase Task

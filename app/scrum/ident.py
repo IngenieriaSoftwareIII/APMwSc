@@ -131,9 +131,14 @@ def VLogin():
         password         = 'Sabeys.2008'
         encriptPassword  = oLogin.encript(password)
 
-        result = oUser.insertUser('Dueno','admin',encriptPassword,'productOwner@gmail.com',1)
-        result = oUser.insertUser('Maestro Scrum','scrum',encriptPassword,'scrumMaster@gmail.com',2)
-        result = oUser.insertUser('Equipo de Trabajo','team',encriptPassword,'teamMember@gmail.com',3)
+        oActor.insertActor('Dueno','Dueño del Producto',0)
+        oActor.insertActor('Maestro Scrum','Maestro Scrum',0)
+        oActor.insertActor('Miembro del Equipo','Miembro del Equipo',0)
+
+        #Corregido error de los actores por defecto, deberian ir en la tabla de Actores
+        #result = oUser.insertUser('Dueno','admin',encriptPassword,'productOwner@gmail.com',1)
+        #result = oUser.insertUser('Maestro Scrum','scrum',encriptPassword,'scrumMaster@gmail.com',2)
+        #result = oUser.insertUser('Equipo de Trabajo','team',encriptPassword,'teamMember@gmail.com',3)
 
         print('Se cargaron los datos.')
 

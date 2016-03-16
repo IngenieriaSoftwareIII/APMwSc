@@ -64,21 +64,11 @@ scrumModule.controller('VTareaController',
       $scope.fTarea = {};
       $scope.idHistoria = $routeParams.idHistoria;
 
-      tareasService.VTarea({"idTarea":$routeParams.idTarea, "idHistoria": 7}).then(function (object) {
+      tareasService.VTarea({"idTarea":$routeParams.idTarea, "idHistoria": $routeParams.idHistoria}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
-        equipoService.VEquipo({"idPila":1}).then(function (object) {
-            var miembros = object.data.fEquipo.lista;
-
-            for (var i = 0; i < miembros.length; i++) {
-                if (miembros[i].id == $scope.res.fTarea.asignado){
-                    $scope.miembroAsignado = miembros[i].miembro;
-                }
-            }
-        });
-
 
         if ($scope.logout) {
             $location.path('/');

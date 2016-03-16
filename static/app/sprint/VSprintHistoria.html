@@ -1,0 +1,37 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Asignar Historia Historia a Sprint {{idSprint}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VSprint1(idSprint)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fSprintHistoriaForm" ng-submit="ASprintHistoria0(fSprintHistoriaForm.$valid)" novalidate>
+            <input id="fSprintHistoria_idPila" type="hidden" name="idPila" ng-model="fSprintHistoria.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fSprintHistoriaSubmitted && fSprintHistoriaForm.historia.$invalid && fSprintHistoriaForm.historia.$pristine && fSprintHistoriaSubmitted}"><label for="fSprintHistoria_historia">Historia</label>:&nbsp;<select id="fSprintHistoria_historia" ng-model="fSprintHistoria.historia" required ng-options="item.key as item.value for item in fSprintHistoria_opcionesHistoria"></select><p ng-show="fSprintHistoriaSubmitted && fSprintHistoriaForm.historia.$invalid" class="help-block">Error en campo Historia.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Asignar Historia
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
