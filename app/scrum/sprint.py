@@ -22,9 +22,10 @@ def ACrearSprint():
         newNumero      = params['numero'] 
         newDescription = params['descripcion']
         newFechini = params ['fechini']
+        newFechfin = params ['fechfin']
         
         oSprint = sprints()
-        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini)
+        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin)
 
         if result:
             res = results[0]
@@ -155,10 +156,11 @@ def AModifSprint():
     newSprintNumber = int(params['numero'])
     newDescription  = str(params['descripcion'])
     newFechini = params['fechini']
+    newFechfin = params['fechfin']
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
-    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini)
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini, newFechfin)
     
     if not result:
         res = results[1]        
@@ -358,7 +360,7 @@ def VSprint():
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini }
+    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini, 'fechfin':sprint.S_fechfin }
 
     #Obtenes las historias asignadas al sprint
     listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
@@ -484,7 +486,7 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini, 'fechfin':spr.S_fechfin } for spr in sprintList]
 
 
     session['idPila'] = idPila

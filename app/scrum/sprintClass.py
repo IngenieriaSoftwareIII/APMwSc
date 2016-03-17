@@ -19,14 +19,15 @@ MAX_SPRINT_NUMBER = 1000
 class sprints(object):
 	'''Clase que permite manejar los sprints de manera persistente'''
 
-	def insertSprint(self, sprintNumber, sprintDescription, idBacklog, fechini): 
+	def insertSprint(self, sprintNumber, sprintDescription, idBacklog, fechini, fechfin): 
 		'''Permite insertar una Sprint asociado a un producto'''   
 		checkTypeDescription = type(sprintDescription) == str
 		checkTypeId          = type(idBacklog) == int
 		checkTypeNumber      = type(sprintNumber) == int
-		#checkTypeFechini	 = type(fechini) == datetime.date
+		checkTypeFechini	 = type(fechini) == str
+		checkTypeFechfin	 = type(fechfin) == str
 
-		if checkTypeDescription and checkTypeId and checkTypeNumber :
+		if checkTypeDescription and checkTypeId and checkTypeNumber and checkTypeFechini and checkTypeFechfin :
 			checkSprintNumber          = MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 			checkLongSprintDescription = MIN_SPRINT_DESCRIPTION <= len(sprintDescription) <= MAX_SPRINT_DESCRIPTION
 			checkLongId                = MIN_ID <= idBacklog
@@ -42,7 +43,7 @@ class sprints(object):
 							return False
 						 
 					# Si S_numero no se repite
-					newSprint = clsSprint(sprintNumber, sprintDescription, idBacklog, fechini)
+					newSprint = clsSprint(sprintNumber, sprintDescription, idBacklog, fechini, fechfin)
 
 					db.session.add(newSprint)
 					db.session.commit()
@@ -51,14 +52,15 @@ class sprints(object):
 
 
 
-	def updateSprint(self, idSprint, idBacklog, newSprintNumber,newDescription, newfechini):
+	def updateSprint(self, idSprint, idBacklog, newSprintNumber,newDescription, fechini, fechfin):
 		'''Permite actualizar la descripcion de una sprint'''   
 		checkTypeId              = type(idSprint) == int
 		checkTypeNewSprintNumber = type(newSprintNumber) == int
 		checkTypeNewdescription  = type(newDescription) == str
-		#checkTypeFechini	 = type(newfechini) == datetime.date
+		checkTypeFechini	 = type(fechini) == str
+		checkTypeFechfin	 = type(fechfin) == str
 
-		if checkTypeId and checkTypeNewdescription and checkTypeNewSprintNumber:
+		if checkTypeId and checkTypeNewdescription and checkTypeNewSprintNumber and checkTypeFechini and checkTypeFechfin:
 			checkLongNewDescription = MIN_SPRINT_DESCRIPTION <= len(newDescription) <= MAX_SPRINT_DESCRIPTION
 			foundSprint             = self.searchIdSprint(idSprint, idBacklog)
 			if foundSprint != [] and checkLongNewDescription:
@@ -69,6 +71,7 @@ class sprints(object):
 				foundSprint[0].S_sprintDescription = newDescription
 				foundSprint[0].S_numero = newSprintNumber
 				foundSprint[0].S_fechini = newfechini
+				foundSprint[0].S_fechfin = newfechfin
 				db.session.commit()
 				return True
 		return False

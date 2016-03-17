@@ -324,12 +324,14 @@ class clsSprint(db.Model):
     S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
     S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
     S_fechini           = db.Column(db.String(140))
+    S_fechfin          = db.Column(db.String(140))
 
-    def __init__(self, numero, sprintDescription, idBacklog, fechini):
+    def __init__(self, numero, sprintDescription, idBacklog, fechini, fechfin):
         self.S_numero            = numero
         self.S_sprintDescription = sprintDescription
         self.S_idBacklog         = idBacklog
         self.S_fechini           = fechini
+        self.S_fechfin           = fechfin
 
     def __repr__(self):
         '''Representacion en string del Sprint'''
