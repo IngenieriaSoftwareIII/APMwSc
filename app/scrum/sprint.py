@@ -21,9 +21,10 @@ def ACrearSprint():
         # Extraemos los parámetros
         newNumero      = params['numero'] 
         newDescription = params['descripcion']
+        newFechini = params ['fechini']
         
         oSprint = sprints()
-        result  = oSprint.insertSprint(newNumero, newDescription, idPila)
+        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini)
 
         if result:
             res = results[0]
@@ -153,10 +154,11 @@ def AModifSprint():
     idSprint = int(session['idSprint'])
     newSprintNumber = int(params['numero'])
     newDescription  = str(params['descripcion'])
+    newFechini = params['fechini']
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
-    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini)
     
     if not result:
         res = results[1]        
@@ -356,7 +358,7 @@ def VSprint():
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
+    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini }
 
     #Obtenes las historias asignadas al sprint
     listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
@@ -482,7 +484,7 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini } for spr in sprintList]
 
 
     session['idPila'] = idPila

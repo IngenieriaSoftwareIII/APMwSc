@@ -32,6 +32,7 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Número'" ng-bind="row['numero']"></td>
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
+                <td data-title="'Fecha de inicio'" ng-bind="row['fechini']"></td>
                 <td ng-show="row['numero']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VSprint1(row['numero'])">Ver</a></td>
             </tr>
         </table>
