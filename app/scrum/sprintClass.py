@@ -26,8 +26,9 @@ class sprints(object):
 		checkTypeNumber      = type(sprintNumber) == int
 		checkTypeFechini	 = type(fechini) == str
 		checkTypeFechfin	 = type(fechfin) == str
-
-		if checkTypeDescription and checkTypeId and checkTypeNumber and checkTypeFechini and checkTypeFechfin :
+		checkDuration		 = (fechfin >= fechini)
+		
+		if checkTypeDescription and checkTypeId and checkTypeNumber and checkTypeFechini and checkTypeFechfin and checkDuration :
 			checkSprintNumber          = MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 			checkLongSprintDescription = MIN_SPRINT_DESCRIPTION <= len(sprintDescription) <= MAX_SPRINT_DESCRIPTION
 			checkLongId                = MIN_ID <= idBacklog
@@ -59,8 +60,9 @@ class sprints(object):
 		checkTypeNewdescription  = type(newDescription) == str
 		checkTypeFechini	 = type(fechini) == str
 		checkTypeFechfin	 = type(fechfin) == str
+		checkDuration		 = (fechfin >= fechini)
 
-		if checkTypeId and checkTypeNewdescription and checkTypeNewSprintNumber and checkTypeFechini and checkTypeFechfin:
+		if checkTypeId and checkTypeNewdescription and checkTypeNewSprintNumber and checkTypeFechini and checkTypeFechfin and checkDuration:
 			checkLongNewDescription = MIN_SPRINT_DESCRIPTION <= len(newDescription) <= MAX_SPRINT_DESCRIPTION
 			foundSprint             = self.searchIdSprint(idSprint, idBacklog)
 			if foundSprint != [] and checkLongNewDescription:
