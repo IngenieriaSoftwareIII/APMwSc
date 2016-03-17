@@ -23,9 +23,10 @@ def ACrearSprint():
         newDescription = params['descripcion']
         newFechini = params ['fechini']
         newFechfin = params ['fechfin']
+        newState = params ['state']
         
         oSprint = sprints()
-        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin)
+        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin, newState)
 
         if result:
             res = results[0]
@@ -157,10 +158,11 @@ def AModifSprint():
     newDescription  = str(params['descripcion'])
     newFechini = params['fechini']
     newFechfin = params['fechfin']
+    newState = params['state']
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
-    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini, newFechfin)
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini, newFechfin, newState)
     
     if not result:
         res = results[1]        
@@ -360,7 +362,7 @@ def VSprint():
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini, 'fechfin':sprint.S_fechfin }
+    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini, 'fechfin':sprint.S_fechfin, 'state':sprint.S_state }
 
     #Obtenes las historias asignadas al sprint
     listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
@@ -486,7 +488,7 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini, 'fechfin':spr.S_fechfin } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini, 'fechfin':spr.S_fechfin, 'state':spr.S_state } for spr in sprintList]
 
 
     session['idPila'] = idPila
