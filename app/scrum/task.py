@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-. 
 
 import sys
+import datetime
+from sqlalchemy import DateTime 
 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
@@ -27,17 +29,18 @@ class task(object):
             otask = clsTask.query.filter_by(HW_idUserHistory = HW_idUserHistory).all()
             return otask
         return ([])
-    
 
-    def insertTask(self, HW_description, C_idCategory, HW_weight, UH_idUserHistory):
+    def insertTask(self, HW_description, C_idCategory, HW_weight, UH_idUserHistory, HW_iniciado, HW_fechaInicio):
         '''Permite insertar una tarea'''
          
         typedescription = (type(HW_description) == str)
         typeidCategory  = (type(C_idCategory) == int)
         typeWeight      = (type(HW_weight) == int)
         typeid          = (type(UH_idUserHistory) == int)
+        typeIniciado    = (type(HW_iniciado) == bool)
+        typeFechaInicio = (type(HW_fechaInicio) == DateTime)
  
-        if (typedescription and typeidCategory and typeWeight and typeid):
+        if (typedescription and typeidCategory and typeWeight and typeid and typeIniciado and typeFechaInicio):
             long_HW_description  = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
             min_C_idCategory     = C_idCategory >= MIN_ID
             min_HW_weight        = HW_weight >= MIN_WEIGHT
@@ -51,7 +54,7 @@ class task(object):
                 esEpica      = (oHistory.isEpic(UH_idUserHistory))
                 
                 if ((oUserHistory != []) and (oCategory != []) and (oTask == []) and (not esEpica)):
-                    new_task = clsTask(HW_description,C_idCategory,HW_weight,UH_idUserHistory)
+                    new_task = clsTask(HW_description,C_idCategory,HW_weight,UH_idUserHistory,HW_iniciado,HW_fechaInicio)
                     db.session.add(new_task)
                     db.session.commit()
                     return True
@@ -90,13 +93,18 @@ class task(object):
         return oTask
     
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight):
+    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio):
         '''Permite actualizar la descripcion de una tarea'''
           
         typedescription    = (type(HW_description) == str)
         typeNewdescription = (type(newDescription) == str)
+
         typeidCategory     = (type(C_idCategory) == int)
-        typeWeight         = (type(HW_weight) == int)        
+        typeWeight         = (type(HW_weight) == int)
+
+        typeIniciado    = (type(HW_iniciado) == bool)
+        typeFechaInicio = (type(HW_fechaInicio) == DateTime)
+       
          
         if (typedescription and typeNewdescription and typeidCategory and typeWeight):
             long_HW_description = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
@@ -109,11 +117,14 @@ class task(object):
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
                 
-                if ((foundTask != []) and (foundCat != []) and ((foundNew == [])or(HW_description == newDescription))):
+                if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
                     oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
                     oTask.HW_description = newDescription
                     oTask.HW_idCategory  = C_idCategory
                     oTask.HW_weight      = HW_weight
+                    oTask.HW_iniciado   = HW_iniciado
+                    oTask.HW_fechaInicio = HW_fechaInicio
+
                     db.session.commit()
                     return True
         return False

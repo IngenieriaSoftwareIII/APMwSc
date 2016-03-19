@@ -200,9 +200,11 @@ class clsUserHistory(db.Model):
     UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_resume            = db.Column(db.String(200), nullable=True)
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    UH_iniciado         = db.Column(db.Boolean, default=False)
+    UH_fechaInicio      = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
-    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale):
+    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio):
         self.UH_codeUserHistory = codeUserHistory
         self.UH_idSuperHistory  = idSuperHistory
         self.UH_accionType      = accionType
@@ -211,11 +213,13 @@ class clsUserHistory(db.Model):
         self.UH_scale           = scale
         self.UH_idSprint        = None
         self.UH_resume          = None
+        self.UH_iniciado        = iniciado
+        self.UH_fechaInicio     = fechaInicio
 
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume)
+        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, iniciado %r, fechaInicio %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio)
 
 
 class clsAcceptanceTest(db.Model):
@@ -281,19 +285,23 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HW_idEquipo   = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
+    HW_idEquipo     = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    HW_iniciado      = db.Column(db.Boolean, default=False)
+    HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__(self, description, idCategory, weight, idUserHistory):
+    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio):
         self.HW_description   = description
         self.HW_idCategory    = idCategory
         self.HW_weight        = weight
         self.HW_idUserHistory = idUserHistory
         self.HW_idSprint      = None
+        self.HW_iniciado      = iniciado
+        HW_fechaInicio        = fechaInicio
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, HW_iniciado %r, HW_fechaInicio %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio)
 
 
 class clsCategory(db.Model):

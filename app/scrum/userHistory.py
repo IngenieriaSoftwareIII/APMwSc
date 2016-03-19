@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-. 
 
 import sys
+import datetime
+from sqlalchemy import DateTime 
 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
@@ -86,7 +88,7 @@ class userHistory(object):
         return succ
                
                 
-    def insertUserHistory(self,codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog, priority):
+    def insertUserHistory(self,codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog, priority, iniciado, fechaInicio):
         '''Permite insertar una Historia de usuario'''
         
         checkCodUserHistory = type(codeUserHistory) == str
@@ -95,8 +97,10 @@ class userHistory(object):
         checkIdAccion       = type(idAccion) == int
         checkIdBacklog      = type(idBacklog) == int
         checkPriority       = type(priority) == int
+        typeIniciado        = (type(iniciado) == bool)
+        typeFechaInicio     = (type(fechaInicio) == DateTime)
 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority and typeIniciado and typeFechaInicio:
             checkLenCodUserHistory = CONST_MIN_COD <= len(codeUserHistory) <= CONST_MAX_COD
             checkIdSuperHistory = CONST_MIN_IDHIST <= idSuperHistory 
             checkIdAccion       = CONST_MIN_ID <= idAccion 
@@ -111,7 +115,7 @@ class userHistory(object):
                     oBacklog  = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()
             
                     if oBacklog != [] and oHistorys != []:                         
-                        newUserHistory = clsUserHistory(codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog,priority)
+                        newUserHistory = clsUserHistory(codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog,priority, iniciado,fechaInicio)
                         db.session.add(newUserHistory)
                         db.session.commit()
 
@@ -151,7 +155,7 @@ class userHistory(object):
         return ([])    
     
 
-    def updateUserHistory(self,idUserHist,newCodeUserHistory,newIdSuperHistory,newAccionType,newIdAccion,newScale):
+    def updateUserHistory(self,idUserHist,newCodeUserHistory,newIdSuperHistory,newAccionType,newIdAccion,newScale,iniciado,fechaInicio):
         '''Permite modificar una Historia de usuario'''
         
         checkCodUserHistory = type(newCodeUserHistory) == str
@@ -160,8 +164,10 @@ class userHistory(object):
         checkIdAccion       = type(newIdAccion) == int
         checkIdUser         = type(idUserHist) == int
         checkPriority       = type(newScale) == int
+        typeIniciado        = (type(iniciado) == bool)
+        typeFechaInicio     = (type(fechaInicio) == DateTime)
                 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority and typeIniciado and typeFechaInicio:
             checkLenCodUserHistory = CONST_MIN_COD <= len(newCodeUserHistory) <= CONST_MAX_COD
             checkIdHistory         = newIdSuperHistory >= CONST_MIN_IDHIST
             checkIdAccion          = newIdAccion >= CONST_MIN_ID
@@ -181,6 +187,8 @@ class userHistory(object):
                             result[0].UH_accionType      = newAccionType
                             result[0].UH_idAccion        = newIdAccion
                             result[0].UH_scale           = newScale
+                            result[0].UH_iniciado        = iniciado
+                            result[0].UH_fechaInicio     = fechaInicio
                              
                             # Consideramos el caso en que una historia deje de ser epica y se le asigna un valor
                             # arbitrario a la escala
