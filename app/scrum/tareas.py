@@ -5,6 +5,7 @@ from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.Team        import *
+from datetime              import datetime
 
 tareas = Blueprint('tareas', __name__)
 
@@ -23,6 +24,15 @@ def ACrearTarea():
     taskDesc    = params['descripcion']
     idCategoria = params['categoria']
     taskPeso    = params['peso']
+    
+    #TODO: descomentar
+    #started     = params['iniciado']
+    #startingDate= params['fechaInicio']
+
+    #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
+    started = True
+    startingDate = datetime.utcnow()
+
     oBackLog    = backlog()
     oTask       = task()
 
@@ -31,7 +41,7 @@ def ACrearTarea():
     else:
         miembro = None
     
-    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory)
+    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate)
 
     insertedTask = oTask.searchTask(taskDesc)[0]
     
@@ -100,13 +110,22 @@ def AModifTarea():
     new_idCategoria = params['categoria']
     new_taskPeso    = params['peso']
     new_miembro = params['miembro']
+
+    #TODO: descomentar
+    #started     = params['iniciado']
+    #startingDate= params['fechaInicio']
+
+    #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
+    started = True
+    startingDate = datetime.utcnow()
+
   
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
  
     # Modificamos la tarea
-    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso)
+    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate)
     
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
