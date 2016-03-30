@@ -10,6 +10,7 @@ from app.scrum.objectivesUserHistory import *
 from app.scrum.actorsUserHistory     import * 
 from app.scrum.task                  import *
 from sqlalchemy.ext.baked            import Result
+from datetime                        import datetime
 
 historias = Blueprint('historias', __name__)
 
@@ -64,10 +65,19 @@ def ACrearHistoria():
     idObjective = params['objetivos']
     priority    = params['prioridad']
     
+    #TODO: descomentar
+    #started     = params['iniciado']
+    #startingDate= params['fechaInicio']
+    
     if idActor != [] and idObjective != []:
         oUserHistory = userHistory()
+
+        #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
+        started = True
+        startingDate = datetime.utcnow()
+
         # Insertamos los datos de la historia
-        inserted     = oUserHistory.insertUserHistory(codeHistory,idSuperHist,idType,idAccion,idPila,priority)
+        inserted     = oUserHistory.insertUserHistory(codeHistory,idSuperHist,idType,idAccion,idPila,priority,started,startingDate)
     
         # Asociamos los actores y objetivos a la historia.
         if inserted:
@@ -192,12 +202,21 @@ def AModifHistoria():
     type         = params['tipo']
     priority     = params['prioridad']
     idPila       = params['idPila']
+
+    #TODO: descomentar
+    #started     = params['iniciado']
+    #startingDate= params['fechaInicio']
     
     subHistories = oUserHist.historySuccesors(idHistory)
     
     if not(idSupHist in subHistories):
+
+        #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
+        started = True
+        startingDate = datetime.utcnow()
+
         # Actualizamos los datos de la historia
-        updated     = oUserHist.updateUserHistory(idHistory,codeHist,idSupHist,type,idaccion,priority)
+        updated     = oUserHist.updateUserHistory(idHistory,codeHist,idSupHist,type,idaccion,priority,started,startingDate)
 
         if updated:
             # Buscamos los actores asociados

@@ -2,7 +2,6 @@
 
 import sys
 import datetime
-from sqlalchemy import DateTime 
 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
@@ -98,9 +97,8 @@ class userHistory(object):
         checkIdBacklog      = type(idBacklog) == int
         checkPriority       = type(priority) == int
         typeIniciado        = (type(iniciado) == bool)
-        typeFechaInicio     = (type(fechaInicio) == DateTime)
 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority and typeIniciado and typeFechaInicio:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority and typeIniciado:
             checkLenCodUserHistory = CONST_MIN_COD <= len(codeUserHistory) <= CONST_MAX_COD
             checkIdSuperHistory = CONST_MIN_IDHIST <= idSuperHistory 
             checkIdAccion       = CONST_MIN_ID <= idAccion 
@@ -165,9 +163,8 @@ class userHistory(object):
         checkIdUser         = type(idUserHist) == int
         checkPriority       = type(newScale) == int
         typeIniciado        = (type(iniciado) == bool)
-        typeFechaInicio     = (type(fechaInicio) == DateTime)
                 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority and typeIniciado and typeFechaInicio:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority and typeIniciado:
             checkLenCodUserHistory = CONST_MIN_COD <= len(newCodeUserHistory) <= CONST_MAX_COD
             checkIdHistory         = newIdSuperHistory >= CONST_MIN_IDHIST
             checkIdAccion          = newIdAccion >= CONST_MIN_ID

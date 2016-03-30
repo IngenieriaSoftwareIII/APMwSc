@@ -2,7 +2,6 @@
 
 import sys
 import datetime
-from sqlalchemy import DateTime 
 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
@@ -38,9 +37,8 @@ class task(object):
         typeWeight      = (type(HW_weight) == int)
         typeid          = (type(UH_idUserHistory) == int)
         typeIniciado    = (type(HW_iniciado) == bool)
-        typeFechaInicio = (type(HW_fechaInicio) == DateTime)
  
-        if (typedescription and typeidCategory and typeWeight and typeid and typeIniciado and typeFechaInicio):
+        if (typedescription and typeidCategory and typeWeight and typeid and typeIniciado):
             long_HW_description  = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
             min_C_idCategory     = C_idCategory >= MIN_ID
             min_HW_weight        = HW_weight >= MIN_WEIGHT
@@ -103,7 +101,6 @@ class task(object):
         typeWeight         = (type(HW_weight) == int)
 
         typeIniciado    = (type(HW_iniciado) == bool)
-        typeFechaInicio = (type(HW_fechaInicio) == DateTime)
        
          
         if (typedescription and typeNewdescription and typeidCategory and typeWeight):

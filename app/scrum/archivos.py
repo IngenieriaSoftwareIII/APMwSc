@@ -2,7 +2,6 @@
 
 import sys
 import datetime
-from sqlalchemy import DateTime 
 
 # Ruta que permite utilizar el módulo model.py
 sys.path.append('app/scrum')
@@ -47,7 +46,6 @@ class archivos(object):
         oBackLog = backlog()
         checkTypeName = type(name) == str
         checkTypeUrl = type(url) == str
-        checkTypedate = type(dateAr) == DateTime
         checkTypeBacklog = type(idbacklog) == int
         checkTypeEtiqueta = type(etiqueta) == str
 
