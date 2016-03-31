@@ -119,7 +119,7 @@ class clsUser(db.Model):
         self.U_password = password
         self.U_email    = email
         self.U_idActor  = idActor
-   
+
     def __repr__(self):
         '''Representacion en string del modelo Usuario'''
         return '<fullname %r, username %r, email %r>' % (self.U_fullname, self.U_username, self.U_email)
@@ -297,7 +297,7 @@ class clsTask(db.Model):
         self.HW_idUserHistory = idUserHistory
         self.HW_idSprint      = None
         self.HW_iniciado      = iniciado
-        HW_fechaInicio        = fechaInicio
+        self.HW_fechaInicio   = fechaInicio
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''

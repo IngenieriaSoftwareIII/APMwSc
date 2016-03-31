@@ -6,7 +6,6 @@ from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.Team        import *
 from datetime              import datetime
-import time
 
 tareas = Blueprint('tareas', __name__)
 
@@ -17,7 +16,7 @@ def ACrearTarea():
     params  = request.get_json()
     results = [{'label':'/VHistoria', 'msg':['Tarea creada']}, {'label':'/VHistoria', 'msg':['No se pudo crear tarea.']}, ]
     res     = results[0]
-    
+
     # Obtenemos el id de la historia actual
     idHistory = int(session['idHistoria'])
 
@@ -25,8 +24,22 @@ def ACrearTarea():
     taskDesc    = params['descripcion']
     idCategoria = params['categoria']
     taskPeso    = params['peso']
-    started     = params['iniciado']
-    startingDate= params['fechaInicio']
+
+    if 'iniciado' in params:
+        started = params['iniciado']
+    else:
+        started = False
+
+    if 'fechaInicio' in params:
+            startingDate= params['fechaInicio']
+            try:
+                startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+            except ValueError:
+                res     = results[1]
+                res['label'] = res['label'] + '/'+str(idHistory)
+                return json.dumps(res)
+    else:
+        startingDate_object = None
 
     oBackLog    = backlog()
     oTask       = task()
@@ -35,18 +48,18 @@ def ACrearTarea():
         miembro = params['miembro']
     else:
         miembro = None
-    
-    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate)
+
+    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object)
 
     insertedTask = oTask.searchTask(taskDesc)[0]
-    
+
     if miembro == None or miembro < 0:
         oTask.deleteUserTask(int(insertedTask.HW_idTask))
     else:
         oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
 
 
-    if insert:        
+    if insert:
         res = results[0]
     else:
         res = results[1]
@@ -72,7 +85,7 @@ def AElimTarea():
     idHistoria = int(session['idHistoria'])
     idTarea    = int(session['idTarea'])
 
-    # Eliminamos la tarea 
+    # Eliminamos la tarea
     oTarea     = task()
     result     = clsTask.query.filter_by(HW_idTask = idTarea).first()
     delete     = oTarea.deleteTask(result.HW_description)
@@ -95,7 +108,7 @@ def AElimTarea():
 def AModifTarea():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VCrearTarea', 'msg':['No se pudo modificar esta tarea.']}, ]
+    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VHistoria', 'msg':['No se pudo modificar esta tarea.']}, ]
     res     = results[1]
 
     # Obtenemos los parámetros
@@ -107,16 +120,22 @@ def AModifTarea():
     new_miembro = params['miembro']
     started     = params['iniciado']
     startingDate= params['fechaInicio']
-    startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
 
-  
+    try:
+        startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+    except ValueError:
+        res     = results[1]
+        res['label'] = res['label'] + '/'+str(idHistoria)
+        return json.dumps(res)
+
+
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
- 
+
     # Modificamos la tarea
     modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object)
-    
+
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
     else:
@@ -124,7 +143,7 @@ def AModifTarea():
 
     if modify:
         res = results[0]
-         
+
     res['label'] = res['label'] + '/' + str(idHistoria)
 
     if "actor" in res:
@@ -138,7 +157,7 @@ def AModifTarea():
 @tareas.route('/tareas/VCrearTarea')
 def VCrearTarea():
     #GET parameter
-    res = {}    
+    res = {}
     # Obtenemos el id de la historia actual
     idHistory = int(request.args.get('idHistoria'))
 
@@ -148,14 +167,14 @@ def VCrearTarea():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
-  
+
     # Buscamos la historia actual
     oUserHistory = userHistory()
     hist         = oUserHistory.searchIdUserHistory(idHistory)
-    
+
     res['usuario']        = session['usuario']
     res['codHistoria']    = hist[0].UH_codeUserHistory
-    
+
     # Obtenemos una lista con los datos asociados a las categorías
     cateList  = clsCategory.query.all()
 
@@ -169,7 +188,7 @@ def VCrearTarea():
     ListaCompleta = []
     for i in cateList:
         ListaCompleta.append((i.C_idCategory,i.C_nameCate,i.C_weight))
-    
+
     decorated = [(tup[2], tup) for tup in ListaCompleta]
     decorated.sort()
 
@@ -190,14 +209,14 @@ def VCrearTarea():
 @tareas.route('/tareas/VTarea')
 def VTarea():
     #GET parameter
-    
+
     # Obtenemos el id de la historia y de la tarea
     idTarea    = int(request.args['idTarea'])
     idHistoria    = int(request.args['idHistoria'])
 
     found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistoria).first()
     codHistoria = found.UH_codeUserHistory
-    
+
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -207,7 +226,7 @@ def VTarea():
     categoryList     = clsCategory.query.all()
     oTeam = team()
     miembroList = oTeam.getTeam(found.UH_idBacklog)
-    
+
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
@@ -217,7 +236,7 @@ def VTarea():
 
     res['fTarea_opcionesCategoria'] = [
       {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
-    
+
     res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
       {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
