@@ -11,6 +11,7 @@ from app.scrum.actorsUserHistory     import *
 from app.scrum.task                  import *
 from sqlalchemy.ext.baked            import Result
 from datetime                        import datetime
+import time
 
 historias = Blueprint('historias', __name__)
 
@@ -204,19 +205,21 @@ def AModifHistoria():
     idPila       = params['idPila']
 
     #TODO: descomentar
-    #started     = params['iniciado']
-    #startingDate= params['fechaInicio']
+    started     = params['iniciado']
+    startingDate = params['fechaInicio']
+    startingDate_object = datetime.strptime(startingDate, '%Y-%m-%d')
     
     subHistories = oUserHist.historySuccesors(idHistory)
     
     if not(idSupHist in subHistories):
 
-        #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
-        started = True
-        startingDate = datetime.utcnow()
+        # #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
+        # started = True
+        # startingDate = datetime.utcnow()
 
         # Actualizamos los datos de la historia
-        updated     = oUserHist.updateUserHistory(idHistory,codeHist,idSupHist,type,idaccion,priority,started,startingDate)
+        print(started)
+        updated     = oUserHist.updateUserHistory(idHistory,codeHist,idSupHist,type,idaccion,priority,started,startingDate_object)
 
         if updated:
             # Buscamos los actores asociados
@@ -402,6 +405,9 @@ def VHistoria():
             resultScale = [(i,i) for i in range(1,20+1)]
     
     
+    # fechaInicio_string = datetime.strftime('%m/%d/%Y', history.UH_fechaInicio)
+    print(history.UH_fechaInicio)
+
     res['fHistoria_opcionesHistorias']     = [{'key':hist.UH_idUserHistory,'value':hist.UH_codeUserHistory}for hist in historias] 
     res['fHistoria_opcionesHistorias'].append({'key':0,'value':'Ninguno'})
     res['fHistoria_opcionesTiposHistoria'] = [{'key':1,'value':'Opcional'},{'key':2,'value':'Obligatoria'}]
@@ -409,11 +415,11 @@ def VHistoria():
     res['fHistoria_opcionesAcciones']      = [{'key':acc.AC_idAccion,'value':acc.AC_accionDescription}for acc in accionList]
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
-    
-    
+
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog, 
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion, 
-                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale}
+                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale,
+                        'iniciado': history.UH_iniciado, 'fechaInicio': history.UH_fechaInicio}
    
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
 

@@ -144,7 +144,7 @@ scrumModule.controller('VHistoriaController',
                   getData: function($defer, params) {
                       $defer.resolve(VPrueba2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });                          
+              });
       });
       $scope.VHistorias3 = function(idPila) {
         $location.path('/VHistorias/'+idPila);
