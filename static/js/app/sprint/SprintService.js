@@ -39,6 +39,7 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+
     this.AElimSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -155,7 +156,7 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
-
+    
     this.VResumenHistoria = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({

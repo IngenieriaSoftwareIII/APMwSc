@@ -60,6 +60,7 @@ scrumModule.controller('VCrearSprintController',
       };
 
     }]);
+
 scrumModule.controller('VCriterioHistoriaController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -97,6 +98,7 @@ scrumModule.controller('VCriterioHistoriaController',
       };
 
     }]);
+
 scrumModule.controller('VResumenHistoriaController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -150,27 +152,27 @@ scrumModule.controller('VSprintController',
         }
 
 
-              var AElimSprintHistoria7Data = $scope.res.data7;
-              if(typeof AElimSprintHistoria7Data === 'undefined') AElimSprintHistoria7Data=[];
-              $scope.tableParams7 = new ngTableParams({
+              var AElimSprintHistoria6Data = $scope.res.data6;
+              if(typeof AElimSprintHistoria6Data === 'undefined') AElimSprintHistoria6Data=[];
+              $scope.tableParams6 = new ngTableParams({
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
-                  total: AElimSprintHistoria7Data.length, // length of data
+                  total: AElimSprintHistoria6Data.length, // length of data
                   getData: function($defer, params) {
-                      $defer.resolve(AElimSprintHistoria7Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                      $defer.resolve(AElimSprintHistoria6Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
 
-              var AElimSprintTarea9Data = $scope.res.data9;
-              if(typeof AElimSprintTarea9Data === 'undefined') AElimSprintTarea9Data=[];
-              $scope.tableParams9 = new ngTableParams({
+              var AElimSprintTarea8Data = $scope.res.data8;
+              if(typeof AElimSprintTarea8Data === 'undefined') AElimSprintTarea8Data=[];
+              $scope.tableParams8 = new ngTableParams({
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
-                  total: AElimSprintTarea9Data.length, // length of data
+                  total: AElimSprintTarea8Data.length, // length of data
                   getData: function($defer, params) {
-                      $defer.resolve(AElimSprintTarea9Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                      $defer.resolve(AElimSprintTarea8Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
 
@@ -184,7 +186,7 @@ scrumModule.controller('VSprintController',
                   getData: function($defer, params) {
                       $defer.resolve(AElimCriterioHistoria11Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });    
 
 
       });
@@ -219,7 +221,7 @@ scrumModule.controller('VSprintController',
         }
       };
 
-      $scope.AElimSprintHistoria7 = function(id) {
+      $scope.AElimSprintHistoria6 = function(id) {
           var tableFields = [["idHistoria","id"],["prioridad","Prioridad"],["enunciado","Enunciado"]];
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
@@ -231,7 +233,7 @@ scrumModule.controller('VSprintController',
               $route.reload();
           });
       };
-      $scope.AElimSprintTarea9 = function(id) {
+      $scope.AElimSprintTarea8 = function(id) {
           var tableFields = [["idTarea","id"],["descripcion","Descripción"]];
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);

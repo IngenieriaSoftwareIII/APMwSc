@@ -490,6 +490,9 @@ def VSprints():
  
     return json.dumps(res)
 
+
+
+
 ########## CRITERIOS DE ACEPTACIÓN ##########
 
 @sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
@@ -540,6 +543,9 @@ def VCriterioHistoria():
 
     #Action code ends here
     return json.dumps(res)
+
+
+
 
 #Use case code starts here
 

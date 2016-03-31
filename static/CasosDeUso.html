@@ -1167,74 +1167,6 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
-   <li>URL: '/sprint/ACriterioHistoria'</li>
-   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
-<li>Parámetros POST:
-    <ul>     <li>idPila -  
-Opcional. 
-     </li>     <li>opcionesHistoria -  
-Opcional. 
-     </li>     <li>Historia -  
-Requerido. 
-     </li>     <li>Descripcion -  
-Requerido. 
-     </li>
-    </ul>
-   </li>
-   <li>Roles: Sin restricción de rol
-   <li>Requisitos: No disponible
-   <li>
-    <p><strong>Cursos posibles</strong></p>
-    <ol>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VSprint',</li>
-       <li> msg:"Criterio agregado exitosamente".</li>
-      </ul>
-     </li>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VCriterioHistoria',</li>
-       <li> msg:"Error agregando criterio a la historia".</li>
-      </ul>
-     </li>
-
-    </ol>
-   </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/sprint/AElimCriterioHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-   <li>Roles: Sin restricción de rol
-   <li>Requisitos: No disponible
-   <li>
-    <p><strong>Cursos posibles</strong></p>
-    <ol>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VSprint',</li>
-       <li> msg:"Criterio de aceptación eliminado".</li>
-      </ul>
-     </li>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VSprint',</li>
-       <li> msg:"Error al eliminar el criterio de aceptación".</li>
-      </ul>
-     </li>
-
-    </ol>
-   </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
    <li>URL: '/sprint/AElimSprint'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
    <li>Roles: Sin restricción de rol
@@ -1357,46 +1289,6 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
-   <li>URL: '/sprint/AResumenHistoria'</li>
-   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
-<li>Parámetros POST:
-    <ul>     <li>idPila -  
-Opcional. 
-     </li>     <li>opcionesHistoria -  
-Opcional. 
-     </li>     <li>Historia -  
-Requerido. 
-     </li>     <li>Resumen -  
-Requerido. 
-     </li>
-    </ul>
-   </li>
-   <li>Roles: desarrollador </li>
-   <li>Requisitos: No disponible
-   <li>
-    <p><strong>Cursos posibles</strong></p>
-    <ol>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VSprint',</li>
-       <li> msg:"Resumen agregado exitosamente!".</li>
-      </ul>
-     </li>
-     <li><br>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VResumenHistoria',</li>
-       <li> msg:"Error agregando resumen de historia".</li>
-      </ul>
-     </li>
-
-    </ol>
-   </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
    <li>URL: '/sprint/ASprintHistoria'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -1477,22 +1369,6 @@ Requerido.
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/sprint/VCriterioHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idSprint
-   <li>Roles: desarrollador </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/sprint/VResumenHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idSprint
-   <li>Roles: desarrollador </li>
   </ul>
  </li> <li>
   <p></p>
