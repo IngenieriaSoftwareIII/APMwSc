@@ -271,6 +271,22 @@ class clsObjectivesUserHistory(db.Model):
         '''Representacion en string de los id's a los roles y sus historias'''
         return '<idObjective %r, idUserHistory %r>' % (self.OUH_idObjective, self.OUH_idUserHistory)
 
+class clsAcceptanceCriteria(db.Model):
+    '''Clase que representa los criterios de aceptacion para las historia de usuario'''
+
+    __tablename__ = 'acceptanceCriteria'
+    HAC_idAcceptanceCriteria = db.Column(db.Integer, primary_key=True, index=True)
+    HAC_description   = db.Column(db.String(140), unique=True, index=True)
+    HAC_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+
+    def __init__(self, idUserHistory, description):
+        HAC_description = description
+        HAC_idUserHistory = idUserHistory
+
+    def __repr__(self):
+        '''Representacion en string del criterio de aceptacion'''
+        return '<HAC_idAcceptanceCriteria, HAC_idUserHistory %r>' % (HAC_idAcceptanceCriteria, HAC_idUserHistory)
+
 
 class clsTask(db.Model):
     '''Clase que define el modelo de la tabla Task'''
