@@ -6,6 +6,7 @@ from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.Team        import *
 from datetime              import datetime
+import time
 
 tareas = Blueprint('tareas', __name__)
 
@@ -104,14 +105,9 @@ def AModifTarea():
     new_idCategoria = params['categoria']
     new_taskPeso    = params['peso']
     new_miembro = params['miembro']
-
-    #TODO: descomentar
-    #started     = params['iniciado']
-    #startingDate= params['fechaInicio']
-
-    #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
-    started = True
-    startingDate = datetime.utcnow()
+    started     = params['iniciado']
+    startingDate= params['fechaInicio']
+    startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
 
   
     # Buscamos la tarea a modificar
@@ -119,7 +115,7 @@ def AModifTarea():
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
  
     # Modificamos la tarea
-    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate)
+    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object)
     
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
@@ -225,12 +221,16 @@ def VTarea():
     res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
       {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
+    startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
+
     res['fTarea'] = {'idHistoria':idHistoria,
                     'idTarea': idTarea,
                     'descripcion': result.HW_description,
                     'categoria': result.HW_idCategory,
                     'peso':result.HW_weight,
-                    'miembro': result.HW_idEquipo}
+                    'miembro': result.HW_idEquipo,
+                    'iniciado': result.HW_iniciado,
+                    'fechaInicio': startingDate_object_new}
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea

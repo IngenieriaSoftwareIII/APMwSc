@@ -207,7 +207,7 @@ def AModifHistoria():
     #TODO: descomentar
     started     = params['iniciado']
     startingDate = params['fechaInicio']
-    startingDate_object = datetime.strptime(startingDate, '%Y-%m-%d')
+    startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
     
     subHistories = oUserHist.historySuccesors(idHistory)
     
@@ -416,10 +416,11 @@ def VHistoria():
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
 
+    startingDate_object_new = datetime.strftime(history.UH_fechaInicio, '%d/%m/%Y')
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog, 
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion, 
                         'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale,
-                        'iniciado': history.UH_iniciado, 'fechaInicio': history.UH_fechaInicio}
+                        'iniciado': history.UH_iniciado, 'fechaInicio': startingDate_object_new}
    
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
 
