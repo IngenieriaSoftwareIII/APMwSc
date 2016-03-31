@@ -1,3 +1,7 @@
 *.pyc
 *~
 *.swp
+app/scrum/data.sqlite
+
+# Custom ignores
+.idea

@@ -17,7 +17,7 @@
   +Tarea</a></li>
 <li><a ng-click="VCrearPrueba11(idHistoria)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || false">
-  +Prueba</a></li>  
+  +Prueba</a></li>
 <li><a ng-click="VCrearActor6(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +Actor</a></li>
@@ -58,6 +58,7 @@
             <input id="fHistoria_idPila" type="hidden" name="idPila" ng-model="fHistoria.idPila" />
             <input id="fHistoria_idHistoria" type="hidden" name="idHistoria" ng-model="fHistoria.idHistoria" />
             <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid && fHistoriaForm.prioridad.$pristine && fHistoriaSubmitted}"><label for="fHistoria_prioridad">Prioridad</label>:&nbsp;<select id="fHistoria_prioridad" ng-model="fHistoria.prioridad" required ng-options="item.key as item.value for item in fHistoria_opcionesPrioridad"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid" class="help-block">Error en campo Prioridad.</p></div>
+            <b>Estado de la historia:<span class="estado-{{fHistoria.estado}}">{{fHistoria.estado}}</span></b>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
@@ -69,6 +70,12 @@
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
             </tr>
         </table>
+        <button name="complete" class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
+            Marcar como completa
+        </button>
+        <button name="incomplete" class="btn btn-perso btn-lg btn-block no-{{fHistoria.estado}}" ng-click="AIncompletarHistoria(fHistoria.idHistoria)" type="button">
+            Marcar como incompleta
+        </button>
     <hr /><h3>Pruebas de aceptación <span class="badge" ng-bind="numPruebas"></span></h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">

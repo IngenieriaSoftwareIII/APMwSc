@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
 
@@ -76,7 +76,43 @@ class task(object):
                     db.session.commit()
                     return True
         return False
-    
+
+    def deleteDoc(self, taskId, documentName):
+        '''Permite eliminar una documento según su nombre y id de tarea'''
+
+        foundid = clsTaskDoc.query.filter_by(HWD_idTask = taskId, HWD_docName = documentName ).all()
+        if foundid !=[]:
+            for i in foundid:
+                db.session.delete(i)
+            db.session.commit()
+            return True
+        return False
+
+    def completeTask(self,idTask):
+        '''Permite marcar una tarea como completa'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        if found != None:
+            found.HW_completed = True
+            db.session.commit()
+            return True
+        return False
+
+    def incompleteTask(self,idTask):
+        '''Permite marcar una tarea como incompleta'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        if found != None:
+            found.HW_completed = False
+            db.session.commit()
+            return True
+        return False
+
+    def taskById(self,idTask):
+        '''Permite actualizar la prioridad de una historia de usuario'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        return found
     
     def searchTask(self, HW_description):
         '''Permite buscar tareas por su descripcion'''

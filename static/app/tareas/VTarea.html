@@ -41,10 +41,62 @@
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.categoria.$invalid && fTareaForm.categoria.$pristine && fTareaSubmitted}"><label for="fTarea_categoria">Cateoría</label>:&nbsp;<select id="fTarea_categoria" ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Cateoría.</p></div>
 
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}"><label for="fTarea_peso">Peso</label><input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
+            <b>Estado de la tarea:<span class="estado-{{fTarea.estado}}">{{fTarea.estado}}</span></b>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form>
+</br>
+    <button name="complete" class="btn btn-perso btn-lg btn-block {{fTarea.estado}}" ng-click="ACompletarTarea(fTarea.idTarea)" type="button">
+        Marcar como completa
+    </button>
+<button name="incomplete" class="btn btn-perso btn-lg btn-block no-{{fTarea.estado}}" ng-click="AIncompletarTarea(fTarea.idTarea)" type="button">
+        Marcar como incompleta
+    </button>
+
+    <h2 class="form-signin-heading" align="center">Subir Documento</h2>
+
+    <form action="tareas/upload" method="post" enctype="multipart/form-data">
+        <input id="idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" value="{{fTarea.idTarea}}" />
+        <input type="file" class="form-control mid-input" name="file">
+            <div class="form-group">
+                <label for="fTareaDoc_descripcion">Descripción</label>
+                <textarea id="fTareaDoc_descripcion" name="docDescription" class="form-control" ng-model="fTareaDoc.descripcion" placeholder="Descripción" required></textarea>
+                <p ng-show="fTareaDocSubmitted && fTareaDocForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p>
+            </div>
+
+        <input type="text" class="form-control mid-input hidden"  name="id" ng-model="$parent.id">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Subir</button>
+        </form>
+
+
+        <h2 class="form-signin-heading" align="center">Documentos</h2>
+
+        <div >
+            <table style="border: solid 1px" class="table">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr ng-repeat="documento in documentos"  style="border: solid 1px">
+                    <td >
+                        <a href="{{documento.url}}">{{documento.name}}</a>
+                    </td>
+                    <td >
+                        {{documento.descripcion}}
+                    </td>
+                    <td >
+                        <button class="btn btn-lg btn-primary btn-block" ng-click="eliminarDoc3(documento.name,fTarea.idTarea)" type="button">Eliminar</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+
+
     <hr />
 
 

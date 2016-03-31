@@ -5625,4 +5625,437 @@ class TestTask(unittest.TestCase):
          aAcc.deleteAccion('cinrohbwidia',1)
          aBacklog.deleteProduct('Podn fjdd.')
          
+    #########################
+    #     COMPLETE TASK     #
+    #########################
+
+     def testCompletarTarea(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos tarea
+        self.assertEqual ((aTarea.completeTask(idFound1)),True)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testCompletarTareaNoExistente(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = idprimera + 1
+        self.assertEqual ((aTarea.completeTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testCompletarTareaIdNeg(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = -1
+        self.assertEqual ((aTarea.completeTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testCompletarTareaIdFloat(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = 1.2
+        self.assertEqual ((aTarea.completeTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testCompletarTareaIdString(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = "mala idea"
+        self.assertEqual ((aTarea.completeTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testCompletarTareaIdBool(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = False
+        self.assertEqual ((aTarea.completeTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+    #########################
+    #  INCOMPLETE HISTORY   #
+    #########################
+
+     def testIncompleteTarea(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        self.assertEqual ((aTarea.incompleteTask(idFound1)),True)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testIncompleteTareaNoExistente(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = idprimera + 1
+        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+
+     def testIncompleteTareaIdNeg(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = -1
+        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testIncompleteTareaIdFloat(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = 1.2
+        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testIncompleteTareaIdString(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = "mala idea"
+        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
+     def testIncompleteTareaIdBool(self):
+        # Insertamos Producto
+        aBacklog = backlog()
+        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+        searchBacklog = aBacklog.findName('Podn fjdd.')
+        idFound0 = searchBacklog[0].BL_idBacklog
+     
+        # Insertamos la accion
+        aAcc = accions()
+        aAcc.insertAccion('cinrohbwidia',idFound0)
+        search = aAcc.searchAccion('cinrohbwidia',idFound0)
+        idFound = search[0].AC_idAccion
+               
+        # Insertamos la historia
+        aHist = userHistory()
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+        idFound1 = searchHist[0].UH_idUserHistory 
+
+        # Insertamos Tarea
+        aTarea = task()
+        aTarea.insertTask('dwidjw',1,1,idFound1)
+        searchTask1 = aTarea.searchTask('dwidjw')
+        idprimera = searchTask1[0].HW_idTask
+
+        # Completamos historia
+        badId = False
+        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+
+        # Eliminamos todo de la BD
+        aTarea.deleteTask('dwidjw')
+        aHist.deleteUserHistory(idFound1)
+        aAcc.deleteAccion('cinrohbwidia', idFound0)
+        aBacklog.deleteProduct('Podn fjdd.')
+
 #Fin de los casos de prueba

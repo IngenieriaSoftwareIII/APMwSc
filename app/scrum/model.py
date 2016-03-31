@@ -3,31 +3,37 @@
 # Se importan las librerias necesarias.
 import os
 import datetime
-from flask                import Flask
-from flask.ext.migrate    import Migrate, MigrateCommand
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.script     import Manager
-from sqlalchemy           import DateTime
+
+from flask                 import Flask
+from flask.ext.migrate     import Migrate, MigrateCommand
+from flask.ext.sqlalchemy  import SQLAlchemy
+from flask.ext.script      import Manager
+
+from sqlalchemy import *
 
 # Conexion con la base de datos.
 basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'apl.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-
 # Instancia de la aplicacion.
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
 # Instancia de la base de datos.
-
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
 
 # Definicion de la Base de Datos.
+
 
 class clsBacklog(db.Model):
     '''Clase que define el modelo Backlog'''
@@ -94,9 +100,9 @@ class clsActor(db.Model):
 
     def __init__(self, nameActor, actorDescription, idBacklog):
         '''Constructor del modelo Actor'''
-        self.A_nameActor        = nameActor
+        self.A_nameActor = nameActor
         self.A_actorDescription = actorDescription
-        self.A_idBacklog        = idBacklog
+        self.A_idBacklog = idBacklog
 
     def __repr__(self):
         '''Respresentacion en string del modelo Actor'''
@@ -109,17 +115,17 @@ class clsUser(db.Model):
     U_fullname = db.Column(db.String(50))
     U_username = db.Column(db.String(16), primary_key=True, index=True)
     U_password = db.Column(db.String(200))
-    U_email    = db.Column(db.String(30), unique=True)
-    U_idActor  = db.Column(db.Integer, db.ForeignKey('actors.A_idActor'))
+    U_email = db.Column(db.String(30), unique=True)
+    U_idActor = db.Column(db.Integer, db.ForeignKey('actors.A_idActor'))
 
     def __init__(self, fullname, username, password, email, idActor):
         '''Constructor del modelo usuario'''
         self.U_fullname = fullname
         self.U_username = username
         self.U_password = password
-        self.U_email    = email
-        self.U_idActor  = idActor
-   
+        self.U_email = email
+        self.U_idActor = idActor
+
     def __repr__(self):
         '''Representacion en string del modelo Usuario'''
         return '<fullname %r, username %r, email %r>' % (self.U_fullname, self.U_username, self.U_email)
@@ -291,6 +297,9 @@ class clsTask(db.Model):
         self.HW_idUserHistory = idUserHistory
         self.HW_idSprint      = None
 
+    def getCompleted(self):
+        return self.HW_completed
+
     def __repr__(self):
         '''Representacion en string de la Tarea'''
         return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint)
@@ -334,9 +343,130 @@ class clsSprint(db.Model):
         return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog)
 
 
+class clsSprintMeeting(db.Model):
+    '''Clase que define el modelo de las reuniones diarias'''
+    __tablename__ = 'meeting'
+    SM_idSprintMeeting  = db.Column(db.Integer, primary_key = True, index = True)
+    SM_meetingDate      = db.Column(db.String(12))
+    SM_activities       = db.Column(db.String(300))
+    SM_suggestions      = db.Column(db.String(300))
+    SM_challenges       = db.Column(db.String(300))
+    SM_typeMeeting      = db.Column(db.String(300))
+    SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    def __init__(self, meetingDate, activities, suggestions, challenges, idSprint, typeM):
+        self.SM_meetingDate     = meetingDate
+        self.SM_activities      = activities
+        self.SM_suggestions     = suggestions
+        self.SM_challenges      = challenges
+        self.SM_idSprint        = idSprint
+        self.SM_typeMeeting     = typeM
+
+
+    def __repr__(self):
+        '''Representacion en string del Meeting'''
+        return '<SM_idSprintMeeting %r, SM_meetingDate %r,  SM_activities %r, SM_idSprint %r, SM_typeMeeting %r>' % (self.SM_idSprintMeeting, self.SM_meetingDate, self.SM_activities, self.SM_idSprint, self.SM_typeMeeting)
+
+
+class clsElementMeeting(db.Model):
+    '''Clase que define el modelo de un elemento de una reunión'''
+    __tablename__          = "elementMeeting"
+    EM_idElementMeeting    = db.Column(db.Integer, primary_key = True, index = True)
+    EM_challenges          = db.Column(db.String(300))
+    EM_planned             = db.Column(db.String(300))
+    EM_done                = db.Column(db.String(300))
+    EM_meeting             = db.Column(db.Integer, db.ForeignKey('meeting.SM_idSprintMeeting'))
+    EM_user                = db.Column(db.String(16), db.ForeignKey('equipo.EQ_username'))
+
+    def __init__(self,challenges,planned,done,user,meeting):
+        self.EM_challenges = challenges
+        self.EM_planned    = planned
+        self.EM_done       = done
+        self.EM_meeting    = meeting
+        self.EM_user       = user
+
+    def __repr__(self):
+        '''Representacion en string del ElementMeeting'''
+        return '<EM_idElementMeeting %r, EM_challenges %r,  EM_planned %r, EM_done %r, EM_meeting %r, EM_user %r>' % (self.EM_idElementMeeting, self.EM_challenges, self.EM_planned, self.EM_done, self.EM_meeting, self.EM_user)
+
+
+class clsPrecedence(db.Model):
+    '''Clase que define el modelo de la tabla Precedence'''
+
+    __tablename__ = 'precedence'
+    P_idPrecedence = db.Column(db.Integer, primary_key=True, index=True)
+    P_idFirstTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    P_idSecondTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    P_idPila = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+
+    def __init__(self, firstTask, secondTask, idPila):
+        self.P_idFirstTask = firstTask
+        self.P_idSecondTask = secondTask
+        self.P_idPila = idPila
+
+    def __repr__(self):
+        '''Representacion en string de la Categoria'''
+        return '<P_idPrecedence  %r, P_idFirstTask %r, P_idSecondTask %r>' % (
+            self.P_idPrecedence, self.P_idFirstTask, self.P_idSecondTask)
+
+
+class clsTaskDoc(db.Model):
+    '''Clase que define el modelo de la tabla TaskDoc'''
+
+    __tablename__ = 'taskDoc'
+    HWD_idTaskDoc = db.Column(db.Integer, primary_key=True, index=True)
+    HWD_idTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    HWD_docName = db.Column(db.String(50), unique=True, index=True)
+    HWD_docDescription = db.Column(db.String(140), unique=False, index=True)
+
+    def __init__(self, idTask, docName, docDescription):
+        self.HWD_idTask = idTask
+        self.HWD_docName = docName
+        self.HWD_docDescription = docDescription
+
+    def getName(self):
+        return self.HWD_docName
+
+    def getDescription(self):
+        return self.HWD_docDescription
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def __repr__(self):
+        '''Representacion en string del documento de la Tarea'''
+        return '<HWD_ idTaskDoc  %r,HWD_idTask %r, HWD_docName %r ,HWD_docDescription %r>' % (
+            self.HWD_idTaskDoc, self.HWD_idTask, self.HWD_docName, self.HWD_docDescription)
+
+
+def taskDocs_by_taskId(taskID):
+    return clsTaskDoc.query.filter(clsTaskDoc.HWD_idTask == taskID).all()
+
 
 migrate = Migrate(app, db)
 manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 db.create_all()  # Creamos la base de datos
+
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
+    meta = MetaData(engine)
+    historiaDeUsuario = Table('userHistory', meta, autoload=True)
+    completed = Column('UH_completed', db.Boolean)
+    completed.create(historiaDeUsuario)
+except:
+    pass
+
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
+    meta = MetaData(engine)
+    tareaTable = Table('task', meta, autoload=True)
+    completedTask = Column('HW_completed', db.Boolean)
+    completedTask.create(tareaTable)
+except:
+    pass
+
+
+db.create_all()  # Creamos la base de datos
+

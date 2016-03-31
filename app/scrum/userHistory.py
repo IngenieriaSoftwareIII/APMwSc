@@ -207,27 +207,55 @@ class userHistory(object):
     
     def updatePriority(self,idHistory,priority):
         '''Permite actualizar la prioridad de una historia de usuario'''
-        
-        checkIdHistory  = type(idHistory) == int 
-        checkPriority   = type(priority) == int 
+
+        checkIdHistory  = type(idHistory) == int
+        checkPriority   = type(priority) == int
 
         if checkIdHistory and checkPriority:
             checkLonIdHistory = CONST_MIN_ID <= idHistory
             checkLonPriority  = 0 <= priority
 
             if  checkLonIdHistory and checkLonPriority:
-                
+
                 found     = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
                 foundTask = clsTask.query.filter_by(HW_idUserHistory = idHistory).all()
                 if found != None:
                     found.UH_scale = priority
                     if (priority == 0) and (foundTask != []):
-                        for task in foundTask:    
+                        for task in foundTask:
                             db.session.delete(task)
                     db.session.commit()
                     return True
         return False
-    
+
+    def completeHistory(self,idHistory):
+        '''Permite marcar una historia como completa'''
+
+        checkIdHistory  = type(idHistory) == int
+        if checkIdHistory:
+            checkLonIdHistory = CONST_MIN_ID <= idHistory
+            if  checkLonIdHistory:
+                found     = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+                if found != None:
+                    found.UH_completed = True
+                    db.session.commit()
+                    return True
+        return False
+
+    def incompleteHistory(self,idHistory):
+        '''Permite marcar una historia como incompleta'''
+
+        checkIdHistory  = type(idHistory) == int
+        if checkIdHistory:
+            checkLonIdHistory = CONST_MIN_ID <= idHistory
+            if  checkLonIdHistory:
+                found     = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+                if found != None:
+                    found.UH_completed = False
+                    db.session.commit()
+                    return True
+        return False
+
 
     def accionsAsociatedToUserHistory(self,userHistoryId):
         ''' Permite obtener una lista de los Acciones asociados a una historia de usuario'''
@@ -393,5 +421,9 @@ class userHistory(object):
                 return True
 
         return False
+
+    def getUHCodeFromId(self,idUserHistory):
+        found = clsUserHistory.query.filter_by(UH_idUserHistory = idUserHistory).first()
+        return found.UH_codeUserHistory
 
 # Fin Clase userHistory

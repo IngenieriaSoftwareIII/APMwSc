@@ -77,6 +77,7 @@ scrumModule.controller('VTareaController',
       $scope.VHistoria1 = function(idHistoria) {
         $location.path('/VHistoria/'+idHistoria);
       };
+
       $scope.AElimTarea2 = function() {
           
         tareasService.AElimTarea().then(function (object) {
@@ -86,9 +87,37 @@ scrumModule.controller('VTareaController',
           $location.path(label);
           $route.reload();
         });};
+
       $scope.VLogin3 = function() {
         $location.path('/VLogin');
       };
+
+        $scope.eliminarDoc3 = function(documento,tarea) {
+        tareasService.AElimDoc({name:documento,tarea:tarea}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          $route.reload();
+        });};
+
+    $scope.ACompletarTarea = function(idTarea) {
+        tareasService.ACompletarTarea({idTarea: idTarea}).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+    };
+
+    $scope.AIncompletarTarea = function(idTarea) {
+        tareasService.AIncompletarTarea({idTarea: idTarea}).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+    };
 
       $scope.fTareaSubmitted = false;
       $scope.AModifTarea0 = function(isValid) {

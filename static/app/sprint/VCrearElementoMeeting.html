@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear Detalle a una Reunión</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VReunion0(idSprint)"
+       ng-show="actor=='desarrollador' || false">
+  Regresar</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fElementoMeetingForm" ng-submit="ACrearElementoMeeting1(fElementoMeetingForm.$valid)" novalidate>
+            <input id="fElementoMeeting_idElemento" type="hidden" name="idElemento" ng-model="fElementoMeeting.idElemento" />
+            <div class="form-group" ng-class="{ 'has-error' :  fElementoMeetingSubmitted && fElementoMeetingForm.challenge.$invalid && fElementoMeetingForm.challenge.$pristine && fElementoMeetingSubmitted}"><label for="fElementoMeeting_challenge">Retos</label><input id="fElementoMeeting_challenge" type="text" name="challenge" class="form-control" ng-model="fElementoMeeting.challenge" placeholder="Retos" /><p ng-show="fElementoMeetingSubmitted && fElementoMeetingForm.challenge.$invalid" class="help-block">Error en campo Retos.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fElementoMeetingSubmitted && fElementoMeetingForm.planed.$invalid && fElementoMeetingForm.planed.$pristine && fElementoMeetingSubmitted}"><label for="fElementoMeeting_planed">Planificado</label><input id="fElementoMeeting_planed" type="text" name="planed" class="form-control" ng-model="fElementoMeeting.planed" placeholder="Planificado" /><p ng-show="fElementoMeetingSubmitted && fElementoMeetingForm.planed.$invalid" class="help-block">Error en campo Planificado.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fElementoMeetingSubmitted && fElementoMeetingForm.done.$invalid && fElementoMeetingForm.done.$pristine && fElementoMeetingSubmitted}"><label for="fElementoMeeting_done">Realizado</label><input id="fElementoMeeting_done" type="text" name="done" class="form-control" ng-model="fElementoMeeting.done" placeholder="Realizado" /><p ng-show="fElementoMeetingSubmitted && fElementoMeetingForm.done.$invalid" class="help-block">Error en campo Realizado.</p></div>
+            <input id="fElementoMeeting_idReunion" type="hidden" name="idReunion" ng-model="fElementoMeeting.idReunion" />
+            <input id="fElementoMeeting_idUser" type="hidden" name="idUser" ng-model="fElementoMeeting.idUser" />
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

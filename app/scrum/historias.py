@@ -9,6 +9,7 @@ from app.scrum.objective             import *
 from app.scrum.objectivesUserHistory import *
 from app.scrum.actorsUserHistory     import * 
 from app.scrum.task                  import *
+from app.scrum.precedence            import *
 from sqlalchemy.ext.baked            import Result
 
 historias = Blueprint('historias', __name__)
@@ -232,6 +233,41 @@ def AModifHistoria():
             session['actor'] = res['actor']       
     return json.dumps(res)
 
+@historias.route('/historias/ACompletarHistoria', methods=['GET'])
+def ACompletarHistoria():
+    params  = request.get_json()
+    idHistory    = request.args.get('idHistoria')
+    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como completada']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oUserHist    = userHistory()
+
+    completed = oUserHist.completeHistory(int(idHistory))
+    if completed == True:
+        res = results[0]
+    return json.dumps(res)
+
+@historias.route('/historias/AIncompletarHistoria', methods=['GET'])
+def AIncompletarHistoria():
+    params  = request.get_json()
+    idHistory    = request.args.get('idHistoria')
+    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como incompleta']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oUserHist    = userHistory()
+
+    incompleted = oUserHist.incompleteHistory(int(idHistory))
+    if incompleted == True:
+        res = results[0]
+    return json.dumps(res)
 
 
 @historias.route('/historias/VCrearHistoria')
@@ -390,12 +426,15 @@ def VHistoria():
     res['fHistoria_opcionesAcciones']      = [{'key':acc.AC_idAccion,'value':acc.AC_accionDescription}for acc in accionList]
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
-    
+    if history.UH_completed:
+        estado = 'completa'
+    else:
+        estado = 'incompleta'
     
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog, 
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion, 
-                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale}
-   
+                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale, 'estado': estado}
+
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
 
     res['pruebas'] = [{'idTarea':test.AT_idAT, 
@@ -431,7 +470,7 @@ def VHistorias():
     oObjUserHIst      = objectivesUserHistory()
         
     # Obtenemos las historias asociadas al producto idPila.
-    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)  
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)
     pesos          = []         
     userHistories  = []
     options        = {1:'podria ',2:'puede '}
@@ -556,6 +595,102 @@ def VPrioridades():
  
     return json.dumps(res)
 
+## ROUTES MAGOCA
+@historias.route('/historias/APrelaciones', methods=['POST'])
+def APrelaciones():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VPrelaciones', 'msg':['Cambios almacenados']}, {'label':'/VPrelaciones', 'msg':['Error al guardar prelaciones']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    oPrecedence = precedence()
+    # Obtenemos prelaciones ya existentes en el producto
+    previous = oPrecedence.getAllPrecedences(session['idPila'])
+    # Buscamos que precedencias fueron eliminadas y agregadas por el usuario e ignoramos las que no fueron cambiadas
+    for object in previous:
+        esta = False
+        for i in params['lista']:
+            if (object.P_idFirstTask == int(i['antecedente']) and object.P_idSecondTask == int(i['consecuente'])):
+                esta = True
+                params['lista'].remove(i)
+        if not esta: # Fue eliminada
+            oPrecedence.deletePrecedence(object.P_idFirstTask, object.P_idSecondTask) #Podria eliminar el objeto directamente, sin el deletePrecedence
+
+    for i in params['lista']: # Los que van a ser agregados
+        if (int(i['antecedente']) == int(i['consecuente'])): # Este if se puede quitar porque se esta haciendo la verficiacion en insertPrecedence
+            print('Error, la historia no debe prelarse a si misma')
+        else:
+            oPrecedence.insertPrecedence(int(i['antecedente']), int(i['consecuente']), session['idPila'])
+
+    res['label'] = res['label'] + '/' + repr(1)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+@historias.route('/historias/VPrelaciones')
+def VPrelaciones():
+    #GET parameter
+    idPila = request.args['idPila']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
+    res['usuario'] = session['usuario']
+
+    # Obtenemos el id del producto y de la historia.
+    idPila = request.args['idPila']
+
+    oBacklog          = backlog()
+    oUserHistory      = userHistory()
+    oTask             = task()
+    oPrecedence       = precedence()
+
+
+    #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
+    lista = []
+    precedenceList = oPrecedence.getAllPrecedences(idPila)
+    for object in precedenceList:
+        lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
+
+    res['fPrelaciones'] = {'lista':lista}
+
+    #res['fPrelaciones'] = {'lista':[
+    #  {'antecedente':1, 'consecuente':2},
+    #  {'antecedente':2, 'consecuente':3}]}
+
+
+
+    res['idPila'] = idPila
+
+    #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
+    taskList = []
+    #tasks = []
+
+    #Se obtienen todas las tareas de las historias de usuarios
+    for hist in userHistoriesList:
+        taskList.extend(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+
+    #Se transforman las tareas para la vista
+    #for listaT in taskList:
+    #    for tarea in listaT:
+    #    tasks.append(tarea)
+
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + oUserHistory.getUHCodeFromId(tarea.HW_idUserHistory)}for tarea in taskList]
+
+    #Action code ends here
+    return json.dumps(res)
 
 
 
