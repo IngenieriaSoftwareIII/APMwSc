@@ -4434,7 +4434,3 @@ class TestSprintClass(unittest.TestCase):
         oSprint.deleteSprint(1,self.idBacklog)
         oHistory.deleteUserHistory(idFound)
         oAccion.deleteAccion('Dxfynyr',self.idBacklog)
-
-
-if __name__ == '__main__':
-    unittest.main()
