@@ -7,7 +7,7 @@ sys.path.append('app/scrum')
 from userHistory import *
 
 class acceptanceCriteria(object):
-    '''Clase que permite manejar las pruebas de aceptacion de manera persistente'''
+    '''Clase que permite manejar los criterios de aceptacion de manera persistente'''
 
     def findIdAcceptanceCriteria(self, idHAC):
             '''Permite encontrar un criterio de aceptacion dado un id'''
@@ -15,10 +15,10 @@ class acceptanceCriteria(object):
             found = None
 
             if checkTypeIdHAC:
-                found = clsAcceptanceTest.query.filter_by(HAC_HAC_idAcceptanceCriteria=idHAC).first()
+                found = clsAcceptanceCriteria.query.filter_by(HAC_idAcceptanceCriteria=idHAC).first()
             return found
 
-    def insertAcceptanceTest(self,idUserHistory,description):
+    def insertAcceptanceCriteria(self,idUserHistory,description):
         '''Permite insertar un nuevo criterio de aceptacion'''
 
         checkTypeidUserHistory  = type(idUserHistory)   == int
@@ -37,8 +37,8 @@ class acceptanceCriteria(object):
         return False
 
 
-    def deleteAcceptanceTest(self,idHAC):
-        '''Permite eliminar una nueva prueba de aceptacion'''
+    def deleteAcceptanceCriteria(self,idHAC):
+        '''Permite eliminar un nuevo criterio de aceptacion'''
         checkTypeidHAC = type(idHAC) == int
 
         if checkTypeidHAC:
@@ -51,19 +51,19 @@ class acceptanceCriteria(object):
 
         return False
 
-    def modifyAcceptanceTest(self,idAT,description):
-        '''Permite modificar una nueva prueba de aceptacion'''
-        checkTypeidAT = type(idAT) == int
+    def modifyAcceptanceCriteria(self,idHAC,description):
+        '''Permite modificar un nuevo criterio de aceptacion'''
+        checkTypeidHAC = type(idHAC) == int
 
-        if checkTypeidAT:
+        if checkTypeidHAC:
             if description == None:
                 return True
 
             checkTypeDescription = type(description) == str
             if checkTypeDescription:
-                found = self.findIdAcceptanceTests(idAT)
+                found = self.findIdAcceptanceCriteria(idHAC)
                 if found != []:
-                    found.AT_description = description
+                    found.HAC_description = description
                     db.session.commit()
                     return True
         return False
