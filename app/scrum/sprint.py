@@ -534,16 +534,33 @@ def AElimCriterioHistoria():
 @sprint.route('/sprint/VCriterioHistoria')
 def VCriterioHistoria():
     #GET parameter
-    idSprint = request.args['idSprint']
+    #idSprint = request.args['idSprint']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+
+    idPila = int(session['idPila'])
+    idSprint = int(session['idSprint'])
+# 
+    print("******************")
+    oSprint = sprints()
+    historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
+    print(historiasSprint)
+    res['fCriterioHistoria_opcionesHistoria'] = [
+        {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasSprint
+    ]
+
+    res['idSprint'] = idSprint
+    res['fCriterioHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
     #Action code ends here
     return json.dumps(res)
-
 
 
 
