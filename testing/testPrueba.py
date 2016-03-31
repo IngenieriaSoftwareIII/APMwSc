@@ -529,7 +529,3 @@ class testPrueba(unittest.TestCase):
         oTest = acceptanceTest()
         result = oTest.deleteAcceptanceTest(None)
         self.assertFalse(result)
-
-
-if __name__ == '__main__':
-    unittest.main()
