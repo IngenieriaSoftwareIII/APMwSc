@@ -490,9 +490,56 @@ def VSprints():
  
     return json.dumps(res)
 
+########## CRITERIOS DE ACEPTACIÓN ##########
+
+@sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
+def ACriterioHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria', 'msg':['Error agregando criterio a la historia']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
 
 
 
+@sprint.route('/sprint/AElimCriterioHistoria')
+def AElimCriterioHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Criterio de aceptación eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar el criterio de aceptación']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+@sprint.route('/sprint/VCriterioHistoria')
+def VCriterioHistoria():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+
+    #Action code ends here
+    return json.dumps(res)
 
 #Use case code starts here
 

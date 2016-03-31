@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle"
-                    data-toggle="collapse"
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
                     data-target="#contenido-plegable">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -21,6 +21,9 @@
 <li><a ng-click="VResumenHistoria4(idSprint)"
        ng-show="actor=='desarrollador' || false">
   +Asignar Resumen</a></li>
+<li><a ng-click="VCriterioHistoria5(idSprint)"
+       ng-show="actor=='desarrollador' || false">
+  +Asignar Criterio</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -43,20 +46,26 @@
         </button>
     </form>
     <hr /><h3>Historias</h3>
-        <table ng-table="tableParams6" template-pagination="pager.html" class="table">
+        <table ng-table="tableParams7" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Prioridad'" ng-bind="row['prioridad']"></td>
                 <td data-title="'Enunciado'" ng-bind="row['enunciado']"></td>
-                <td data-title="'Resumen'" ng-bind="row['resumen']"></td>
-                <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])" ng-show="actor=='duenoProducto' || false">-historia</a></td>
+                <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria7(row['idHistoria'])">-historia</a></td>
             </tr>
         </table>
 
 <hr /><h3>Tareas</h3>
-        <table ng-table="tableParams8" template-pagination="pager.html" class="table">
+        <table ng-table="tableParams9" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
-                <td ng-show="row['idTarea']"><a ng-click="AElimSprintTarea8(row['idTarea'])" ng-show="actor=='duenoProducto' || false">-tarea</a></td>
+                <td ng-show="row['idTarea']"><a ng-click="AElimSprintTarea9(row['idTarea'])">-tarea</a></td>
+            </tr>
+        </table>
+
+<hr /><h3>Criterios de aceptación</h3>        <table ng-table="tableParams11" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
+                <td ng-show="row['idCriterio']"><a ng-click="AElimCriterioHistoria11(row['idCriterio'])">-criterio</a></td>
             </tr>
         </table>
 
