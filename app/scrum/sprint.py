@@ -494,6 +494,7 @@ def VSprints():
 
 
 ########## CRITERIOS DE ACEPTACIÓN ##########
+criterio = 1
 
 @sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
 def ACriterioHistoria():
@@ -503,6 +504,26 @@ def ACriterioHistoria():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
+    # idSprint = int(session['idSprint'])
+    # idUserHistory = int(params['Historia'])
+    # description = str(params['Descripcion'])
+
+    # res['label'] = res['label'] + '/' + str(idSprint)
+
+    # oSprint = sprints()
+    # oAcceptanceCriteria = acceptanceCriteria()
+
+    # insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
+
+
+    # #if oSprint.asignSprintHistory(idSprint,idPila, id...):
+
+
+    # oUserHistory = userHistory()
+    # result = oUserHistory.assignHistoryCriteria(idUserHistory, resume)
+
+    # if not result:
+    #     res = results[1]
 
     #Action code ends here
     if "actor" in res:
@@ -548,10 +569,8 @@ def VCriterioHistoria():
     idPila = int(session['idPila'])
     idSprint = int(session['idSprint'])
 # 
-    print("******************")
     oSprint = sprints()
     historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
-    print(historiasSprint)
     res['fCriterioHistoria_opcionesHistoria'] = [
         {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasSprint
     ]

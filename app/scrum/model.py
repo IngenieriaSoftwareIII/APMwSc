@@ -278,14 +278,16 @@ class clsAcceptanceCriteria(db.Model):
     HAC_idAcceptanceCriteria = db.Column(db.Integer, primary_key=True, index=True)
     HAC_description   = db.Column(db.String(140), unique=True, index=True)
     HAC_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HAC_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, idUserHistory, description):
-        HAC_description = description
-        HAC_idUserHistory = idUserHistory
+        self.HAC_description = description
+        self.HAC_idUserHistory = idUserHistory
+        self.HAC_idSprint = None
 
     def __repr__(self):
         '''Representacion en string del criterio de aceptacion'''
-        return '<HAC_idAcceptanceCriteria, HAC_idUserHistory %r>' % (HAC_idAcceptanceCriteria, HAC_idUserHistory)
+        return '<HAC_idAcceptanceCriteria %r, HAC_idUserHistory %r, HAC_idSprint %r>' % (self.HAC_idAcceptanceCriteria, self.HAC_idUserHistory, self.HAC_idSprint)
 
 
 class clsTask(db.Model):

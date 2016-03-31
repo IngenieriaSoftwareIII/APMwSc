@@ -180,4 +180,20 @@ class sprints(object):
 				db.session.commit()
 				return True
 		return False
+
+	def assignSprintAcceptanceCriteria(self, sprintNumber, idBacklog, idAC):
+		''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidAC = type(idAC) == int and MIN_ID <= idTask
+		if checkSprintNumber and checkidBacklog and checkidTask:
+			oAcceptanceCriteria = acceptanceCriteria()
+			criterio = oAcceptanceCriteria.getACById(idAC)
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			if criterio and sprint:
+				criterio.HAC_idSprint = sprint[0].S_idSprint
+				db.session.commit()
+				return True
+		return False
+
 # Fin Clase Sprint
