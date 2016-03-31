@@ -24,14 +24,8 @@ def ACrearTarea():
     taskDesc    = params['descripcion']
     idCategoria = params['categoria']
     taskPeso    = params['peso']
-    
-    #TODO: descomentar
-    #started     = params['iniciado']
-    #startingDate= params['fechaInicio']
-
-    #TODO CABLEADO!!!!!!!!!!!!!!!!!!!!!
-    started = True
-    startingDate = datetime.utcnow()
+    started     = params['iniciado']
+    startingDate= params['fechaInicio']
 
     oBackLog    = backlog()
     oTask       = task()
