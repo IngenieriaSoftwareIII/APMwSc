@@ -331,8 +331,8 @@ class clsSprint(db.Model):
     S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
     S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
     S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
-    S_fechini           = db.Column(db.String(140))
-    S_fechfin          = db.Column(db.String(140))
+    S_fechini           = db.Column(db.DateTime, default=datetime.datetime.now())
+    S_fechfin          = db.Column(db.DateTime, default=datetime.datetime.now())
     S_state            = db.Column(db.String(30))
 
     def __init__(self, numero, sprintDescription, idBacklog, fechini, fechfin, state):

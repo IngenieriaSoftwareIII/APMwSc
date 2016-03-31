@@ -5,7 +5,11 @@ from app.scrum.sprintClass       import *
 from app.scrum.backLog           import *
 from app.scrum.userHistory       import *
 from app.scrum.task              import *
+from datetime                    import datetime
+
 sprint = Blueprint('sprint', __name__)
+
+DATE_FORMAT = '%d/%m/%Y'
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
@@ -21,9 +25,16 @@ def ACrearSprint():
         # Extraemos los parámetros
         newNumero      = params['numero'] 
         newDescription = params['descripcion']
-        newFechini = params ['fechini']
-        newFechfin = params ['fechfin']
         newState = params ['state']
+
+        # Parse las fechas
+        try:
+            newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+            newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+        except ValueError:
+            res = results[1]        
+            res['label'] = res['label'] + '/' + str(idPila)
+            return json.dumps(res)
         
         oSprint = sprints()
         result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin, newState)
@@ -156,9 +167,16 @@ def AModifSprint():
     idSprint = int(session['idSprint'])
     newSprintNumber = int(params['numero'])
     newDescription  = str(params['descripcion'])
-    newFechini = params['fechini']
-    newFechfin = params['fechfin']
     newState = params['state']
+
+    # Parse las fechas
+    try:
+        newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+        newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+    except ValueError:
+        res = results[1]        
+        res['label'] = res['label'] + '/' + str(idPila)
+        return json.dumps(res)
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
@@ -362,7 +380,12 @@ def VSprint():
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription, 'fechini':sprint.S_fechini, 'fechfin':sprint.S_fechfin, 'state':sprint.S_state }
+    res['fSprint'] = {'idSprint':idSprint, 
+                        'numero':sprint.S_numero, 
+                        'descripcion':sprint.S_sprintDescription, 
+                        'fechini':sprint.S_fechini.strftime(DATE_FORMAT), 
+                        'fechfin':sprint.S_fechfin.strftime(DATE_FORMAT), 
+                        'state':sprint.S_state }
 
     #Obtenes las historias asignadas al sprint
     listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
@@ -488,7 +511,11 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription, 'fechini':spr.S_fechini, 'fechfin':spr.S_fechfin, 'state':spr.S_state } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero, 
+                    'descripcion':spr.S_sprintDescription, 
+                    'fechini':spr.S_fechini.strftime(DATE_FORMAT), 
+                    'fechfin':spr.S_fechfin.strftime(DATE_FORMAT), 
+                    'state':spr.S_state } for spr in sprintList]
 
 
     session['idPila'] = idPila
