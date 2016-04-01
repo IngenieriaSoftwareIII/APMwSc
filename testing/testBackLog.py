@@ -12,6 +12,10 @@ from role        import *
 from accions     import *
 from objective   import *
 from userHistory import *
+from datetime    import *
+
+TODAY = datetime.utcnow()
+
 class TestBacklog(unittest.TestCase):
      
      #############################################      
@@ -1067,7 +1071,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1097,7 +1101,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1125,7 +1129,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1153,7 +1157,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1181,7 +1185,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1209,7 +1213,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1237,7 +1241,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1265,7 +1269,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1293,7 +1297,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1321,7 +1325,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1351,7 +1355,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1379,7 +1383,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1407,7 +1411,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1435,7 +1439,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1463,7 +1467,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1491,7 +1495,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1521,7 +1525,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1549,7 +1553,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1577,7 +1581,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB11',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB11',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB11',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1605,7 +1609,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
 import unittest
@@ -9,10 +9,16 @@ sys.path.append('../app/scrum')
 from sprintClass import *
 from meetingClass import *
 from role import *
+from datetime import *
+
+# Declaracion de constantes
+TODAY = datetime.utcnow()
+TOMORROW = TODAY + timedelta(days=1)
+STATES = ["Terminada", "En ejecución", "No iniciada"]
 
 class TestMeeting(unittest.TestCase):
 
-    #############################################      
+    #############################################
     #         Pruebas para emptyTable           #
     #############################################
 
@@ -23,14 +29,14 @@ class TestMeeting(unittest.TestCase):
         self.aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
         findId         = self.aBacklog.findName('Bxtyllz')
         self.idBacklog = findId[0].BL_idBacklog
-    
+
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
@@ -54,11 +60,11 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
@@ -68,7 +74,7 @@ class TestMeeting(unittest.TestCase):
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
-    #############################################      
+    #############################################
     #        Pruebas para searchMeeting         #
     #############################################
 
@@ -81,7 +87,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -103,7 +109,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -126,7 +132,7 @@ class TestMeeting(unittest.TestCase):
 #        self.idBacklog = findId[0].BL_idBacklog
 #        # Creamos el sprint
 #        aSprint      = sprints()
-#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
 #        findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
 #        idASprint = findIdSprint[0].S_idSprint
 #        # Creamos el meeting
@@ -149,7 +155,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -164,11 +170,11 @@ class TestMeeting(unittest.TestCase):
         aSprint.deleteSprint(1,self.idBacklog)
         self.assertFalse(result)
 
-    #############################################      
+    #############################################
     #        Pruebas para insertMeeting         #
     #############################################
-    
-    # Probar que la funcionalidad se ejecuta    
+
+    # Probar que la funcionalidad se ejecuta
     def testInsertMeeting(self):
         # Creamos el backlog
         self.aBacklog  = backlog()
@@ -177,7 +183,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -198,7 +204,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -220,7 +226,7 @@ class TestMeeting(unittest.TestCase):
 #        self.idBacklog = findId[0].BL_idBacklog
 #        # Creamos el sprint
 #        aSprint      = sprints()
-#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
 #        findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
 #        idASprint = findIdSprint[0].S_idSprint
 #        # Creamos el meeting
@@ -249,7 +255,7 @@ class TestMeeting(unittest.TestCase):
         result = aMeeting.insertMeeting(date, 0, 2.5, [],tipo, 1)
         self.assertFalse(result)
 
-    #############################################      
+    #############################################
     #       Pruebas para updateMeeting          #
     #############################################
 
@@ -262,7 +268,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -288,7 +294,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -314,7 +320,7 @@ class TestMeeting(unittest.TestCase):
 #        self.idBacklog = findId[0].BL_idBacklog
 #        # Creamos el sprint
 #        aSprint      = sprints()
-#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+#        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
 #        findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
 #        idASprint = findIdSprint[0].S_idSprint
 #        # Creamos el meeting
@@ -337,7 +343,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -364,7 +370,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -383,7 +389,7 @@ class TestMeeting(unittest.TestCase):
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertFalse(result)
 
-    #############################################      
+    #############################################
     #         Pruebas para getMeetings          #
     #############################################
 
@@ -396,7 +402,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -419,7 +425,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -438,7 +444,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -460,7 +466,7 @@ class TestMeeting(unittest.TestCase):
         result = aMeeting.getMeetings(-1)
         self.assertTrue(result == [])
 
-    #############################################      
+    #############################################
     #        Pruebas para deleteMeeting         #
     #############################################
 
@@ -473,7 +479,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -495,7 +501,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
@@ -518,7 +524,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         ## Creamos el meeting
@@ -544,7 +550,7 @@ class TestMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting

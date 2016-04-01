@@ -10,6 +10,7 @@ from app.scrum.task              import *
 
 sprint = Blueprint('sprint', __name__)
 
+DATE_FORMAT = '%d/%m/%Y'
 
 @sprint.route('/sprint/ACrearElementoMeeting', methods=['POST'])
 def ACrearElementoMeeting():
@@ -79,8 +80,6 @@ def ACrearReunionSprint():
     return json.dumps(res)
 
 
-
-
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
     #POST/PUT parameters
@@ -93,11 +92,21 @@ def ACrearSprint():
 
     if request.method == 'POST':
         # Extraemos los parámetros
-        newNumero      = params['numero'] 
+        newNumero      = params['numero']
         newDescription = params['descripcion']
-        
+        newState = params ['state']
+
+        # Parse las fechas
+        try:
+            newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+            newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+        except ValueError:
+            res = results[1]
+            res['label'] = res['label'] + '/' + str(idPila)
+            return json.dumps(res)
+
         oSprint = sprints()
-        result  = oSprint.insertSprint(newNumero, newDescription, idPila)
+        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin, newState)
 
         if result:
             res = results[0]
@@ -119,7 +128,7 @@ def AElimSprint():
     params  = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
     res     = results[1]
-    
+
     # Obtenemos el id del producto
     idPila       = int(session['idPila'])
 
@@ -135,7 +144,7 @@ def AElimSprint():
         deleted = oSprint.deleteSprint(found[0].S_numero, found[0].S_idBacklog)
 
     if deleted:
-            res = results[0]  
+            res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
 
@@ -196,7 +205,7 @@ def AModifElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Detalle Modificado con éxito']},{'label':'/VReunion', 'msg':['Error al modificar detalle']} ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-    # Cableada para la presentación. Sólo funciona para modificar los 
+    # Cableada para la presentación. Sólo funciona para modificar los
     # elementos creados por el usuario de turno en la reunión 1
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -312,13 +321,23 @@ def AModifSprint():
     idSprint = int(session['idSprint'])
     newSprintNumber = int(params['numero'])
     newDescription  = str(params['descripcion'])
+    newState = params['state']
+
+    # Parse las fechas
+    try:
+        newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+        newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+    except ValueError:
+        res = results[1]
+        res['label'] = res['label'] + '/' + str(idPila)
+        return json.dumps(res)
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
-    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
-    
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini, newFechfin, newState)
+
     if not result:
-        res = results[1]        
+        res = results[1]
         res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
@@ -361,7 +380,7 @@ def AResumenHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-# 
+#
 
 @sprint.route('/sprint/ASprintHistoria', methods=['POST'])
 def ASprintHistoria():
@@ -394,7 +413,7 @@ def ASprintHistoria():
         #Obtenemos las tareas asociadas a cada historia de usuario asignada
         for idHist in historiesList:
             taskList = oTask.getAllTask(idHist)
-            
+
             if taskList != []:
                 for t in taskList:
                     result = oSprint.asignSprintTask(idSprint,idPila, t.HW_idTask)
@@ -492,7 +511,7 @@ def VCrearSprint():
     res = {}
 
     idPila = int(request.args.get('idPila',1))
-        
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -523,7 +542,7 @@ def VResumenHistoria():
 
     idPila = int(session['idPila'])
     idSprint = int(session['idSprint'])
-# 
+#
     oSprint = sprints()
     historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
     res['fResumenHistoria_opcionesHistoria'] = [
@@ -585,7 +604,7 @@ def VReunion():
 
     oElement = elementMeeting()
     elements = oElement.getElements(idReunion)
-    res['data4'] = [{'id':elem.EM_idElementMeeting, 'user':elem.EM_user}for elem in elements]  
+    res['data4'] = [{'id':elem.EM_idElementMeeting, 'user':elem.EM_user}for elem in elements]
     res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
 
     #Action code ends here
@@ -603,7 +622,7 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-    
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -615,14 +634,19 @@ def VSprint():
     # Buscamos el actor actual
 
     oSprint      = sprints()
-    oBacklog     = backlog() 
+    oBacklog     = backlog()
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
+    res['fSprint'] = {'idSprint':idSprint,
+                        'numero':sprint.S_numero,
+                        'descripcion':sprint.S_sprintDescription,
+                        'fechini':sprint.S_fechini.strftime(DATE_FORMAT),
+                        'fechfin':sprint.S_fechfin.strftime(DATE_FORMAT),
+                        'state':sprint.S_state }
 
     #Obtenes las historias asignadas al sprint
-    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila)
     userHistories  = []
 
     #Acomodamos la escala asociada a la historia
@@ -661,7 +685,7 @@ def VSprint():
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
-    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]  
+    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
@@ -732,7 +756,7 @@ def VSprintTarea():
 
     res['idSprint']= idSprint
     res['usuario'] = session['usuario']
-    
+
     return json.dumps(res)
 
 
@@ -741,9 +765,9 @@ def VSprintTarea():
 def VSprints():
      #GET parameter
     res = {}
-    
+
     # Obtenemos el id del producto.
-    idPila = int(request.args.get('idPila',1)) 
+    idPila = int(request.args.get('idPila',1))
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -756,12 +780,16 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero,
+                    'descripcion':spr.S_sprintDescription,
+                    'fechini':spr.S_fechini.strftime(DATE_FORMAT),
+                    'fechfin':spr.S_fechfin.strftime(DATE_FORMAT),
+                    'state':spr.S_state } for spr in sprintList]
 
 
     session['idPila'] = idPila
-    res['idPila']     = idPila 
- 
+    res['idPila']     = idPila
+
     return json.dumps(res)
 
 

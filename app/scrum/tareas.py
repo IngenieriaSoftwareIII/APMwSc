@@ -4,8 +4,9 @@ from flask                 import request, session, Blueprint, json, render_temp
 from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
-from app.scrum.model      import *
+from app.scrum.model       import *
 from app.scrum.Team        import *
+from datetime              import datetime
 
 from werkzeug import secure_filename
 
@@ -27,6 +28,23 @@ def ACrearTarea():
     taskDesc    = params['descripcion']
     idCategoria = params['categoria']
     taskPeso    = params['peso']
+
+    if 'iniciado' in params:
+        started = params['iniciado']
+    else:
+        started = False
+
+    if 'fechaInicio' in params:
+            startingDate= params['fechaInicio']
+            try:
+                startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+            except ValueError:
+                res     = results[1]
+                res['label'] = res['label'] + '/'+str(idHistory)
+                return json.dumps(res)
+    else:
+        startingDate_object = None
+
     oBackLog    = backlog()
     oTask       = task()
 
@@ -35,7 +53,7 @@ def ACrearTarea():
     else:
         miembro = None
 
-    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory)
+    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object)
 
     insertedTask = oTask.searchTask(taskDesc)[0]
 
@@ -45,7 +63,7 @@ def ACrearTarea():
         oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
 
 
-    if insert:        
+    if insert:
         res = results[0]
     else:
         res = results[1]
@@ -124,7 +142,7 @@ def AElimDoc():
 def AModifTarea():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VCrearTarea', 'msg':['No se pudo modificar esta tarea.']}, ]
+    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VHistoria', 'msg':['No se pudo modificar esta tarea.']}, ]
     res     = results[1]
 
     # Obtenemos los parámetros
@@ -135,12 +153,23 @@ def AModifTarea():
     new_taskPeso    = params['peso']
     new_miembro = params['miembro']
 
+    started     = params['iniciado']
+    startingDate= params['fechaInicio']
+
+    try:
+        startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+    except ValueError:
+        res     = results[1]
+        res['label'] = res['label'] + '/'+str(idHistoria)
+        return json.dumps(res)
+
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
 
     # Modificamos la tarea
-    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso)
+
+    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object)
 
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
@@ -271,6 +300,7 @@ def VTarea():
     oTeam = team()
     miembroList = oTeam.getTeam(found.UH_idBacklog)
 
+
     if result.HW_completed:
         estado = 'completa'
     else:
@@ -289,7 +319,7 @@ def VTarea():
     res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
       {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
-    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight, 'estado':estado}
+    startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
 
     res['fTarea'] = {'idHistoria':idHistoria,
                     'idTarea': idTarea,
@@ -297,7 +327,9 @@ def VTarea():
                     'categoria': result.HW_idCategory,
                     'peso':result.HW_weight,
                     'miembro': result.HW_idEquipo,
-                    'estado': estado}
+                    'estado': estado,
+                    'iniciado': result.HW_iniciado,
+                    'fechaInicio': startingDate_object_new }
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea
