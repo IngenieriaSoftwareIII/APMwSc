@@ -499,10 +499,7 @@ def VSprints():
     return json.dumps(res)
 
 
-
-
 ########## CRITERIOS DE ACEPTACIÓN ##########
-
 
 @sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
 def ACriterioHistoria():
@@ -526,7 +523,6 @@ def ACriterioHistoria():
     results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria/'+str(idSprint), 'msg':['Error al asignar criterio a la historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
 
     res['label'] = res['label'] + '/' + str(idSprint)
 
@@ -577,6 +573,8 @@ def AElimCriterioHistoria():
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
+
+
 
 @sprint.route('/sprint/VCriterioHistoria')
 def VCriterioHistoria():
