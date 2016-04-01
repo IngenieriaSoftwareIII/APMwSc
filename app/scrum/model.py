@@ -276,7 +276,7 @@ class clsAcceptanceCriteria(db.Model):
 
     __tablename__ = 'acceptanceCriteria'
     HAC_idAcceptanceCriteria = db.Column(db.Integer, primary_key=True, index=True)
-    HAC_description   = db.Column(db.String(140), unique=True, index=True)
+    HAC_description   = db.Column(db.String(140), index=True)
     HAC_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
     HAC_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
