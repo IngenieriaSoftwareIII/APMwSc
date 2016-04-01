@@ -511,7 +511,9 @@ def ACriterioHistoria():
     if numCriteria == []:
         criterio = 1
     else:
-        criterio = len(numCriteria) + 1
+        for elem in numCriteria:
+            x = elem.HAC_idAcceptanceCriteria
+        criterio = x + 1
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VSprint', 'msg':['Error al asignar criterio a la historia']}, ]
@@ -596,6 +598,7 @@ def VCriterioHistoria():
     ]
 
     res['idSprint'] = idSprint
+    res['idPila']  = idPila
     res['fCriterioHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
     #Action code ends here
