@@ -73,7 +73,9 @@ class acceptanceCriteria(object):
             checkTypeDescription = type(description) == str
             if checkTypeDescription:
                 found = self.findIdAcceptanceCriteria(idHAC)
-                if found != []:
+                if len(description) > MAX_ACCEPTANCE_DESCRIPTION:
+                    return False
+                if found != [] and hasattr(found, 'HAC_description'):
                     found.HAC_description = description
                     db.session.commit()
                     return True

@@ -47,7 +47,7 @@ class TestAcceptanceCriteriaClass(unittest.TestCase):
     ###################################################
     #       Pruebas para insertAcceptanceCriteria     #
     ###################################################
-        # Caso InicialaSprint
+        # Caso InicialaCriteria
 
     # Prueba 1
     def testAcceptanceCriteria(self):
@@ -147,20 +147,20 @@ class TestAcceptanceCriteriaClass(unittest.TestCase):
         self.assertFalse(result)
 
     # Prueba 9
-    def testInsertCriteriaIdBackLogInvalid(self):
+    def testInsertCriteriaIdHistoryInvalid(self):
         aCriteria = acceptanceCriteria()
         result = aCriteria.insertAcceptanceCriteria(0, 'Descripcion Criterio')
         self.assertFalse(result)
 
     # Casos Esquinas
     # Prueba 10
-    def testInsertCriteriaIdBacklogNoExists(self):
+    def testInsertCriteriaIdHistoryNoExists(self):
         aCriteria = acceptanceCriteria()
         result = aCriteria.insertAcceptanceCriteria(80, 'Descripcion Criterio')
         self.assertFalse(result)
 
     # Prueba 11
-    def testInsertSprintLongDesc140AndIdBackLogNoExists(self):
+    def testInsertCriteriaLongDesc140AndIdHistoryNoExists(self):
         aCriteria = acceptanceCriteria()
         result = aCriteria.insertAcceptanceCriteria(80, 100*'LlWmcrl')
         self.assertFalse(result)
@@ -199,4 +199,335 @@ class TestAcceptanceCriteriaClass(unittest.TestCase):
     ##############################################
     #   Pruebas para deleteAcceptanceCriteria    #
     ##############################################
-    
+    # Caso Inicial
+
+    # Prueba
+    def testDeletCriteriaExists(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+
+    # Casos Normales
+    # Prueba
+    def testDeleteValidCriteria(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        result = aCriteria.deleteAcceptanceCriteria(idCriterio)
+        self.assertTrue(result)
+
+
+    # Casos Fronteras internas
+
+    # Prueba
+    def testDeleteCriteriaNum1ValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    #Prueba
+    def testDeleteCriteriaNum1000ValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(1000, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(1000, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    #Prueba
+    def testDeleteCriteriaNum1ValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(1, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(1, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    #Prueba
+    def testDeleteCriteriaNum1001ValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(1001, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(1001, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    #Prueba
+    def testDeleteSprintNegativeNumValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(-1, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(-1, 'Descripcion Criterio')
+        result = aCriteria.deleteAcceptanceCriteria(idCriterio)
+        self.assertFalse(result)
+
+    #Prueba
+    def testDeleteCriteriaStringNumValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria('1', 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID('1', 'Descripcion Criterio')
+        result = aCriteria.deleteAcceptanceCriteria(idCriterio)
+        self.assertFalse(result)
+
+    #Prueba
+    def testDeleteCriteriaNoneNumValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(None, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(None, 'Descripcion Criterio')
+        result = aCriteria.deleteAcceptanceCriteria(idCriterio)
+        self.assertFalse(result)
+
+    #Prueba
+    def testDeleteSprintNotNumValidIdHistory(self):
+        aCriteria = acceptanceCriteria()
+
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        result = aCriteria.deleteAcceptanceCriteria(idCriterio)
+        self.assertFalse(result)
+
+    ##############################################
+    #   Pruebas para modifyAcceptanceCriteria    #
+    ##############################################
+
+    # Prueba
+    def testModifyCriteria(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        aCriteria.modifyAcceptanceCriteria(idCriterio, 'Descripcion Nueva')
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Nueva')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Casos Normales
+
+    # Prueba
+    def testModifyAcceptanceCriteria(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio, 'Descripcion Nueva')
+        self.assertTrue(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Nueva')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyRepeatedCriteria(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio, 'Descripcion Criterio') # mismo que el anterior
+        self.assertTrue(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Casos Fronteras
+
+    # Prueba
+    def testInsertRepeatedCriteriaDiferentHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Creamos una nueva historia de usuario
+        #Insertamos la accion
+        oAccion = accions()
+        oAccion.insertAccion('Accion2', self.idBacklog)
+        search  = oAccion.searchAccion('Accion2', self.idBacklog)
+        idFound = search[0].AC_idAccion
+
+        #Insertamos la historia
+        oHistory = userHistory()
+        oHistory.insertUserHistory('Historia2',0,1,idFound,self.idBacklog,1)
+        idHistoria2 = oHistory.searchUserHistory('Historia2',self.idBacklog)[0].UH_idUserHistory #Obtenemos el id de la historia
+
+        aCriteria.insertAcceptanceCriteria(idHistoria2, 'Descripcion Criterio1')
+        idCriterio2 = aCriteria.getAceptanceCriteriaID(idHistoria2, 'Descripcion Criterio1')
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio2, 'Descripcion Criterio1 Modificada')
+
+        self.assertTrue(result)
+        #Eliminamos los datos insertados
+        idCriterio1 = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        idCriterio2 = aCriteria.getAceptanceCriteriaID(idHistoria2, 'Descripcion Criterio1 Modificada')
+        aCriteria.deleteAcceptanceCriteria(idCriterio1)
+        aCriteria.deleteAcceptanceCriteria(idCriterio2)
+
+    # Prueba
+    def testModifyCriteriaShortDesc0(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio, 'D')
+        self.assertTrue(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'D')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyCriteriaLongDesc1(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio, '@')
+        self.assertTrue(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, '@')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyCriteriaLongDesc140(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 20*'LlWmcrl')
+
+        self.assertTrue(result)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 20*'LlWmcrl')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyCriteriaLongDesc141(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(idCriterio, 20*'LlWmcrl'+'x')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyCriteriaIdHistoryInvalid(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(0, 'Descripcion Criterio')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Casos Esquinas
+    # Prueba
+    def testModifyCriteriaIdHistoryNoExists(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(80, 'Descripcion Criterio')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyCriteriaLongDesc140AndIdHistoryNoExists(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(80, 100*'LlWmcrl')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Casos Maliciosos
+    # Prueba
+    def testModifyNotString(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(80, 1548785)
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyNoneAsString(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(80, None)
+        self.assertTrue(result)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyIdNegative(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(-1, 'Descripcion Criterio')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    # Prueba
+    def testModifyIdAsString(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(str(self.idHistory), 'Descripcion Criterio')
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
+
+    #Prueba 16
+    def testModifyNegativeDescription(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Inicio Prueba
+        result = aCriteria.modifyAcceptanceCriteria(self.idHistory, -1)
+        self.assertFalse(result)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
