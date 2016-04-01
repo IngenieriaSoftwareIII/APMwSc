@@ -5,6 +5,7 @@ from app.scrum.sprintClass       import *
 from app.scrum.backLog           import *
 from app.scrum.userHistory       import *
 from app.scrum.task              import *
+from app.scrum.acceptanceCriteria import *
 sprint = Blueprint('sprint', __name__)
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
@@ -397,6 +398,11 @@ def VSprint():
     res['idPila'] = idPila
 
 
+    #Lista de criterios
+    listaCriterios = oSprint.getAssignedSprintAC(idSprint, idPila) # Criterios de aceptación asignados al Sprint
+    print(listaCriterios)
+    res['data11'] = [{'idCriterio':criterio.HAC_idAcceptanceCriteria, 'descripcion':criterio.HAC_description} for criterio in listaCriterios]    
+
     return json.dumps(res)
 
 
@@ -498,32 +504,32 @@ criterio = 1
 
 @sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
 def ACriterioHistoria():
+    global criterio
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria', 'msg':['Error agregando criterio a la historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
-    # idSprint = int(session['idSprint'])
-    # idUserHistory = int(params['Historia'])
-    # description = str(params['Descripcion'])
+    idPila = params['idPila']
+    idSprint = int(session['idSprint'])
+    idUserHistory = int(params['Historia'])
+    description = str(params['Descripcion'])
 
-    # res['label'] = res['label'] + '/' + str(idSprint)
+    res['label'] = res['label'] + '/' + str(idSprint)
 
-    # oSprint = sprints()
-    # oAcceptanceCriteria = acceptanceCriteria()
+    oSprint = sprints()
+    oAcceptanceCriteria = acceptanceCriteria()
 
-    # insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
+    insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
 
+    if insert:
+        result = oSprint.assignSprintAcceptanceCriteria(idSprint, idPila, criterio);
 
-    # #if oSprint.asignSprintHistory(idSprint,idPila, id...):
-
-
-    # oUserHistory = userHistory()
-    # result = oUserHistory.assignHistoryCriteria(idUserHistory, resume)
-
-    # if not result:
-    #     res = results[1]
+    if not result:
+        res = results[1]
+    else:
+        criterio += 1
 
     #Action code ends here
     if "actor" in res:

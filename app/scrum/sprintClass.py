@@ -7,6 +7,8 @@ sys.path.append('app/scrum')
 from backLog import *
 from userHistory import *
 from task        import *
+from acceptanceCriteria import *
+
 # Declaracion de constantes.
 MIN_ID                 = 1
 MIN_SPRINT_DESCRIPTION = 1
@@ -185,8 +187,8 @@ class sprints(object):
 		''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
-		checkidAC = type(idAC) == int and MIN_ID <= idTask
-		if checkSprintNumber and checkidBacklog and checkidTask:
+		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		if checkSprintNumber and checkidBacklog and checkidAC:
 			oAcceptanceCriteria = acceptanceCriteria()
 			criterio = oAcceptanceCriteria.getACById(idAC)
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
@@ -195,5 +197,15 @@ class sprints(object):
 				db.session.commit()
 				return True
 		return False
+
+	def getAssignedSprintAC(self, sprintNumber, idBacklog):
+		'''Permite obtener los criterios de aceptación asociados a un determinado Sprint'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		if checkSprintNumber and checkidBacklog:
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			found = clsAcceptanceCriteria.query.filter_by(HAC_idSprint = sprint[0].S_idSprint).all()
+			return found
+		return []
 
 # Fin Clase Sprint

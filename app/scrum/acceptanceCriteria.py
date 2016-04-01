@@ -70,4 +70,4 @@ class acceptanceCriteria(object):
 
     def getACById(self, acceptanceCriteriaID):
         ''' Permite obtener un criterio de aceptación dado su ID'''
-        return clsAcceptanceCriteria.query.filter_by(HW_idTask = acceptanceCriteriaID).first()
+        return clsAcceptanceCriteria.query.filter_by(HAC_idAcceptanceCriteria = acceptanceCriteriaID).first()
