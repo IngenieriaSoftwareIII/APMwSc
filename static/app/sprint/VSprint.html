@@ -49,8 +49,10 @@
         <table ng-table="tableParams6" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Prioridad'" ng-bind="row['prioridad']"></td>
-                <td data-title="'Enunciado'" ng-bind="row['enunciado']"></td>
-                <td data-title="'Resumen'" ng-bind="row['resumen']"></td>
+                <td data-title="'Enunciado'">
+                    <p ng-bind="row['enunciado']"></p>
+                    <p ng-bind="row['resumen']"></p>
+                </td>
                 <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])" ng-show="actor=='duenoProducto' || false">-historia</a></td>
             </tr>
         </table>
