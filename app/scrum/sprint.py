@@ -400,8 +400,10 @@ def VSprint():
 
     #Lista de criterios
     listaCriterios = oSprint.getAssignedSprintAC(idSprint, idPila) # Criterios de aceptación asignados al Sprint
-    print(listaCriterios)
-    res['data11'] = [{'idCriterio':criterio.HAC_idAcceptanceCriteria, 'descripcion':criterio.HAC_description} for criterio in listaCriterios]    
+    res['data11'] = [{'idCriterio':criterio.HAC_idAcceptanceCriteria, \
+                      'descripcion': "Historia " + \
+                        clsUserHistory.query.filter_by(UH_idUserHistory = criterio.HAC_idUserHistory).first().UH_codeUserHistory \
+                        + ": " + criterio.HAC_description} for criterio in listaCriterios]    
 
     return json.dumps(res)
 
@@ -529,11 +531,9 @@ def ACriterioHistoria():
     insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
 
     if insert:
-        print("creado")
         result = oSprint.assignSprintAcceptanceCriteria(idSprint, idPila, criterio);
 
     if not result:
-        print("no asignado")
         res = results[1]
 
     #Action code ends here
@@ -554,21 +554,15 @@ def AElimCriterioHistoria():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
-
     idSprint = int(session['idSprint'])
     idPila = int(session['idPila'])
     idCriterioEliminar = int(request.args['id'])
 
-    # oSprint  = sprints()
-    # print(idCriterioEliminar)
-    # print("imprimi****************")
-    # if oSprint.deleteAssignedSprintAC(idSprint, idPila, idCriterioEliminar):
     oAcceptanceCriteria = acceptanceCriteria()
     if oAcceptanceCriteria.deleteAcceptanceCriteria(idCriterioEliminar):
         res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
-
 
     #Action code ends here
     if "actor" in res:
