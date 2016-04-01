@@ -3,9 +3,10 @@
 import sys
 import unittest
 
-# Ruta que permite utilizar el módulo sprintClass.py
+# Ruta que permite utilizar el módulo acceptanceCriteria.py
 sys.path.append('../app/scrum')
 
+from acceptanceCriteria import *
 from sprintClass import *
 from accions     import *
 from category    import *
@@ -35,6 +36,7 @@ class TestAcceptanceCriteriaClass(unittest.TestCase):
         #Insertamos la historia
         oHistory = userHistory()
         oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        self.idHistory = oHistory.searchUserHistory('jDw',self.idBacklog)[0].UH_idUserHistory #Obtenemos el id de la historia
 
 
     def tearDown(self):
@@ -45,89 +47,156 @@ class TestAcceptanceCriteriaClass(unittest.TestCase):
     ###################################################
     #       Pruebas para insertAcceptanceCriteria     #
     ###################################################
-        # Caso Inicial
+        # Caso InicialaSprint
+
     # Prueba 1
     def testAcceptanceCriteria(self):
-        aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Casos Normales
 
     # Prueba 2
-    def testInsertSprintElement(self):
-        aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+    def testInsertAcceptanceCriteria(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
         self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Prueba 3
-    def testInsertSprintRepeatedNumber(self):
-        aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
-        result1   = aSprint.insertSprint(1,'Haskndwkd akdmkwdmdwa',self.idBacklog)
-        self.assertFalse(result1)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+    def testInsertRepeatedCriteria(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        self.assertFalse(result)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Casos Fronteras
 
     # Prueba 4
-    def testInsertSprintShortDesc0(self):
-        aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'',self.idBacklog)
-        self.assertFalse(result)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+    def testInsertRepeatedCriteriaDiferentHistory(self):
+        aCriteria = acceptanceCriteria()
+        aCriteria.insertAcceptanceCriteria(self.idHistory, 'Descripcion Criterio')
+
+        #Creamos una nueva historia de usuario
+        #Insertamos la accion
+        oAccion = accions()
+        oAccion.insertAccion('Accion2', self.idBacklog)
+        search  = oAccion.searchAccion('Accion2', self.idBacklog)
+        idFound = search[0].AC_idAccion
+
+        #Insertamos la historia
+        oHistory = userHistory()
+        oHistory.insertUserHistory('Historia2',0,1,idFound,self.idBacklog,1)
+        idHistoria2 = oHistory.searchUserHistory('Historia2',self.idBacklog)[0].UH_idUserHistory #Obtenemos el id de la historia
+
+        result = aCriteria.insertAcceptanceCriteria(idHistoria2, 'Descripcion Criterio1')
+
+        self.assertTrue(result)
+        #Eliminamos los datos insertados
+        idCriterio1 = aCriteria.getAceptanceCriteriaID(self.idHistory, 'Descripcion Criterio')
+        idCriterio2 = aCriteria.getAceptanceCriteriaID(idHistoria2, 'Descripcion Criterio1')
+        aCriteria.deleteAcceptanceCriteria(idCriterio1)
+        aCriteria.deleteAcceptanceCriteria(idCriterio2)
 
     # Prueba 5
-    def testInsertSprintLongDesc1(self):
-        aSprint      = sprints()
-        result    = aSprint.insertSprint(1,'@',self.idBacklog)
+    def testInsertCriteriaShortDesc0(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 'D')
+
         self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 'D')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Prueba 6
-    def testInsertSprintLongDesc140(self):
-        aSprint      = sprints()
-        result    = aSprint.insertSprint(1,20*'LlWmcrl',self.idBacklog)
+    def testInsertCriteriaLongDesc1(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, '@')
+
         self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(1,self.idBacklog)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, '@')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Prueba 7
-    def testInsertSprintLongDesc141(self):
-        aSprint   = sprints()
-        result    = aSprint.insertSprint(1,20*'LlWmcrl' + 'x',self.idBacklog)
-        self.assertFalse(result)
-        aSprint.deleteSprint(1,self.idBacklog)
+    def testInsertCriteriaLongDesc140(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 20*'LlWmcrl')
+
+        self.assertTrue(result)
+        #Eliminamos los datos insertados
+        idCriterio = aCriteria.getAceptanceCriteriaID(self.idHistory, 20*'LlWmcrl')
+        aCriteria.deleteAcceptanceCriteria(idCriterio)
 
     # Prueba 8
-    def testInsertSprintIdBackLogInvalid(self):
-        aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'Wtqczr ul mds dfbyl',0)
+    def testInsertCriteriaLongDesc141(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, 20*'LlWmcrl'+'x')
+        self.assertFalse(result)
+
+    # Prueba 9
+    def testInsertCriteriaIdBackLogInvalid(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(0, 'Descripcion Criterio')
         self.assertFalse(result)
 
     # Casos Esquinas
-
-    # Prueba 9
-    def testInsertSprintIdBacklogNoExists(self):
-        aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'DwfEndqr cun fw3rzv',80)
-        self.assertFalse(result)
-
     # Prueba 10
-    def testInsertSprintLongDesc140AndIdBackLogNoExists(self):
-        aSprint  = sprints()
-        result   = aSprint.insertSprint(1,20*'LlWmcrl',99)
+    def testInsertCriteriaIdBacklogNoExists(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(80, 'Descripcion Criterio')
         self.assertFalse(result)
 
-    def testInsertMaxSprintNumber(self):
-        aSprint  = sprints()
-        result   = aSprint.insertSprint(MAX_SPRINT_NUMBER,'MAX_SPRINT_TEST',self.idBacklog)
-        self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aSprint.deleteSprint(MAX_SPRINT_NUMBER,self.idBacklog)
+    # Prueba 11
+    def testInsertSprintLongDesc140AndIdBackLogNoExists(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(80, 100*'LlWmcrl')
+        self.assertFalse(result)
+
+    # Casos Maliciosos
+    # Prueba 12
+    def testInsertNotString(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(80, 1548785)
+        self.assertFalse(result)
+
+    # Prueba 13
+    def testInsertNoneAsString(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(80, None)
+        self.assertFalse(result)
+
+    # Prueba 14
+    def testInsertIdNegative(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(-1, 'Descripcion Criterio')
+        self.assertFalse(result)
+
+    # Prueba 15
+    def testInsertIdAsString(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(str(self.idHistory), 'Descripcion Criterio')
+        self.assertFalse(result)
+
+    #Prueba 16
+    def testInsertNegativeDescription(self):
+        aCriteria = acceptanceCriteria()
+        result = aCriteria.insertAcceptanceCriteria(self.idHistory, -1)
+        self.assertFalse(result)
+
+    ##############################################
+    #   Pruebas para deleteAcceptanceCriteria    #
+    ##############################################
+    

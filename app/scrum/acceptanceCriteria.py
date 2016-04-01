@@ -6,6 +6,8 @@ sys.path.append('app/scrum')
 
 from userHistory import *
 
+MAX_ACCEPTANCE_DESCRIPTION = 140
+
 class acceptanceCriteria(object):
     '''Clase que permite manejar los criterios de aceptacion de manera persistente'''
 
@@ -27,6 +29,9 @@ class acceptanceCriteria(object):
         if checkTypeidUserHistory and checkTypeDescription:
             oUserStory = userHistory()
             foundUserHistory = oUserStory.searchIdUserHistory(idUserHistory)
+
+            if len(description) > MAX_ACCEPTANCE_DESCRIPTION:
+                return False
 
             if foundUserHistory != []:
                 foundAC = clsAcceptanceCriteria.query.filter_by(HAC_idUserHistory = idUserHistory).all()
@@ -77,3 +82,10 @@ class acceptanceCriteria(object):
     def getACById(self, acceptanceCriteriaID):
         ''' Permite obtener un criterio de aceptación dado su ID'''
         return clsAcceptanceCriteria.query.filter_by(HAC_idAcceptanceCriteria = acceptanceCriteriaID).first()
+
+    def getAceptanceCriteriaID(self, idUserHistory,description):
+        ''' Permite obtener el id del criterio de aceptacion de acuerdo ol id de historia y descripcion'''
+        criterio = clsAcceptanceCriteria.query.filter_by(HAC_idUserHistory = idUserHistory, HAC_description = description).first()
+        if criterio:
+            return criterio.HAC_idAcceptanceCriteria
+        return []
