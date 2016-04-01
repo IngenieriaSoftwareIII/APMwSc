@@ -532,6 +532,7 @@ def ACriterioHistoria():
 
     insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
 
+    result = False
     if insert:
         result = oSprint.assignSprintAcceptanceCriteria(idSprint, idPila, criterio);
 

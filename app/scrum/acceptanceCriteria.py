@@ -29,6 +29,12 @@ class acceptanceCriteria(object):
             foundUserHistory = oUserStory.searchIdUserHistory(idUserHistory)
 
             if foundUserHistory != []:
+                foundAC = clsAcceptanceCriteria.query.filter_by(HAC_idUserHistory = idUserHistory).all()
+
+                for elem in foundAC:
+                    if elem.HAC_description == description:
+                        return False
+
                 newHAC = clsAcceptanceCriteria(idUserHistory,description)
                 db.session.add(newHAC)
                 db.session.commit()
