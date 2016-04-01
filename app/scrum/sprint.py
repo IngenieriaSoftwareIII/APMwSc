@@ -500,14 +500,19 @@ def VSprints():
 
 
 ########## CRITERIOS DE ACEPTACIÓN ##########
-criterio = 1
+
 
 @sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
 def ACriterioHistoria():
-    global criterio
+
+    numCriteria = clsAcceptanceCriteria.query.order_by(clsAcceptanceCriteria.HAC_idAcceptanceCriteria).all()
+    if numCriteria == []:
+        criterio = 1
+    else:
+        criterio = len(numCriteria) + 1
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria', 'msg':['Error agregando criterio a la historia']}, ]
+    results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VSprint', 'msg':['Error al asignar criterio a la historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
@@ -524,12 +529,12 @@ def ACriterioHistoria():
     insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
 
     if insert:
+        print("creado")
         result = oSprint.assignSprintAcceptanceCriteria(idSprint, idPila, criterio);
 
     if not result:
+        print("no asignado")
         res = results[1]
-    else:
-        criterio += 1
 
     #Action code ends here
     if "actor" in res:
@@ -548,6 +553,21 @@ def AElimCriterioHistoria():
     results = [{'label':'/VSprint', 'msg':['Criterio de aceptación eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar el criterio de aceptación']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
+
+
+    idSprint = int(session['idSprint'])
+    idPila = int(session['idPila'])
+    idCriterioEliminar = int(request.args['id'])
+
+    # oSprint  = sprints()
+    # print(idCriterioEliminar)
+    # print("imprimi****************")
+    # if oSprint.deleteAssignedSprintAC(idSprint, idPila, idCriterioEliminar):
+    oAcceptanceCriteria = acceptanceCriteria()
+    if oAcceptanceCriteria.deleteAcceptanceCriteria(idCriterioEliminar):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
 
 
     #Action code ends here

@@ -208,4 +208,18 @@ class sprints(object):
 			return found
 		return []
 
+	def deleteAssignedSprintAC(self, sprintNumber, idBacklog, idAC):
+		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		if checkSprintNumber and checkidBacklog and checkidAC:
+			oAcceptanceCriteria = acceptanceCriteria()
+			criterio = oAcceptanceCriteria.getACById(idAC)
+			if criterio:
+				criterio.HAC_idSprint = None
+				db.session.commit()
+				return True
+		return False
+
 # Fin Clase Sprint
