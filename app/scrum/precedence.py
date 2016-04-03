@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
 
@@ -26,12 +26,6 @@ class precedence(object):
                     db.session.add(newPrecedence)
                     db.session.commit()
                     return True
-                else:
-                    print('Error')
-            else:
-                print('Error')
-        else:
-            print ('Error')
         return
 
     def deletePrecedence(self, idFirstTask, idSecondTask):
@@ -46,7 +40,7 @@ class precedence(object):
 
     def existPrecedence(self, idFirstTask, idSecondTask):
         '''Permite saber si existe una precedencia'''
-        
+
         typeFirst   = (type(idFirstTask) == int)
         typeSecond  = (type(idSecondTask) == int)
 
@@ -80,7 +74,7 @@ class precedence(object):
 
         typeFirst   = (type(idFirstTask) == int)
         typeSecond  = (type(idSecondTask) == int)
-        noHayCiclo  = True 
+        noHayCiclo  = True
 
         if (typeFirst and typeSecond):
             if (idFirstTask == idSecondTask):

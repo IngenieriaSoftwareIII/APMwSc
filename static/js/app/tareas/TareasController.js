@@ -123,7 +123,6 @@ scrumModule.controller('VTareaController',
       $scope.AModifTarea0 = function(isValid) {
         $scope.fTareaSubmitted = true;
         if (isValid) {
-          
           tareasService.AModifTarea($scope.fTarea).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);

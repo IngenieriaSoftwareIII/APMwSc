@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
 import unittest
@@ -9,9 +9,12 @@ sys.path.append('../app/scrum')
 from backLog 		import *
 from accions 		import *
 from userHistory 	import *
-from model			import *  
+from model			import *
 from task		   	import *
 from category		import *
+from datetime       import *
+
+TODAY = datetime.utcnow()
 
 class TestUserHistory(unittest.TestCase):
 
@@ -25,18 +28,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		self.assertEqual ((aHist.completeHistory(idFound1)),True)
@@ -53,32 +56,32 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Insertamos la categoria
 		aCategory = category()
 		aCategory.insertCategory('wofhweoifh',1)
-		 
-		# Insertamos la tarea 1  
+
+		# Insertamos la tarea 1
 		aTarea = task()
-		aTarea.insertTask('dwidjw',1,1,idFound1)
+		aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
 		searchTask1 = aTarea.searchTask('dwidjw')
 		idprimera = searchTask1[0].HW_idTask
 
 		# Insertamos la tarea 2
 		bTarea = task()
-		bTarea.insertTask('dfghj',2,2,idFound1)
+		bTarea.insertTask('dfghj',2,2,idFound1,True,TODAY)
 		searchTask2 = bTarea.searchTask('dfghj')
 		idsegunda = searchTask2[0].HW_idTask
 
@@ -99,21 +102,21 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
-		badId = idFound1 + 1
+		badId = 1324
 		self.assertEqual ((aHist.completeHistory(badId)),False)
 
 		# Eliminamos todo de la BD
@@ -127,32 +130,32 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Insertamos la categoria
 		aCategory = category()
 		aCategory.insertCategory('wofhweoifh',1)
-		 
-		# Insertamos la tarea 1  
+
+		# Insertamos la tarea 1
 		aTarea = task()
-		aTarea.insertTask('dwidjw',1,1,idFound1)
+		aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
 		searchTask1 = aTarea.searchTask('dwidjw')
 		idprimera = searchTask1[0].HW_idTask
 
 		# Insertamos la tarea 2
 		bTarea = task()
-		bTarea.insertTask('dfghj',2,2,idFound1)
+		bTarea.insertTask('dfghj',2,2,idFound1,True,TODAY)
 		searchTask2 = bTarea.searchTask('dfghj')
 		idsegunda = searchTask2[0].HW_idTask
 
@@ -175,18 +178,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = -1
@@ -203,18 +206,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = 1.2
@@ -231,18 +234,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = "mala idea"
@@ -259,18 +262,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = False
@@ -291,18 +294,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		self.assertEqual ((aHist.incompleteHistory(idFound1)),True)
@@ -319,32 +322,32 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Insertamos la categoria
 		aCategory = category()
 		aCategory.insertCategory('wofhweoifh',1)
-		 
-		# Insertamos la tarea 1  
+
+		# Insertamos la tarea 1
 		aTarea = task()
-		aTarea.insertTask('dwidjw',1,1,idFound1)
+		aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
 		searchTask1 = aTarea.searchTask('dwidjw')
 		idprimera = searchTask1[0].HW_idTask
 
 		# Insertamos la tarea 2
 		bTarea = task()
-		bTarea.insertTask('dfghj',2,2,idFound1)
+		bTarea.insertTask('dfghj',2,2,idFound1,True,TODAY)
 		searchTask2 = bTarea.searchTask('dfghj')
 		idsegunda = searchTask2[0].HW_idTask
 
@@ -365,18 +368,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = idFound1 + 1
@@ -393,32 +396,32 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Insertamos la categoria
 		aCategory = category()
 		aCategory.insertCategory('wofhweoifh',1)
-		 
-		# Insertamos la tarea 1  
+
+		# Insertamos la tarea 1
 		aTarea = task()
-		aTarea.insertTask('dwidjw',1,1,idFound1)
+		aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
 		searchTask1 = aTarea.searchTask('dwidjw')
 		idprimera = searchTask1[0].HW_idTask
 
 		# Insertamos la tarea 2
 		bTarea = task()
-		bTarea.insertTask('dfghj',2,2,idFound1)
+		bTarea.insertTask('dfghj',2,2,idFound1,True,TODAY)
 		searchTask2 = bTarea.searchTask('dfghj')
 		idsegunda = searchTask2[0].HW_idTask
 
@@ -441,18 +444,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = -1
@@ -469,18 +472,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = 1.2
@@ -497,18 +500,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = "mala idea"
@@ -525,18 +528,18 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
 		searchBacklog = aBacklog.findName('Podn fjdd.')
 		idFound0 = searchBacklog[0].BL_idBacklog
-	 
+
 		# Insertamos la accion
 		aAcc = accions()
 		aAcc.insertAccion('cinrohbwidia',idFound0)
 		search = aAcc.searchAccion('cinrohbwidia',idFound0)
 		idFound = search[0].AC_idAccion
-			   
+
 		# Insertamos la historia
 		aHist = userHistory()
-		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
 		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-		idFound1 = searchHist[0].UH_idUserHistory 
+		idFound1 = searchHist[0].UH_idUserHistory
 
 		# Completamos historia
 		badId = False
