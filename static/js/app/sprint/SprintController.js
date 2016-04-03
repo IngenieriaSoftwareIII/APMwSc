@@ -1,10 +1,13 @@
-scrumModule.config(['$routeProvider', function ($routeProvider) {
+﻿scrumModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/VCrearSprint/:idPila', {
                 controller: 'VCrearSprintController',
                 templateUrl: 'app/sprint/VCrearSprint.html'
             }).when('/VCriterioHistoria/:idSprint', {
                 controller: 'VCriterioHistoriaController',
                 templateUrl: 'app/sprint/VCriterioHistoria.html'
+            }).when('/VDesempeno/:idSprint', {
+                controller: 'VDesempenoController',
+                templateUrl: 'app/sprint/VDesempeno.html'
             }).when('/VResumenHistoria/:idSprint', {
                 controller: 'VResumenHistoriaController',
                 templateUrl: 'app/sprint/VResumenHistoria.html'
@@ -98,7 +101,143 @@ scrumModule.controller('VCriterioHistoriaController',
       };
 
     }]);
+scrumModule.controller('VDesempenoController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+      $scope.msg = '';
+      sprintService.VDesempeno({"idSprint":$routeParams.idSprint}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+      });
+      $scope.VSprint0 = function(idSprint) {
+        $location.path('/VSprint/'+idSprint);
+      };
+	  
+	  $scope.bdchart = {
+		  "type": "ComboChart",
+		  "data": {
+			"cols": [
+				{ "id":"days",
+				"label":"Dias del sprint",
+				"type":"string",
+				"p":{}
+				},
+			  {
+				"id": "actual_hours",
+				"label": "Horas reales",
+				"type": "number",
+				"p": {}
+			  },
+			  {
+				"id": "ideal_hours",
+				"label": "Horas estimadas",
+				"type": "number",
+				"p": {}
+			  },
+      
+    ],
+    "rows": [
+      {
+        "c": [
+          {
+            "v": "Dia 1"
+          },
+          {
+            "v": 165,
+          },
+          {
+            "v": 165,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 2"
+          },
+          {
+            "v": 135,
+          },
+          {
+            "v": 132,
+          }
+        ]
+      },
+	  
+	  {
+        "c": [
+          {
+            "v": "Dia 3"
+          },
+          {
+            "v": 157,
+          },
+          {
+            "v": 99,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 4"
+          },
+          {
+            "v": 139,
+          },
+          {
+            "v": 66,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 5"
+          },
+          {
+            "v": 136,
+          },
+          {
+            "v": 33,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 5"
+          },
+          {
+            "v": 0,
+          },
+          {
+            "v": 0,
+          }
+        ]
+      },
+    ]  
+  },
+  "options": {
+    "title": "Burn down chart del Sprint",
+    "vAxis": {
+      "title": "Horas/hombre al día empleadas"
+      },
+    "hAxis": {
+      "title": "Dias"
+    },
+	"seriesType":"bars",
+	"series":{1:{type: 'line'}, 0: {color: '#000000'}},
+  },
+	"formatters": {}
+};
 
+    }]);
 scrumModule.controller('VResumenHistoriaController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -204,6 +343,9 @@ scrumModule.controller('VSprintController',
       };
       $scope.VCriterioHistoria5 = function(idSprint) {
         $location.path('/VCriterioHistoria/'+idSprint);
+      };
+       $scope.VDesempeno12 = function(idSprint) {
+        $location.path('/VDesempeno/'+idSprint);
       };
 
       $scope.fSprintSubmitted = false;

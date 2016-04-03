@@ -156,6 +156,20 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+	
+    this.VDesempeno = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VDesempeno',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     
     this.VResumenHistoria = function(args) {
         if(typeof args == 'undefined') args={};

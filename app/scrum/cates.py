@@ -3,7 +3,7 @@
 from flask import request, session, Blueprint, json
 from app.scrum.category import *
 from app.scrum.model    import *
-from _operator import length_hint
+#from _operator import length_hint
 
 cates = Blueprint('cates', __name__)
 

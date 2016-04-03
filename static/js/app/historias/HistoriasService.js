@@ -104,10 +104,10 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.VDesempeno = function(args) {
+    this.VHDesempeno = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
-          url: 'historias/VDesempeno',
+          url: 'historias/VHDesempeno',
           method: 'GET',
           params: args
         });

@@ -1,5 +1,5 @@
-// Creación del módulo de la aplicación
-var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'flash']);
+﻿// Creación del módulo de la aplicación
+var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'flash','googlechart']);
 scrumModule.config(function ($routeProvider) {
     $routeProvider
         .when('/', {

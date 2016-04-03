@@ -342,7 +342,7 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-    
+    print(id)
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -602,6 +602,25 @@ def VCriterioHistoria():
     res['idSprint'] = idSprint
     res['idPila']  = idPila
     res['fCriterioHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
+
+    #Action code ends here
+    return json.dumps(res)
+
+@sprint.route('/sprint/VDesempeno')
+def VDesempeno():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    print(request.args)
+    print(idSprint)
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['idSprint']=idSprint
 
     #Action code ends here
     return json.dumps(res)
