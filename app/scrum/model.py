@@ -208,6 +208,7 @@ class clsUserHistory(db.Model):
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     UH_iniciado         = db.Column(db.Boolean, default=False)
     UH_fechaInicio      = db.Column(db.DateTime, default=datetime.datetime.now())
+    UH_completed        = db.Column(db.Boolean)
 
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio):
@@ -295,6 +296,7 @@ class clsTask(db.Model):
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     HW_iniciado      = db.Column(db.Boolean, default=False)
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_completed    = db.Column(db.Boolean)
 
     def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio):
         self.HW_description   = description
