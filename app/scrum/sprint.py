@@ -3,10 +3,10 @@ from app.scrum.sprintClass       import *
 from app.scrum.meetingClass      import *
 from app.scrum.elementMeetingClass   import *
 from app.scrum.backLog           import *
-from datetime import datetime
 from app.scrum.userHistory       import *
 from app.scrum.user              import *
 from app.scrum.task              import *
+from datetime import datetime
 
 sprint = Blueprint('sprint', __name__)
 
