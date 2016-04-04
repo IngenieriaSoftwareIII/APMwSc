@@ -342,7 +342,6 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-    print(id)
     if "actor" in session:
         res['actor']=session['actor']
 
