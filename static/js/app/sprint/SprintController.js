@@ -8,6 +8,12 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VCrearSprint/:idPila', {
                 controller: 'VCrearSprintController',
                 templateUrl: 'app/sprint/VCrearSprint.html'
+            }).when('/VCriterioHistoria/:idSprint', {
+                controller: 'VCriterioHistoriaController',
+                templateUrl: 'app/sprint/VCriterioHistoria.html'
+            }).when('/VDesempeno/:idSprint', {
+                controller: 'VDesempenoController',
+                templateUrl: 'app/sprint/VDesempeno.html'
             }).when('/VElementoMeeting/:idReunion', {
                 controller: 'VElementoMeetingController',
                 templateUrl: 'app/sprint/VElementoMeeting.html'
@@ -20,9 +26,6 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VResumenHistoria/:idSprint', {
                 controller: 'VResumenHistoriaController',
                 templateUrl: 'app/sprint/VResumenHistoria.html'
-            }).when('/VSprint/:idSprint', {
-                controller: 'VSprintController',
-                templateUrl: 'app/sprint/VSprint.html'
             }).when('/VSprintHistoria/:idSprint', {
                 controller: 'VSprintHistoriaController',
                 templateUrl: 'app/sprint/VSprintHistoria.html'
@@ -149,6 +152,181 @@ scrumModule.controller('VCrearSprintController',
           });
         }
       };
+
+    }]);
+
+scrumModule.controller('VCriterioHistoriaController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+      $scope.msg = '';
+      $scope.fCriterioHistoria = {};
+
+      sprintService.VCriterioHistoria({"idSprint":$routeParams.idSprint}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+
+      });
+      $scope.VSprint1 = function(idSprint) {
+        $location.path('/VSprint/'+idSprint);
+      };
+
+      $scope.fCriterioHistoriaSubmitted = false;
+      $scope.ACriterioHistoria0 = function(isValid) {
+        $scope.fCriterioHistoriaSubmitted = true;
+        if (isValid) {
+          
+          sprintService.ACriterioHistoria($scope.fCriterioHistoria).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+        }
+      };
+
+    }]);
+scrumModule.controller('VDesempenoController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+      $scope.msg = '';
+      sprintService.VDesempeno({"idSprint":$routeParams.idSprint}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+      });
+      $scope.VSprint0 = function(idSprint) {
+        $location.path('/VSprint/'+idSprint);
+      };
+	  
+	  $scope.bdchart = {
+		  "type": "ComboChart",
+		  "data": {
+			"cols": [
+				{ "id":"days",
+				"label":"Dias del sprint",
+				"type":"string",
+				"p":{}
+				},
+			  {
+				"id": "actual_hours",
+				"label": "Horas reales",
+				"type": "number",
+				"p": {}
+			  },
+			  {
+				"id": "ideal_hours",
+				"label": "Horas estimadas",
+				"type": "number",
+				"p": {}
+			  },
+      
+    ],
+    "rows": [
+      {
+        "c": [
+          {
+            "v": "Dia 1"
+          },
+          {
+            "v": 165,
+          },
+          {
+            "v": 165,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 2"
+          },
+          {
+            "v": 135,
+          },
+          {
+            "v": 132,
+          }
+        ]
+      },
+	  
+	  {
+        "c": [
+          {
+            "v": "Dia 3"
+          },
+          {
+            "v": 157,
+          },
+          {
+            "v": 99,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 4"
+          },
+          {
+            "v": 139,
+          },
+          {
+            "v": 66,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 5"
+          },
+          {
+            "v": 136,
+          },
+          {
+            "v": 33,
+          }
+        ]
+      },
+	  {
+        "c": [
+          {
+            "v": "Dia 5"
+          },
+          {
+            "v": 0,
+          },
+          {
+            "v": 0,
+          }
+        ]
+      },
+    ]  
+  },
+  "options": {
+    "title": "Burn down chart del Sprint",
+    "vAxis": {
+      "title": "Horas/hombre al día empleadas"
+      },
+    "hAxis": {
+      "title": "Dias"
+    },
+	"seriesType":"bars",
+	"series":{1:{type: 'line'}, 0: {color: '#000000'}},
+  },
+	"formatters": {}
+};
 
     }]);
 
@@ -328,6 +506,18 @@ scrumModule.controller('VSprintController',
                       $defer.resolve(AElimSprintTarea8Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });   
+              var AElimCriterioHistoria11Data = $scope.res.data11;
+              if(typeof AElimCriterioHistoria11Data === 'undefined') AElimCriterioHistoria11Data=[];
+              $scope.tableParams11 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: AElimCriterioHistoria11Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(AElimCriterioHistoria11Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });    
+
 
               var VReunion4Data = $scope.res.data4;
               if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
@@ -380,6 +570,12 @@ scrumModule.controller('VSprintController',
       $scope.VResumenHistoria4 = function(idSprint) {
         $location.path('/VResumenHistoria/'+idSprint);
       };
+      $scope.VCriterioHistoria5 = function(idSprint) {
+        $location.path('/VCriterioHistoria/'+idSprint);
+      };
+       $scope.VDesempeno12 = function(idSprint) {
+        $location.path('/VDesempeno/'+idSprint);
+      };
 
       $scope.fSprintSubmitted = false;
       $scope.AModifSprint0 = function(isValid) {
@@ -413,6 +609,18 @@ scrumModule.controller('VSprintController',
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
           sprintService.AElimSprintTarea(arg).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+      };
+      $scope.AElimCriterioHistoria11 = function(id) {
+          var tableFields = [["idCriterio","id"],["descripcion","Descripción"]];
+          var arg = {};
+          arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
+          sprintService.AElimCriterioHistoria(arg).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];

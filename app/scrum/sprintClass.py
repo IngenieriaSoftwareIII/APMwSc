@@ -8,6 +8,8 @@ from datetime import *
 from backLog import *
 from userHistory import *
 from task        import *
+from acceptanceCriteria import *
+
 # Declaracion de constantes.
 MIN_ID                 = 1
 MIN_SPRINT_DESCRIPTION = 1
@@ -188,4 +190,44 @@ class sprints(object):
 				db.session.commit()
 				return True
 		return False
+
+	def assignSprintAcceptanceCriteria(self, sprintNumber, idBacklog, idAC):
+		''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		if checkSprintNumber and checkidBacklog and checkidAC:
+			oAcceptanceCriteria = acceptanceCriteria()
+			criterio = oAcceptanceCriteria.getACById(idAC)
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			if criterio and sprint:
+				criterio.HAC_idSprint = sprint[0].S_idSprint
+				db.session.commit()
+				return True
+		return False
+
+	def getAssignedSprintAC(self, sprintNumber, idBacklog):
+		'''Permite obtener los criterios de aceptación asociados a un determinado Sprint'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		if checkSprintNumber and checkidBacklog:
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			found = clsAcceptanceCriteria.query.filter_by(HAC_idSprint = sprint[0].S_idSprint).all()
+			return found
+		return []
+
+	def deleteAssignedSprintAC(self, sprintNumber, idBacklog, idAC):
+		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		if checkSprintNumber and checkidBacklog and checkidAC:
+			oAcceptanceCriteria = acceptanceCriteria()
+			criterio = oAcceptanceCriteria.getACById(idAC)
+			if criterio:
+				criterio.HAC_idSprint = None
+				db.session.commit()
+				return True
+		return False
+
 # Fin Clase Sprint

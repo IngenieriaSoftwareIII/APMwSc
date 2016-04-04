@@ -39,6 +39,33 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.ACriterioHistoria = function(fCriterioHistoria) {
+        return  $http({
+          url: "sprint/ACriterioHistoria",
+          data: fCriterioHistoria,
+          method: 'POST',
+        });
+    //    var labels = ["/VSprint", "/VCriterioHistoria", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AElimCriterioHistoria = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/AElimCriterioHistoria',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VSprint", "/VSprint", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.AElimSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -225,6 +252,33 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     };
 
 
+    this.VCriterioHistoria = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VCriterioHistoria',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+	
+    this.VDesempeno = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VDesempeno',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    
     this.VResumenHistoria = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({

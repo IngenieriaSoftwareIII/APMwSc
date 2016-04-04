@@ -24,6 +24,12 @@
 <li><a ng-click="VResumenHistoria4(idSprint)"
        ng-show="actor=='desarrollador' || false">
   +Asignar Resumen</a></li>
+<li><a ng-click="VCriterioHistoria5(idSprint)"
+       ng-show="actor=='desarrollador' || false">
+  +Asignar Criterio</a></li>
+  <li><a ng-click="VDesempeno12(idSprint)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || false">
+  Desempeno</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -62,8 +68,10 @@
         <table ng-table="tableParams6" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Prioridad'" ng-bind="row['prioridad']"></td>
-                <td data-title="'Enunciado'" ng-bind="row['enunciado']"></td>
-                <td data-title="'Resumen'" ng-bind="row['resumen']"></td>
+                <td data-title="'Enunciado'">
+                    <p ng-bind="row['enunciado']"></p>
+                    <p ng-bind="row['resumen']"></p>
+                </td>
                 <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])" ng-show="actor=='duenoProducto' || false">-historia</a></td>
             </tr>
         </table>
@@ -73,6 +81,16 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
                 <td ng-show="row['idTarea']"><a ng-click="AElimSprintTarea8(row['idTarea'])" ng-show="actor=='duenoProducto' || false">-tarea</a></td>
+            </tr>
+        </table>
+
+<hr />
+
+<hr /><h3>Criterios de aceptación</h3>
+        <table ng-table="tableParams11" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
+                <td ng-show="row['idCriterio']"><a ng-click="AElimCriterioHistoria11(row['idCriterio'])"  ng-show="actor=='desarrollador' || false">-criterio</a></td>
             </tr>
         </table>
 

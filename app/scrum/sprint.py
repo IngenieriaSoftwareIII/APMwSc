@@ -6,11 +6,11 @@ from app.scrum.backLog           import *
 from app.scrum.userHistory       import *
 from app.scrum.user              import *
 from app.scrum.task              import *
+from app.scrum.acceptanceCriteria import *
 from datetime import datetime
-
 sprint = Blueprint('sprint', __name__)
 
-DATE_FORMAT = '%d/%m/%Y'
+DATE_FORMAT = '%Y-%m-%d'
 
 @sprint.route('/sprint/ACrearElementoMeeting', methods=['POST'])
 def ACrearElementoMeeting():
@@ -622,7 +622,6 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -693,6 +692,13 @@ def VSprint():
     session['idPila'] = idPila
     res['idPila'] = idPila
 
+
+    #Lista de criterios
+    listaCriterios = oSprint.getAssignedSprintAC(idSprint, idPila) # Criterios de aceptación asignados al Sprint
+    res['data11'] = [{'idCriterio':criterio.HAC_idAcceptanceCriteria, \
+                      'descripcion': "Historia " + \
+                        clsUserHistory.query.filter_by(UH_idUserHistory = criterio.HAC_idUserHistory).first().UH_codeUserHistory \
+                        + ": " + criterio.HAC_description} for criterio in listaCriterios]    
 
     return json.dumps(res)
 
@@ -792,6 +798,131 @@ def VSprints():
 
     return json.dumps(res)
 
+########## CRITERIOS DE ACEPTACIÓN ##########
+
+@sprint.route('/sprint/ACriterioHistoria', methods=['POST'])
+def ACriterioHistoria():
+
+    numCriteria = clsAcceptanceCriteria.query.order_by(clsAcceptanceCriteria.HAC_idAcceptanceCriteria).all()
+    if numCriteria == []:
+        criterio = 1
+    else:
+        for elem in numCriteria:
+            x = elem.HAC_idAcceptanceCriteria
+        criterio = x + 1
+
+    #POST/PUT parameters
+    params = request.get_json()
+    
+    idPila = params['idPila']
+    idSprint = int(session['idSprint'])
+    idUserHistory = int(params['Historia'])
+    description = str(params['Descripcion'])
+
+    results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria/'+str(idSprint), 'msg':['Error al asignar criterio a la historia']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label'] + '/' + str(idSprint)
+
+    oSprint = sprints()
+    oAcceptanceCriteria = acceptanceCriteria()
+
+    insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
+
+    result = False
+    if insert:
+        result = oSprint.assignSprintAcceptanceCriteria(idSprint, idPila, criterio);
+
+    if not result:
+        res = results[1]
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/AElimCriterioHistoria')
+def AElimCriterioHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Criterio de aceptación eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar el criterio de aceptación']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    idSprint = int(session['idSprint'])
+    idPila = int(session['idPila'])
+    idCriterioEliminar = int(request.args['id'])
+
+    oAcceptanceCriteria = acceptanceCriteria()
+    if oAcceptanceCriteria.deleteAcceptanceCriteria(idCriterioEliminar):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/VCriterioHistoria')
+def VCriterioHistoria():
+    #GET parameter
+    #idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+
+    idPila = int(session['idPila'])
+    idSprint = int(session['idSprint'])
+# 
+    oSprint = sprints()
+    historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
+    res['fCriterioHistoria_opcionesHistoria'] = [
+        {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasSprint
+    ]
+
+    res['idSprint'] = idSprint
+    res['idPila']  = idPila
+    res['fCriterioHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
+
+    #Action code ends here
+    return json.dumps(res)
+
+@sprint.route('/sprint/VDesempeno')
+def VDesempeno():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    print(request.args)
+    print(idSprint)
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['idSprint']=idSprint
+
+    #Action code ends here
+    return json.dumps(res)
 
 
 
