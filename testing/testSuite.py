@@ -15,6 +15,8 @@ from testTask                   import *
 from testUser                   import *
 from testTeam					import *
 from testArchivo                import *
+from testUserHistory 			import *
+from testPrecedence				import *
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()

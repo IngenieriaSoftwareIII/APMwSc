@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
+            <button type="button" class="navbar-toggle"
+                    data-toggle="collapse"
                     data-target="#contenido-plegable">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -17,7 +17,7 @@
   +Tarea</a></li>
 <li><a ng-click="VCrearPrueba11(idHistoria)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || false">
-  +Prueba</a></li>  
+  +Prueba</a></li>
 <li><a ng-click="VCrearActor6(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +Actor</a></li>
@@ -55,6 +55,9 @@
             <input id="fHistoria_idPila" type="hidden" name="idPila" ng-model="fHistoria.idPila" />
             <input id="fHistoria_idHistoria" type="hidden" name="idHistoria" ng-model="fHistoria.idHistoria" />
             <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid && fHistoriaForm.prioridad.$pristine && fHistoriaSubmitted}"><label for="fHistoria_prioridad">Prioridad</label>:&nbsp;<select id="fHistoria_prioridad" ng-model="fHistoria.prioridad" required ng-options="item.key as item.value for item in fHistoria_opcionesPrioridad"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid" class="help-block">Error en campo Prioridad.</p></div>
+            <b>Estado de la historia:<span class="estado-{{fHistoria.estado}}">{{fHistoria.estado}}</span></b>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.iniciada.$invalid && fHistoriaForm.iniciada.$pristine && fHistoriaSubmitted}"><label for="fHistoria_iniciada">Iniciada:</label><input id="fHistoria_iniciado" type="checkbox" name="iniciado" ng-model="fHistoria.iniciado" placeholder="Iniciada"/><p ng-show="fHistoriaSubmitted && fHistoriaForm.iniciado.$invalid" class="help-block">Error en campo Iniciada.</p></div>
+           <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.fechini.$invalid && fHistoriaForm.fechini.$pristine && fHistoriaSubmitted}" ng-show="fHistoria.iniciado"><label for="fHistoria_fechini">Fecha de Inicio</label><input id="fHistoria_fechini" type="text" name="fechini" class="form-control" ng-model="fHistoria.fechaInicio" placeholder="dd/mm/aaaa" /><p ng-show="fHistoriaSubmitted && fHistoriaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
@@ -66,6 +69,12 @@
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
             </tr>
         </table>
+        <button name="complete" class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
+            Marcar como completa
+        </button>
+        <button name="incomplete" class="btn btn-perso btn-lg btn-block no-{{fHistoria.estado}}" ng-click="AIncompletarHistoria(fHistoria.idHistoria)" type="button">
+            Marcar como incompleta
+        </button>
     <hr /><h3>Pruebas de aceptación <span class="badge" ng-bind="numPruebas"></span></h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">

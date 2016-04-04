@@ -1,0 +1,52 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Reunión de carrera</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VCrearElementoMeeting2(idReunion)" ng-show="actor=='desarrollador' || false">
+  +Detalle</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VSprint0(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fReunionForm" ng-submit="AModifReunionSprint1(fReunionForm.$valid)" novalidate>
+            <input id="fReunion_idReunion" type="hidden" name="idReunion" ng-model="fReunion.idReunion" />
+            <input id="fReunion_idSprint" type="hidden" name="idSprint" ng-model="fReunion.idSprint" />
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Actividades.$invalid && fReunionForm.Actividades.$pristine && fReunionSubmitted}"><label for="fReunion_Actividades">Actividades</label><textarea id="fReunion_Actividades" name="Actividades" class="form-control" ng-model="fReunion.Actividades" placeholder="Actividades" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Actividades.$invalid" class="help-block">Error en campo Actividades.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Sugerencias.$invalid && fReunionForm.Sugerencias.$pristine && fReunionSubmitted}"><label for="fReunion_Sugerencias">Sugerencias</label><textarea id="fReunion_Sugerencias" name="Sugerencias" class="form-control" ng-model="fReunion.Sugerencias" placeholder="Sugerencias" required></textarea><p ng-show="fReunionSubmitted && fReunionForm.Sugerencias.$invalid" class="help-block">Error en campo Sugerencias.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Retos.$invalid && fReunionForm.Retos.$pristine && fReunionSubmitted}"><label for="fReunion_Retos">Retos</label><textarea id="fReunion_Retos" name="Retos" class="form-control" ng-model="fReunion.Retos" placeholder="Retos" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Retos.$invalid" class="help-block">Error en campo Retos.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Tipo.$invalid && fReunionForm.Tipo.$pristine && fReunionSubmitted}"><label for="fReunion_Tipo">Presencial o No Presencial</label><input id="fReunion_Tipo" type="text" name="Tipo" class="form-control" ng-model="fReunion.Tipo" placeholder="Presencial o No Presencial" required/><p ng-show="fReunionSubmitted && fReunionForm.Tipo.$invalid" class="help-block">Error en campo Presencial o No Presencial.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Modificar Reunion de carrera
+        </button>
+    </form>
+    <hr /><h3> Detalles </h3>        <table ng-table="tableParams4" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Número'" ng-bind="row['id']"></td>
+                <td data-title="'Usuario'" ng-bind="row['user']"></td>
+                <td data-title=""><a class="navbar-nav" ng-click="VElementoMeeting4(row['id'])">Ver</a></td>
+            </tr>
+        </table>
+
+<hr />
+
+
+<div id="right"></div>

@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear Reunión </span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VSprint0(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  Regresar</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fReunionForm" ng-submit="ACrearReunionSprint1(fReunionForm.$valid)" novalidate>
+            <input id="fReunion_idReunion" type="hidden" name="idReunion" ng-model="fReunion.idReunion" />
+            <input id="fReunion_idSprint" type="hidden" name="idSprint" ng-model="fReunion.idSprint" />
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Fecha.$invalid && fReunionForm.Fecha.$pristine && fReunionSubmitted}"><label for="fReunion_Fecha">Fecha de reunión</label><input id="fReunion_Fecha" type="date" name="Fecha" class="form-control" ng-model="fReunion.Fecha" placeholder="Fecha de reunion" required/><p ng-show="fReunionSubmitted && fReunionForm.Fecha.$invalid" class="help-block">Error en campo Fecha de reunión.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Actividades.$invalid && fReunionForm.Actividades.$pristine && fReunionSubmitted}"><label for="fReunion_Actividades">Actividades</label><textarea id="fReunion_Actividades" name="Actividades" class="form-control" ng-model="fReunion.Actividades" placeholder="Actividades" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Actividades.$invalid" class="help-block">Error en campo Actividades.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Sugerencias.$invalid && fReunionForm.Sugerencias.$pristine && fReunionSubmitted}"><label for="fReunion_Sugerencias">Sugerencias</label><textarea id="fReunion_Sugerencias" name="Sugerencias" class="form-control" ng-model="fReunion.Sugerencias" placeholder="Sugerencias" required></textarea><p ng-show="fReunionSubmitted && fReunionForm.Sugerencias.$invalid" class="help-block">Error en campo Sugerencias.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Retos.$invalid && fReunionForm.Retos.$pristine && fReunionSubmitted}"><label for="fReunion_Retos">Retos</label><textarea id="fReunion_Retos" name="Retos" class="form-control" ng-model="fReunion.Retos" placeholder="Retos" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Retos.$invalid" class="help-block">Error en campo Retos.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

@@ -1,12 +1,84 @@
-# -*- coding: utf-8 -*-
-
 from flask import request, session, Blueprint, json
 from app.scrum.sprintClass       import *
+from app.scrum.meetingClass      import *
+from app.scrum.elementMeetingClass   import *
 from app.scrum.backLog           import *
 from app.scrum.userHistory       import *
+from app.scrum.user              import *
 from app.scrum.task              import *
 from app.scrum.acceptanceCriteria import *
+from datetime import datetime
 sprint = Blueprint('sprint', __name__)
+
+DATE_FORMAT = '%Y-%m-%d'
+
+@sprint.route('/sprint/ACrearElementoMeeting', methods=['POST'])
+def ACrearElementoMeeting():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VReunion', 'msg':['Detalle de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un detalle a la reunión']}, ]
+    res = results[1]
+    #Action code goes here, res should be a list with a label and a message
+    usuario = session['usuario']
+    oUser = user()
+    usuario = oUser.searchUserByName(usuario['nombre'])
+    print(usuario)
+    challenges = params['challenge']
+    planed = params['planed']
+    done = params['done']
+    idReunion = int(session['idReunion'])
+    oElementMeeting = elementMeeting()
+    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario.U_username)
+    if exito:
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idReunion)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/ACrearReunionSprint', methods=['POST'])
+def ACrearReunionSprint():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Reunión creada']}, {'label':'/VCrearReunionSprint', 'msg':['Error creando reunion']}, ]
+    res = results[1]
+    #Action code goes here, res should be a list with a label and a message
+
+    idPila  = int(session['idPila'])
+    idSprint = int(session['idSprint'])
+    fecha = params['Fecha']
+    actividades = params['Actividades']
+    sugerencias = params['Sugerencias']
+    #tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO
+    retos = params['Retos']
+    tipo = "Presencial"
+
+
+    oMeeting = meeting()
+    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,tipo,idSprint) #AGREGAR NUEVO ATRIBUTO
+    print(exito)
+    print(fecha)
+    if exito:
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
@@ -20,11 +92,21 @@ def ACrearSprint():
 
     if request.method == 'POST':
         # Extraemos los parámetros
-        newNumero      = params['numero'] 
+        newNumero      = params['numero']
         newDescription = params['descripcion']
-        
+        newState = params ['state']
+
+        # Parse las fechas
+        try:
+            newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+            newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+        except ValueError:
+            res = results[1]
+            res['label'] = res['label'] + '/' + str(idPila)
+            return json.dumps(res)
+
         oSprint = sprints()
-        result  = oSprint.insertSprint(newNumero, newDescription, idPila)
+        result  = oSprint.insertSprint(newNumero, newDescription, idPila, newFechini, newFechfin, newState)
 
         if result:
             res = results[0]
@@ -42,11 +124,11 @@ def ACrearSprint():
 
 @sprint.route('/sprint/AElimSprint')
 def AElimSprint():
-    #POST/PUT parameters
+     #POST/PUT parameters
     params  = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
     res     = results[1]
-    
+
     # Obtenemos el id del producto
     idPila       = int(session['idPila'])
 
@@ -62,7 +144,7 @@ def AElimSprint():
         deleted = oSprint.deleteSprint(found[0].S_numero, found[0].S_idBacklog)
 
     if deleted:
-            res = results[0]  
+            res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
 
@@ -116,6 +198,90 @@ def AElimSprintHistoria():
     return json.dumps(res)
 
 
+@sprint.route('/sprint/AModifElementoMeeting', methods=['POST'])
+def AModifElementoMeeting():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VReunion', 'msg':['Detalle Modificado con éxito']},{'label':'/VReunion', 'msg':['Error al modificar detalle']} ]
+    res = results[1]
+    #Action code goes here, res should be a list with a label and a message
+    # Cableada para la presentación. Sólo funciona para modificar los
+    # elementos creados por el usuario de turno en la reunión 1
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
+    challenges = params['challenge']
+    planed = params['planed']
+    done = params['done']
+    # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
+    # session['idReunion'] arrpja KEY ERROR.
+    idReunion = 1
+    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
+    # Por qué es un cable? El query no debería hacerse aquí.
+    res['usuario'] = session['usuario']
+    usuario = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
+    # fin del cable
+    oElementMeeting = elementMeeting()
+    anElement = oElementMeeting.getElementsByUserAndMeeting(usuario, idReunion)[0]
+    exito = oElementMeeting.updateElement(anElement.EM_idElementMeeting, challenges, planed, done, idReunion, usuario)
+    if exito:
+        res = results[0]
+    res['label'] = res['label'] + '/' + str(idReunion)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/AModifReunionSprint', methods=['POST'])
+def AModifReunionSprint():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VReunion', 'msg':['Reunión de sprint modificada'], "actor":"desarrollador"}, {'label':'/VReunion', 'msg':['Error al modificar reunión'], "actor":"desarrollador"}, ]
+    res = results[1]
+    #Action code goes here, res should be a list with a label and a message
+
+    idPila  = int(session['idPila'])
+    idReunion  = params['idReunion']
+    idSprint = int(session['idSprint'])
+    #fecha = params['Fecha']
+    actividades = params['Actividades']
+    sugerencias = params['Sugerencias']
+    retos = params['Retos']
+    tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO (updateMeeting)
+
+    oMeeting = meeting()
+    result = oMeeting.getMeetingID(idReunion,idSprint)
+
+    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,tipo,idSprint)
+
+    if exito:
+        res = results[0]
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    idSprint = 1
+    res['label'] = res['label'] + '/' + str(idSprint)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+
+    res['idSprint'] = idSprint
+    session['idReunion'] = idReunion
+
+    return json.dumps(res)
+
 @sprint.route('/sprint/AElimSprintTarea')
 def AElimSprintTarea():
     #POST/PUT parameters
@@ -142,6 +308,7 @@ def AElimSprintTarea():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+
 @sprint.route('/sprint/AModifSprint', methods=['POST'])
 def AModifSprint():
     #POST/PUT parameters
@@ -154,13 +321,23 @@ def AModifSprint():
     idSprint = int(session['idSprint'])
     newSprintNumber = int(params['numero'])
     newDescription  = str(params['descripcion'])
+    newState = params['state']
+
+    # Parse las fechas
+    try:
+        newFechini = datetime.strptime(params['fechini'], DATE_FORMAT)
+        newFechfin = datetime.strptime(params['fechfin'], DATE_FORMAT)
+    except ValueError:
+        res = results[1]
+        res['label'] = res['label'] + '/' + str(idPila)
+        return json.dumps(res)
 
     res['label'] = res['label'] + '/' + str(idPila)
     oSprint = sprints()
-    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
-    
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription, newFechini, newFechfin, newState)
+
     if not result:
-        res = results[1]        
+        res = results[1]
         res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
@@ -203,7 +380,7 @@ def AResumenHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-# 
+#
 
 @sprint.route('/sprint/ASprintHistoria', methods=['POST'])
 def ASprintHistoria():
@@ -236,7 +413,7 @@ def ASprintHistoria():
         #Obtenemos las tareas asociadas a cada historia de usuario asignada
         for idHist in historiesList:
             taskList = oTask.getAllTask(idHist)
-            
+
             if taskList != []:
                 for t in taskList:
                     result = oSprint.asignSprintTask(idSprint,idPila, t.HW_idTask)
@@ -252,6 +429,51 @@ def ASprintHistoria():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+@sprint.route('/sprint/VCrearElementoMeeting')
+def VCrearElementoMeeting():
+    #GET parameter
+    idReunion = request.args['idReunion']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+    #Datos de prueba
+    res['idReunion'] = 1
+    res['idSprint'] = 1
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/VCrearReunionSprint')
+def VCrearReunionSprint():
+    #GET parameter
+    res = {}
+
+    idPila = int(request.args.get('idPila',1))
+
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
+    res['usuario'] = session['usuario']
+    res['idPila']  = idPila
+    res['idSprint'] = session['idSprint']
+
+    #Action code ends here
     return json.dumps(res)
 
 
@@ -282,13 +504,14 @@ def ASprintTarea():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+
 @sprint.route('/sprint/VCrearSprint')
 def VCrearSprint():
-    #GET parameter
+   #GET parameter
     res = {}
 
-    idPila = request.args.get('idPila',1)
-        
+    idPila = int(request.args.get('idPila',1))
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -319,7 +542,7 @@ def VResumenHistoria():
 
     idPila = int(session['idPila'])
     idSprint = int(session['idSprint'])
-# 
+#
     oSprint = sprints()
     historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
     res['fResumenHistoria_opcionesHistoria'] = [
@@ -330,6 +553,63 @@ def VResumenHistoria():
     res['fSprintHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
     #Action code ends here
+    return json.dumps(res)
+
+
+
+
+@sprint.route('/sprint/VElementoMeeting')
+def VElementoMeeting():
+    #GET parameter
+    idReunion = request.args['idReunion']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['fElementoMeeting'] = {
+      'challenge' :'Carrera inicial. Modelo de datos, MVC, identificación',
+      'planed':'planificado',
+      'done':'realizado',
+      'idReunion':1,
+      'idUser':1,
+      }
+    res['idElementMeeting'] = 1
+    res['idElemento'] = 1
+    res['idReunion'] = 1
+    res['idSprint'] = 1
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/VReunion')
+def VReunion():
+    #GET parameter
+    idReunion = int(request.args.get('id', 1))
+
+    idSprint = session['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    oMeeting = meeting()
+    result  = oMeeting.getMeetingID(idReunion,idSprint)
+
+    oElement = elementMeeting()
+    elements = oElement.getElements(idReunion)
+    res['data4'] = [{'id':elem.EM_idElementMeeting, 'user':elem.EM_user}for elem in elements]
+    res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
+
+    #Action code ends here
+    res['idReunion'] = idReunion
+    session['idReunion'] = idReunion
     return json.dumps(res)
 
 
@@ -351,15 +631,21 @@ def VSprint():
     res['usuario'] = session['usuario']
 
     # Buscamos el actor actual
+
     oSprint      = sprints()
-    oBacklog     = backlog() 
+    oBacklog     = backlog()
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
+    res['fSprint'] = {'idSprint':idSprint,
+                        'numero':sprint.S_numero,
+                        'descripcion':sprint.S_sprintDescription,
+                        'fechini':sprint.S_fechini.strftime(DATE_FORMAT),
+                        'fechfin':sprint.S_fechfin.strftime(DATE_FORMAT),
+                        'state':sprint.S_state }
 
     #Obtenes las historias asignadas al sprint
-    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila)
     userHistories  = []
 
     #Acomodamos la escala asociada a la historia
@@ -394,6 +680,16 @@ def VSprint():
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
+    res['idPila'] = idPila
+
+    oMeeting = meeting()
+    result  = oMeeting.getMeetings(idSprint)
+    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]
+
+    session['idSprint'] = idSprint
+    res['idSprint'] = idSprint
+
+    session['idPila'] = idPila
     res['idPila'] = idPila
 
 
@@ -466,17 +762,18 @@ def VSprintTarea():
 
     res['idSprint']= idSprint
     res['usuario'] = session['usuario']
+
     return json.dumps(res)
 
 
 
 @sprint.route('/sprint/VSprints')
 def VSprints():
-    #GET parameter
+     #GET parameter
     res = {}
-    
+
     # Obtenemos el id del producto.
-    idPila = int(request.args.get('idPila',1)) 
+    idPila = int(request.args.get('idPila',1))
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -489,14 +786,17 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
+    res['data1'] = [{'numero':spr.S_numero,
+                    'descripcion':spr.S_sprintDescription,
+                    'fechini':spr.S_fechini.strftime(DATE_FORMAT),
+                    'fechfin':spr.S_fechfin.strftime(DATE_FORMAT),
+                    'state':spr.S_state } for spr in sprintList]
 
 
     session['idPila'] = idPila
-    res['idPila']     = idPila 
- 
-    return json.dumps(res)
+    res['idPila']     = idPila
 
+    return json.dumps(res)
 
 ########## CRITERIOS DE ACEPTACIÓN ##########
 

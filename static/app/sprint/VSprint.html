@@ -12,6 +12,9 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VCrearReunionSprint1(idSprint)" 
+    ng-show="actor=='desarrollador'|| false">
+  +Reunión</a></li>
 <li><a ng-click="VSprintHistoria2(idSprint)"
        ng-show="actor=='duenoProducto' || false">
   +Asignar Historia</a></li>
@@ -31,7 +34,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VSprints1(idPila)"
+<li><a ng-click="VSprints2(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Regresar</a></li>
 
@@ -44,10 +47,23 @@
             <input id="fSprint_idPila" type="hidden" name="idPila" ng-model="fSprint.idPila" />
             <div class="form-group" ng-class="{ 'has-error' :  fSprintSubmitted && fSprintForm.numero.$invalid && fSprintForm.numero.$pristine && fSprintSubmitted}"><label for="fSprint_numero">Número</label><input id="fSprint_numero" type="number" name="numero" class="form-control" ng-model="fSprint.numero" placeholder="Número" required/><p ng-show="fSprintSubmitted && fSprintForm.numero.$invalid" class="help-block">Error en campo Número.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fSprintSubmitted && fSprintForm.descripcion.$invalid && fSprintForm.descripcion.$pristine && fSprintSubmitted}"><label for="fSprint_descripcion">Descripción</label><textarea id="fSprint_descripcion" name="descripcion" class="form-control" ng-model="fSprint.descripcion" placeholder="Descripción" required></textarea><p ng-show="fSprintSubmitted && fSprintForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+           <div class="form-group" ng-class="{ 'has-error' :  fSprintSubmitted && fSprintForm.fechini.$invalid && fSprintForm.fechini.$pristine && fSprintSubmitted}"><label for="fSprint_fechini">Fecha de Inicio</label><input id="fSprint_fechini" type="date" name="fechini" class="form-control" ng-model="fSprint.fechini" placeholder="dd/mm/aaaa" required/><p ng-show="fSprintSubmitted && fSprintForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p></div>
+           <div class="form-group" ng-class="{ 'has-error' :  fSprintSubmitted && fSprintForm.fechfin.$invalid && fSprintForm.fechfin.$pristine && fSprintSubmitted}"><label for="fSprint_fechfin">Fecha de Culminación</label><input id="fSprint_fechfin" type="date" name="fechfin" class="form-control" ng-model="fSprint.fechfin" placeholder="dd/mm/aaaa" required/><p ng-show="fSprintSubmitted && fSprintForm.fechfin.$invalid" class="help-block">Error en campo Fecha de culminación.</p></div>
+           <div class="form-group" ng-class="{ 'has-error' :  fSprintSubmitted && fSprintForm.state.$invalid && fSprintForm.state.$pristine && fSprintSubmitted}"><label for="fSprint_state">Estado</label><select name="state" id="fSprint_state" ng-model="fSprint.state" placeholder="state" required><option value="No iniciada">No iniciada </option><option value="En ejecución">En ejecución</option><option value="Terminada">Terminada</option></select><p ng-show="fSprintSubmitted && fSprintForm.state.$invalid" class="help-block">Error en campo Estado.</p></div>
+
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form>
+    <hr /><h3>Reuniones</h3>        <table ng-table="tableParams4" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Número'" ng-bind="row['id']"></td>
+                <td data-title="'Fecha'" ng-bind="row['fecha']"></td>
+                <td data-title="'Actividades'" ng-bind="row['actividades']"></td>
+                <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+                <td data-title=""><a class="navbar-nav" ng-click="VReunion4(row['id'])">Ver</a></td>
+            </tr>
+        </table>
     <hr /><h3>Historias</h3>
         <table ng-table="tableParams6" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
