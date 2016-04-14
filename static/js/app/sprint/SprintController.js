@@ -35,6 +35,9 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VSprints/:idPila', {
                 controller: 'VSprintsController',
                 templateUrl: 'app/sprint/VSprints.html'
+            }).when('/VSprint/:idSprint', {
+                controller: 'VSprintController',
+                templateUrl: 'app/sprint/VSprint.html'
             });
 }]);
 

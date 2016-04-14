@@ -120,9 +120,12 @@ def ACrearReunionSprint():
     fecha = params['Fecha']
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
-    #tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO
+    tipo = params['Tipo']
+    if tipo == 1:
+        tipo = 'Presencial'
+    else:
+        tipo = 'No Presencial'
     retos = params['Retos']
-    tipo = "Presencial"
 
 
     oMeeting = meeting()
@@ -316,7 +319,7 @@ def AModifReunionSprint():
 
     idPila  = int(session['idPila'])
     idReunion  = params['idReunion']
-    idSprint = int(session['idSprint'])
+    idSprint = int(params['idSprint'])
     #fecha = params['Fecha']
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
