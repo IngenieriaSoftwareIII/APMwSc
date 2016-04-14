@@ -81,16 +81,15 @@ def ACrearElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Detalle de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un detalle a la reunión']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-    usuario = session['usuario']
+    usuario = session['usuario']['username']
     oUser = user()
-    print(usuario)
-    usuario = oUser.searchUserByName(usuario['nombre'])
+    #print(usuario)
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
     idReunion = int(session['idReunion'])
     oElementMeeting = elementMeeting()
-    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario.U_username)
+    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario)
     if exito:
         res = results[0]
 
@@ -126,8 +125,8 @@ def ACrearReunionSprint():
 
     oMeeting = meeting()
     exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,tipo,idSprint) #AGREGAR NUEVO ATRIBUTO
-    print(exito)
-    print(fecha)
+    #print(exito)
+    #print(fecha)
     if exito:
         res = results[0]
 
@@ -171,7 +170,6 @@ def ACrearSprint():
         teamList = oTeam.getTeamDevs(idPila)
         oSubTeam = subEquipoClass()
         idSprint = oSprint.getSprintId(newNumero,idPila)
-        print('SPRINT ID:::::::::::::: ' + str(idSprint))
 
         for member in teamList:
             oSubTeam.insertMiembroSubEquipo(member.EQ_username,member.EQ_rol,idSprint)
@@ -270,8 +268,6 @@ def AModifElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Detalle Modificado con éxito']},{'label':'/VReunion', 'msg':['Error al modificar detalle']} ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-    # Cableada para la presentación. Sólo funciona para modificar los 
-    # elementos creados por el usuario de turno en la reunión 1
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
@@ -279,17 +275,12 @@ def AModifElementoMeeting():
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
-    # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
-    # session['idReunion'] arrpja KEY ERROR.
-    idReunion = 1
-    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
-    # Por qué es un cable? El query no debería hacerse aquí.
+    idReunion = session['idReunion']
+    idElementMeeting = session['idElementMeeting']
     res['usuario'] = session['usuario']
-    usuario = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
-    # fin del cable
     oElementMeeting = elementMeeting()
-    anElement = oElementMeeting.getElementsByUserAndMeeting(usuario, idReunion)[0]
-    exito = oElementMeeting.updateElement(anElement.EM_idElementMeeting, challenges, planed, done, idReunion, usuario)
+    anElement = oElementMeeting.getElementID(idElementMeeting, idReunion)[0]
+    exito = oElementMeeting.updateElement(anElement.EM_idElementMeeting, challenges, planed, done, idReunion, anElement.EM_user)
     if exito:
         res = results[0]
     res['label'] = res['label'] + '/' + str(idReunion)
@@ -308,7 +299,7 @@ def AModifElementoMeeting():
 def AModifReunionSprint():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VReunion', 'msg':['Reunión de sprint modificada'], "actor":"desarrollador"}, {'label':'/VReunion', 'msg':['Error al modificar reunión'], "actor":"desarrollador"}, ]
+    results = [{'label':'/VSprint', 'msg':['Reunión de sprint modificada'], "actor":"desarrollador"}, {'label':'/VSprint', 'msg':['Error al modificar reunión'], "actor":"desarrollador"}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
@@ -324,7 +315,7 @@ def AModifReunionSprint():
     oMeeting = meeting()
     result = oMeeting.getMeetingID(idReunion,idSprint)
 
-    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,tipo,idSprint)
+    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,tipo,idSprint,idReunion)
 
     if exito:
         res = results[0]
@@ -501,11 +492,8 @@ def VCrearElementoMeeting():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
-    # idReunion tiene valor UNDEFINED
     session['idReunion'] = idReunion
-    res['idSprint'] = 1
-    #FIN DEL CABLE
+    res['idReunion'] = idReunion
 
     #Action code ends here
     return json.dumps(res)
@@ -625,7 +613,9 @@ def VResumenHistoria():
 @sprint.route('/sprint/VElementoMeeting')
 def VElementoMeeting():
     #GET parameter
-    idReunion = int(request.args['idReunion'])
+    idMeeting = int(request.args['idMeeting'])
+    idReunion = session['idReunion']
+    print(idReunion)
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -635,14 +625,11 @@ def VElementoMeeting():
       res['logout'] = '/'
       return json.dumps(res)
 
-    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
-    # Por qué es un cable? Porque debería ser el username que lo creó y no el que
-    # está en sesión. Además, el query no debería hacerse aquí.
     res['usuario'] = session['usuario']
-    u = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
-    # fin del cable
+    u = session['usuario']['username']
+
     oElementMeeting = elementMeeting()
-    anElement = oElementMeeting.getElementsByUserAndMeeting(u, idReunion)[0]
+    anElement = oElementMeeting.getElementID(idMeeting,idReunion)[0]
     res['fElementoMeeting'] = {
         'challenge' : anElement.EM_challenges,
         'planed' : anElement.EM_planned,
@@ -653,10 +640,10 @@ def VElementoMeeting():
 #      'idReunion':1,
 #      'idUser':1,
       }
-    res['idElementMeeting'] = anElement.EM_idElementMeeting 
-    res['idElemento'] = 1 # Qué es esto?
+    res['idElementMeeting'] = anElement.EM_idElementMeeting
+    session['idElementMeeting'] = anElement.EM_idElementMeeting
     res['idReunion'] =  idReunion
-    res['idSprint'] = 1
+    session['idReunion'] =  idReunion
 
     #Action code ends here
     return json.dumps(res)
@@ -683,6 +670,7 @@ def VReunion():
 
     res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
     res['idReunion'] = idReunion
+    session['idReunion'] = idReunion
     res['idSprint'] = idSprint
     #Action code ends here
     return json.dumps(res)
@@ -696,6 +684,8 @@ def VSprint():
 
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
+    print("Argumentos: ")
+    print(request.args)
     idSprint = int(request.args.get('idSprint',1))
     
     if "actor" in session:
@@ -755,7 +745,6 @@ def VSprint():
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
-    print("AAAAAAAAAAA",result)
     res['data5'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]  
 
     session['idSprint'] = idSprint

@@ -8,18 +8,15 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VCrearSprint/:idPila', {
                 controller: 'VCrearSprintController',
                 templateUrl: 'app/sprint/VCrearSprint.html'
-            }).when('/VElementoMeeting/:idReunion', {
+            }).when('/VElementoMeeting/:idMeeting', {
                 controller: 'VElementoMeetingController',
                 templateUrl: 'app/sprint/VElementoMeeting.html'
             }).when('/VEquipoSprint/:idSprint', {
                 controller: 'VEquipoSprintController',
                 templateUrl: 'app/sprint/VEquipoSprint.html'
-            }).when('/VReunion/:idSprint', {
+            }).when('/VReunion/:id', {
                 controller: 'VReunionController',
                 templateUrl: 'app/sprint/VReunion.html'
-            }).when('/VSprint/:idPila', {
-              controller: 'VSprintController',
-                templateUrl: 'app/sprint/VSprint.html'
             }).when('/VResumenHistoria/:idSprint', {
                 controller: 'VResumenHistoriaController',
                 templateUrl: 'app/sprint/VResumenHistoria.html'
@@ -161,7 +158,7 @@ scrumModule.controller('VElementoMeetingController',
       $scope.msg = '';
       $scope.fElementoMeeting = {};
 
-      sprintService.VElementoMeeting({"idReunion":$routeParams.idReunion}).then(function (object) {
+      sprintService.VElementoMeeting({"idMeeting":$routeParams.idMeeting}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -282,7 +279,7 @@ scrumModule.controller('VReunionController',
       $scope.msg = '';
       $scope.fReunion = {};
 
-      sprintService.VReunion({"idSprint":$routeParams.idSprint}).then(function (object) {
+      sprintService.VReunion({"id":$routeParams.id}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -310,8 +307,8 @@ scrumModule.controller('VReunionController',
 
       });
       $scope.VSprint0 = function(idSprint) {
-        $location.path('/VSprint/'+idSprint);
-      };
+        $location.path('/VSprint/'+((typeof idSprint === 'object')?JSON.stringify(idSprint):idSprint));
+              };
       $scope.VCrearElementoMeeting2 = function(idReunion) {
         $location.path('/VCrearElementoMeeting/'+idReunion);
       };
@@ -343,7 +340,6 @@ scrumModule.controller('VSprintController',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
       $scope.msg = '';
       $scope.fSprint = {};
-
       sprintService.VSprint({"idSprint":$routeParams.idSprint}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {

@@ -98,7 +98,7 @@ class meeting(object):
 						return True
 		return False
 
-	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, newType,idSprint):
+	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, newType,idSprint,idSprintMeeting):
 		'''Permite actualizar los datos de una reunión diaria'''   
 		checkTypeDate 			   = type(date) == str
 		checkTypeNewDate 		   = type(newDate) == str
@@ -122,7 +122,7 @@ class meeting(object):
 				# Busco las reuniones que tengan la nueva fecha
 				date0 = datetime.datetime.strptime(date,'%d/%m/%Y').strftime('%Y-%m-%d')
 				newDate0 = datetime.datetime.strptime(newDate,'%d/%m/%Y').strftime('%Y-%m-%d')
-				foundMeeting = self.searchMeeting(newDate0, idSprint)
+				foundMeeting = self.getMeetingID(idSprintMeeting, idSprint)
 				
 				# Si no cambie la fecha
 				if date0 == newDate0:

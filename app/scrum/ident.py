@@ -40,7 +40,8 @@ def AIdentificar():
             if isValid:
                 # Mostramos el nombre en la aplicación
                 fullname = userLogin[0].U_fullname
-                session['usuario'] = {'nombre': fullname.title()}
+                username = userLogin[0].U_username 
+                session['usuario'] = {'nombre': fullname.title(),'username': username}
 
                 # Verificamos el rol del usuario
                 rolUser = userLogin[0].U_idActor

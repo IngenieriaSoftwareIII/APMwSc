@@ -59,7 +59,7 @@ scrumModule.controller('VProductoController',
       $scope.fPila = {};
 
       prodService.VProducto({"idPila":$routeParams.idPila}).then(function (object) {
-        $scope.res = object.data;
+        $scope.res = object.data; 
         $scope.backlogId = $routeParams.nombrePila;
         for (var key in object.data) {
             $scope[key] = object.data[key];

@@ -37,21 +37,6 @@ class user(object):
                 auser = clsUser.query.filter_by(U_username = username).all()
                 return auser
  
- 
-    def searchUserByName(self,name):
-        '''Permite buscar un usuario por su nombre'''
-        
-        if (type(name) != str):
-            return []
-        else:
-            long_name = len(name)
-            if (long_name >CONST_MAX_USER or long_name < CONST_MIN_LONG):
-                return []
-            else:
-                auser = clsUser.query.filter_by(U_fullname = name).all()
-                return auser[0]
- 
- 
     def insertUser(self, fullname, username, password, email, idActor):
         '''Permite insertar un usuario en la tabla'''
         
