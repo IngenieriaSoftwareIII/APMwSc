@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
+            <button type="button" class="navbar-toggle"
+                    data-toggle="collapse"
                     data-target="#contenido-plegable">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -42,6 +42,8 @@
 
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}"><label for="fTarea_peso">Peso</label><input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
             <b>Estado de la tarea:<span class="estado-{{fTarea.estado}}">{{fTarea.estado}}</span></b>
+            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.iniciada.$invalid && fTareaForm.iniciada.$pristine && fTareaSubmitted}"><label for="fTarea_iniciada">Iniciada:</label><input id="fTarea_iniciado" type="checkbox" name="iniciado" ng-model="fTarea.iniciado" placeholder="Iniciada"/><p ng-show="fTareaSubmitted && fTareaForm.iniciado.$invalid" class="help-block">Error en campo Iniciada.</p></div>
+           <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.fechini.$invalid && fTareaForm.fechini.$pristine && fTareaSubmitted}" ng-show="fTarea.iniciado"><label for="fTarea_fechini">Fecha de Inicio</label><input id="fTarea_fechini" type="text" name="fechini" class="form-control" ng-model="fTarea.fechaInicio" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>

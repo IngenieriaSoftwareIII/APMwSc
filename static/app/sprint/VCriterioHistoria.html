@@ -1,0 +1,38 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Agregar Criterio a Historia del Sprint {{idSprint}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VSprint1(idSprint)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fCriterioHistoriaForm" ng-submit="ACriterioHistoria0(fCriterioHistoriaForm.$valid)" novalidate>
+            <input id="fCriterioHistoria_idPila" type="hidden" name="idPila" ng-model="fCriterioHistoria.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fCriterioHistoriaSubmitted && fCriterioHistoriaForm.Historia.$invalid && fCriterioHistoriaForm.Historia.$pristine && fCriterioHistoriaSubmitted}"><label for="fCriterioHistoria_Historia">Historia</label>:&nbsp;<select id="fCriterioHistoria_Historia" ng-model="fCriterioHistoria.Historia" required ng-options="item.key as item.value for item in fCriterioHistoria_opcionesHistoria"></select><p ng-show="fCriterioHistoriaSubmitted && fCriterioHistoriaForm.Historia.$invalid" class="help-block">Error en campo Historia.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fCriterioHistoriaSubmitted && fCriterioHistoriaForm.Descripcion.$invalid && fCriterioHistoriaForm.Descripcion.$pristine && fCriterioHistoriaSubmitted}"><label for="fCriterioHistoria_Descripcion">Descripción</label><textarea id="fCriterioHistoria_Descripcion" name="Descripcion" class="form-control" ng-model="fCriterioHistoria.Descripcion" placeholder="Descripción" required></textarea><p ng-show="fCriterioHistoriaSubmitted && fCriterioHistoriaForm.Descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Agregar Criterio
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

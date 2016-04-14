@@ -15,7 +15,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VHistoria0(idHistoria)"
+<li><a ng-click="VSprint0(idSprint)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Regresar</a></li>
 
@@ -23,7 +23,6 @@
         </div>
     </div>
 </nav>
-
-
-
+ <div google-chart chart="bdchart" style="width: 900px; height: 500px;"></div>
 <div id="right"></div>
+   

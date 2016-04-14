@@ -10,6 +10,12 @@ from sprintClass import *
 from accions     import *
 from category    import *
 from task        import *
+from datetime    import *
+
+# Declaracion de constantes
+TODAY = datetime.utcnow()
+TOMORROW = TODAY + timedelta(days=1)
+STATES = ["Terminada", "En ejecución", "No iniciada"]
 
 class TestSprintClass(unittest.TestCase):
 
@@ -32,7 +38,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 1
     def testInsertSprintExists(self):
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
   
@@ -41,7 +47,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 2
     def testInsertSprintElement(self):
         aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -49,8 +55,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 3
     def testInsertSprintRepeatedNumber(self):
         aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
-        result1   = aSprint.insertSprint(1,'Haskndwkd akdmkwdmdwa',self.idBacklog)
+        result    = aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result1   = aSprint.insertSprint(1,'Haskndwkd akdmkwdmdwa',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result1)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -60,7 +66,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 4
     def testInsertSprintShortDesc0(self):
         aSprint   = sprints()
-        result    = aSprint.insertSprint(1,'',self.idBacklog)
+        result    = aSprint.insertSprint(1,'',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -68,7 +74,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 5
     def testInsertSprintLongDesc1(self):
         aSprint      = sprints()
-        result    = aSprint.insertSprint(1,'@',self.idBacklog)
+        result    = aSprint.insertSprint(1,'@',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -76,7 +82,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 6
     def testInsertSprintLongDesc140(self):
         aSprint      = sprints()
-        result    = aSprint.insertSprint(1,20*'LlWmcrl',self.idBacklog)
+        result    = aSprint.insertSprint(1,20*'LlWmcrl',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -84,14 +90,14 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 7
     def testInsertSprintLongDesc141(self):
         aSprint   = sprints()
-        result    = aSprint.insertSprint(1,20*'LlWmcrl' + 'x',self.idBacklog)
+        result    = aSprint.insertSprint(1,20*'LlWmcrl' + 'x',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
         aSprint.deleteSprint(1,self.idBacklog)
   
     # Prueba 8
     def testInsertSprintIdBackLogInvalid(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'Wtqczr ul mds dfbyl',0)
+        result   = aSprint.insertSprint(1,'Wtqczr ul mds dfbyl',0, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Casos Esquinas
@@ -99,18 +105,18 @@ class TestSprintClass(unittest.TestCase):
     # Prueba 9
     def testInsertSprintIdBacklogNoExists(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'DwfEndqr cun fw3rzv',80)
+        result   = aSprint.insertSprint(1,'DwfEndqr cun fw3rzv',80, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Prueba 10
     def testInsertSprintLongDesc140AndIdBackLogNoExists(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(1,20*'LlWmcrl',99)
+        result   = aSprint.insertSprint(1,20*'LlWmcrl',99, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     def testInsertMaxSprintNumber(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(MAX_SPRINT_NUMBER,'MAX_SPRINT_TEST',self.idBacklog)
+        result   = aSprint.insertSprint(MAX_SPRINT_NUMBER,'MAX_SPRINT_TEST',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(MAX_SPRINT_NUMBER,self.idBacklog)
@@ -120,35 +126,35 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testInsertNotString(self):
         aSprint   = sprints()
-        result    = aSprint.insertSprint(1,4350,self.idBacklog)
+        result    = aSprint.insertSprint(1,4350,self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Prueba
     def testInsertNoneAsString(self):
         aSprint      = sprints()
-        result    = aSprint.insertSprint(1,None,self.idBacklog)
+        result    = aSprint.insertSprint(1,None,self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Prueba
     def testInsertIdNegative(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'Nxn3zzzz',-1)
+        result   = aSprint.insertSprint(1,'Nxn3zzzz',-1, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Prueba
     def testInsertIdAsString(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(1,'Nxn3zzzz','1')
+        result   = aSprint.insertSprint(1,'Nxn3zzzz','1', TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     def testInsertNegativeSprintNumber(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(-1,'Nxn3zzzz',self.idBacklog)
+        result   = aSprint.insertSprint(-1,'Nxn3zzzz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     def testInsertMaxOverflowSprintNumber(self):
         aSprint  = sprints()
-        result   = aSprint.insertSprint(MAX_SPRINT_NUMBER+1,'Nxn3zzzz',self.idBacklog)
+        result   = aSprint.insertSprint(MAX_SPRINT_NUMBER+1,'Nxn3zzzz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     #############################################      
@@ -160,7 +166,7 @@ class TestSprintClass(unittest.TestCase):
     def testsearchIdSprintExists(self):
         # Insertamos los datos necesarios.
         aSprint        = sprints()
-        aSprint.insertSprint(1,'VsAr cdmzndqs qspxcywlts',self.idBacklog)
+        aSprint.insertSprint(1,'VsAr cdmzndqs qspxcywlts',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         foundSprint = aSprint.searchIdSprint(1, self.idBacklog)[0]
         self.assertEqual(foundSprint.S_sprintDescription, 'VsAr cdmzndqs qspxcywlts')
@@ -174,7 +180,7 @@ class TestSprintClass(unittest.TestCase):
     def testSearchIdNotExist(self):
         # Insertamos los datos necesarios.
         aSprint        = sprints()
-        aSprint.insertSprint(1,'VsAr cdmzndqs qspxcywlts',self.idBacklog)
+        aSprint.insertSprint(1,'VsAr cdmzndqs qspxcywlts',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         foundSprintId = aSprint.searchIdSprint(100, self.idBacklog)
         self.assertEqual(foundSprintId,[])
@@ -226,8 +232,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintExists(self):
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Yntdcvr an miqn',self.idBacklog)
-        aSprint.updateSprint(1, self.idBacklog, 2 , 'Tnbdc3r xrmq asrtdmp')
+        aSprint.insertSprint(1,'Yntdcvr an miqn',self.idBacklog, TODAY, TOMORROW, STATES[1])
+        aSprint.updateSprint(1, self.idBacklog, 2 , 'Tnbdc3r xrmq asrtdmp', TODAY, TOMORROW, STATES[1])
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
         aSprint.deleteSprint(2,self.idBacklog)
@@ -236,8 +242,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintDesc(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1,'Altomy Tnvfcgcyqn',self.idBacklog)
-        aSprint.updateSprint(1, self.idBacklog, 1 , 'Tnbdc3r xrmq asrtdmp')
+        aSprint.insertSprint(1,'Altomy Tnvfcgcyqn',self.idBacklog, TODAY, TOMORROW, STATES[1])
+        aSprint.updateSprint(1, self.idBacklog, 1 , 'Tnbdc3r xrmq asrtdmp', TODAY, TOMORROW, STATES[1])
         sprintUpdate = aSprint.searchIdSprint(1,self.idBacklog)[0]
         self.assertEqual(sprintUpdate.S_sprintDescription, 'Tnbdc3r xrmq asrtdmp')
         # Eliminamos los datos insertados.
@@ -246,8 +252,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintNumber(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1,'Altomy Tnvfcgcyqn', self.idBacklog)
-        aSprint.updateSprint(1, self.idBacklog, 2 ,'Altomy Tnvfcgcyqn')
+        aSprint.insertSprint(1,'Altomy Tnvfcgcyqn', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        aSprint.updateSprint(1, self.idBacklog, 2 ,'Altomy Tnvfcgcyqn', TODAY, TOMORROW, STATES[1])
         sprintUpdate = aSprint.searchIdSprint(2,self.idBacklog)[0]
         self.assertNotEqual(sprintUpdate, [])
         # Eliminamos los datos insertados.
@@ -257,7 +263,7 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintDescNOtExist(self):
         aSprint      = sprints()
-        result = aSprint.updateSprint(1, self.idBacklog, 2 ,'Altomy Tnvfcgcyqn')
+        result = aSprint.updateSprint(1, self.idBacklog, 2 ,'Altomy Tnvfcgcyqn', TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     # Casos Fronteras
@@ -265,8 +271,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintLeftLen1(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1, '@', self.idBacklog)
-        result    = aSprint.updateSprint(1, self.idBacklog,1,'Bvscqr pontfs ddbyl3z')
+        aSprint.insertSprint(1, '@', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result    = aSprint.updateSprint(1, self.idBacklog,1,'Bvscqr pontfs ddbyl3z', TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -274,8 +280,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintRightLong1(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog)
-        result    = aSprint.updateSprint(1, self.idBacklog, 1,'@')
+        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result    = aSprint.updateSprint(1, self.idBacklog, 1,'@', TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -283,8 +289,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintRightLen140(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog)
-        result    = aSprint.updateSprint(1, self.idBacklog, 1,140*'T')
+        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result    = aSprint.updateSprint(1, self.idBacklog, 1,140*'T', TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -292,8 +298,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintLeftLen140(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1, 140*'T', self.idBacklog)
-        result    = aSprint.updateSprint(1, self.idBacklog, 1,'@jutdr tqdf lu mpgya')
+        aSprint.insertSprint(1, 140*'T', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result    = aSprint.updateSprint(1, self.idBacklog, 1,'@jutdr tqdf lu mpgya', TODAY, TOMORROW, STATES[1])
         self.assertTrue(result)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
@@ -301,8 +307,8 @@ class TestSprintClass(unittest.TestCase):
     # Prueba
     def testupdateSprintIdBackLogInvalid(self):
         aSprint   = sprints()
-        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog)
-        result    = aSprint.updateSprint(1,'', 1, 'Wtqczr ul mds dfbyl')
+        aSprint.insertSprint(1, '@jutdr tqdf lu mpgya', self.idBacklog, TODAY, TOMORROW, STATES[1])
+        result    = aSprint.updateSprint(1,'', 1, 'Wtqczr ul mds dfbyl', TODAY, TOMORROW, STATES[1])
         self.assertFalse(result)
   
     #############################################
@@ -315,7 +321,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeletSprintExists(self):
         # Insertamos los datos necesarios. 
         oSprint  = sprints()
-        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         oSprint.deleteSprint(1,self.idBacklog)
   
@@ -326,7 +332,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteValidSprint(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(2,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(2,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(2,self.idBacklog)
         self.assertTrue(result)
@@ -338,7 +344,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNum1ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(1,self.idBacklog)
         self.assertTrue(result) 
@@ -347,7 +353,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNum1000ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(1000,self.idBacklog)
         self.assertTrue(result)
@@ -359,7 +365,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNum0ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(0,self.idBacklog)
         self.assertFalse(result)  
@@ -368,7 +374,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNum1001ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(1001,self.idBacklog)
         self.assertFalse(result) 
@@ -377,7 +383,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNegativeNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(-1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(-1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(-1,self.idBacklog)
         self.assertFalse(result) 
@@ -386,7 +392,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintStringNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint('1','VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint('1','VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint('1',self.idBacklog)
         self.assertFalse(result) 
@@ -395,7 +401,7 @@ class TestSprintClass(unittest.TestCase):
     def testDeleteSprintNullNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
-        result   = oSprint.insertSprint(None,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result   = oSprint.insertSprint(None,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(None,self.idBacklog)
         self.assertFalse(result) 
@@ -418,7 +424,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -429,7 +435,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -451,7 +457,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -462,7 +468,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -492,7 +498,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -503,7 +509,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -526,7 +532,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -537,7 +543,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -559,7 +565,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -570,7 +576,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -589,7 +595,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -600,7 +606,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -621,7 +627,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -632,7 +638,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -651,7 +657,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -662,7 +668,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -681,7 +687,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -692,7 +698,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -711,7 +717,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         # Inicio de la prueba.
         result = oSprint.asignSprintHistory(1,self.idBacklog,0)
@@ -736,7 +742,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -755,7 +761,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -766,7 +772,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -794,7 +800,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -813,7 +819,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -824,7 +830,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -845,7 +851,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -856,7 +862,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -876,7 +882,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -887,7 +893,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -907,7 +913,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -918,7 +924,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -938,7 +944,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -949,7 +955,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -969,7 +975,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         # Inicio de la prueba.
         result = oSprint.asignSprintHistory(1,self.idBacklog,1001)
@@ -985,7 +991,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -996,7 +1002,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1016,7 +1022,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         # Inicio de la prueba.
         result = oSprint.asignSprintHistory(1,self.idBacklog,None)
@@ -1032,7 +1038,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1043,7 +1049,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1069,8 +1075,8 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
-          
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
+
         #Creamos una nueva historia de usuario
         #Insertamos la accion
         oAccion = accions()
@@ -1080,13 +1086,13 @@ class TestSprintClass(unittest.TestCase):
           
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
           
         #Asignamos la historia al sprint
         result2 = oSprint.asignSprintHistory(1,self.idBacklog,idFound)
-  
+
         # Inicio de la prueba.
         result = oSprint.getAssignedSprintHistory(1,self.idBacklog)
         self.assertTrue(result)
@@ -1106,7 +1112,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1117,7 +1123,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1143,7 +1149,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1154,7 +1160,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1177,7 +1183,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1188,7 +1194,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1214,7 +1220,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1225,7 +1231,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1248,7 +1254,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1259,7 +1265,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1282,7 +1288,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1293,7 +1299,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1318,7 +1324,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1002,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1002,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1329,7 +1335,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1353,7 +1359,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1364,7 +1370,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1387,7 +1393,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1398,7 +1404,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1421,7 +1427,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1432,7 +1438,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1455,7 +1461,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1466,7 +1472,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1489,7 +1495,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1500,7 +1506,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1523,7 +1529,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1534,7 +1540,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1563,7 +1569,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(7,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(7,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1574,7 +1580,7 @@ class TestSprintClass(unittest.TestCase):
        
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -1584,7 +1590,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1608,7 +1614,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(6,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(6,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1619,7 +1625,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1629,7 +1635,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1653,7 +1659,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1664,7 +1670,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1674,7 +1680,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1696,7 +1702,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1707,7 +1713,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1717,7 +1723,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1741,7 +1747,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1752,7 +1758,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1762,7 +1768,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1785,7 +1791,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1796,7 +1802,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1806,7 +1812,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1830,7 +1836,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(2,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(2,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1841,7 +1847,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1851,7 +1857,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1874,7 +1880,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(3,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(3,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1885,7 +1891,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1895,7 +1901,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1927,7 +1933,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1937,7 +1943,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -1959,7 +1965,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -1970,7 +1976,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -1980,7 +1986,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2010,7 +2016,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2020,7 +2026,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2042,7 +2048,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2053,7 +2059,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2063,7 +2069,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2086,7 +2092,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2097,7 +2103,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2107,7 +2113,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2129,7 +2135,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2140,7 +2146,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2150,7 +2156,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2172,7 +2178,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2183,7 +2189,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2193,7 +2199,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2215,7 +2221,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2226,7 +2232,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2236,7 +2242,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2258,7 +2264,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         # Inicio de la prueba.
         result = oSprint.asignSprintTask(1,self.idBacklog,1001)
@@ -2274,7 +2280,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2285,7 +2291,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2295,7 +2301,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2317,7 +2323,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         # Inicio de la prueba.
         result = oSprint.asignSprintTask(1,self.idBacklog,None)
@@ -2333,7 +2339,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
   
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
   
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2344,7 +2350,7 @@ class TestSprintClass(unittest.TestCase):
   
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
   
@@ -2354,7 +2360,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
   
@@ -2382,7 +2388,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
          
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2393,7 +2399,7 @@ class TestSprintClass(unittest.TestCase):
          
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2403,7 +2409,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
          
@@ -2430,7 +2436,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2441,7 +2447,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2451,7 +2457,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2478,7 +2484,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2489,7 +2495,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2499,7 +2505,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2524,7 +2530,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2535,7 +2541,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2545,7 +2551,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2573,7 +2579,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2584,7 +2590,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2594,7 +2600,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2619,7 +2625,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2630,7 +2636,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2640,7 +2646,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2665,7 +2671,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2676,7 +2682,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2686,7 +2692,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2713,7 +2719,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1002,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1002,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2724,7 +2730,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2734,7 +2740,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2760,7 +2766,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2771,7 +2777,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2781,7 +2787,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2806,7 +2812,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2817,7 +2823,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2827,7 +2833,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2852,7 +2858,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2863,7 +2869,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2873,7 +2879,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2898,7 +2904,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2909,7 +2915,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2919,7 +2925,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2944,7 +2950,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -2955,7 +2961,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -2965,7 +2971,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -2990,7 +2996,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3001,7 +3007,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
          
@@ -3011,7 +3017,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3042,7 +3048,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3053,7 +3059,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3079,7 +3085,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3090,7 +3096,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3114,7 +3120,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3125,7 +3131,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3146,7 +3152,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3157,7 +3163,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3180,7 +3186,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3191,7 +3197,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3212,7 +3218,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3223,7 +3229,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3244,7 +3250,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3255,7 +3261,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3276,7 +3282,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         result = oSprint.asignSprintHistory(1,self.idBacklog,0)
@@ -3302,7 +3308,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3323,7 +3329,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3334,7 +3340,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3364,7 +3370,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3385,7 +3391,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3396,7 +3402,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3417,7 +3423,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3428,7 +3434,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3450,7 +3456,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3461,7 +3467,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3483,7 +3489,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3494,7 +3500,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3516,7 +3522,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3527,7 +3533,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3549,7 +3555,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         oSprint.asignSprintHistory(1,self.idBacklog,1001)
@@ -3567,7 +3573,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3578,7 +3584,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3600,7 +3606,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         oSprint.asignSprintHistory(1,self.idBacklog,None)
@@ -3618,7 +3624,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3629,7 +3635,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -3657,7 +3663,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3668,7 +3674,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3678,7 +3684,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3703,7 +3709,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(5,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3714,7 +3720,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3724,7 +3730,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3748,7 +3754,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3759,7 +3765,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3769,7 +3775,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3790,7 +3796,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3801,7 +3807,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3811,7 +3817,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3834,7 +3840,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3845,7 +3851,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3855,7 +3861,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3876,7 +3882,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3887,7 +3893,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3897,7 +3903,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3918,7 +3924,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -3929,7 +3935,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3939,7 +3945,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -3960,7 +3966,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         result = oSprint.asignSprintTask(1,self.idBacklog,0)
@@ -3986,7 +3992,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -3996,7 +4002,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4017,7 +4023,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4028,7 +4034,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4038,7 +4044,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4068,7 +4074,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4078,7 +4084,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4099,7 +4105,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4110,7 +4116,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4120,7 +4126,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4141,7 +4147,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4152,7 +4158,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4162,7 +4168,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4184,7 +4190,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4195,7 +4201,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4205,7 +4211,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4227,7 +4233,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4238,7 +4244,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4248,7 +4254,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4270,7 +4276,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4281,7 +4287,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4291,7 +4297,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4313,7 +4319,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         oSprint.asignSprintTask(1,self.idBacklog,1001)
@@ -4331,7 +4337,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4342,7 +4348,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
  
@@ -4352,7 +4358,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4374,7 +4380,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Asignamos la historia al sprint.
         oSprint.asignSprintTask(1,self.idBacklog,None)
@@ -4392,7 +4398,7 @@ class TestSprintClass(unittest.TestCase):
         oSprint  = sprints()
  
         #Creamos un nuevo sprint
-        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
  
         #Creamos una nueva historia de usuario
         #Insertamos la accion
@@ -4403,7 +4409,7 @@ class TestSprintClass(unittest.TestCase):
  
         #Insertamos la historia
         oHistory = userHistory()
-        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1, True, TODAY)
         search  = oHistory.searchUserHistory('jDw',self.idBacklog)
         idFound = search[0].UH_idUserHistory
         
@@ -4413,7 +4419,7 @@ class TestSprintClass(unittest.TestCase):
   
         # Insertamos la tarea    
         aTarea  = task()
-        result3 = aTarea.insertTask('dwidjw',1,1,idFound)
+        result3 = aTarea.insertTask('dwidjw',1,1,idFound, True, TODAY)
         search  = aTarea.searchTask('dwidjw')
         idFoundT = search[0].HW_idTask
  
@@ -4428,5 +4434,3 @@ class TestSprintClass(unittest.TestCase):
         oSprint.deleteSprint(1,self.idBacklog)
         oHistory.deleteUserHistory(idFound)
         oAccion.deleteAccion('Dxfynyr',self.idBacklog)
-
-

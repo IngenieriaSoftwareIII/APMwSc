@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
 import unittest
@@ -10,10 +10,16 @@ from sprintClass import *
 from meetingClass import *
 from elementMeetingClass import *
 from role import *
+from datetime import *
+
+# Declaracion de constantes
+TODAY = datetime.utcnow()
+TOMORROW = TODAY + timedelta(days=1)
+STATES = ["Terminada", "En ejecución", "No iniciada"]
 
 class TestElementMeeting(unittest.TestCase):
 
-    #############################################      
+    #############################################
     #         Pruebas para emptyTable           #
     #############################################
 
@@ -26,11 +32,11 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
@@ -63,16 +69,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -86,7 +92,7 @@ class TestElementMeeting(unittest.TestCase):
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
-    #############################################      
+    #############################################
     #        Pruebas para insertElement      #
     #############################################
 
@@ -100,16 +106,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -131,16 +137,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         result = aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -164,16 +170,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         result = aElement.insertElement('challenges', 'planned', 'done', -23, 'user1')
@@ -192,16 +198,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         result = aElement.insertElement(80085 , [], 1.02 , idAMeeting, 2)
@@ -211,7 +217,7 @@ class TestElementMeeting(unittest.TestCase):
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
-    #############################################      
+    #############################################
     #       Pruebas para updateElement          #
     #############################################
 
@@ -225,16 +231,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -257,16 +263,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -291,16 +297,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -323,16 +329,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -347,7 +353,7 @@ class TestElementMeeting(unittest.TestCase):
         self.aBacklog.deleteProduct('Bxtyllz')
 
 
-    #############################################      
+    #############################################
     #       Pruebas para deleteElement          #
     #############################################
 
@@ -360,16 +366,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -391,16 +397,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -422,16 +428,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -454,16 +460,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -486,16 +492,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -509,7 +515,7 @@ class TestElementMeeting(unittest.TestCase):
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
-    #############################################      
+    #############################################
     #       Pruebas para getElements       #
     #############################################
 
@@ -522,16 +528,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -552,11 +558,11 @@ class TestElementMeeting(unittest.TestCase):
     #    self.idBacklog = findId[0].BL_idBacklog
     #    # Creamos el sprint
     #    aSprint      = sprints()
-    #    aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+    #    aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
     #    findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
     #    idASprint = findIdSprint[0].S_idSprint
     #    # Creamos el meeting
-    #    aMeeting = meeting () 
+    #    aMeeting = meeting ()
     #    date = '2015-02-02'
     #    tipo = 'Presencial'
     #    aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
@@ -564,7 +570,7 @@ class TestElementMeeting(unittest.TestCase):
     #    idAMeeting = findIdMeeting[0].SM_idSprintMeeting
     #    # Creamos el elemento
     #    aElement = elementMeeting()
-    #    result = aElement.getElements(idAMeeting)        
+    #    result = aElement.getElements(idAMeeting)
     #    self.assertTrue(result == [])
     #    # Eliminamos los datos insertados.
     #    aMeeting.deleteMeeting(date,idASprint)
@@ -579,11 +585,11 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
@@ -594,7 +600,7 @@ class TestElementMeeting(unittest.TestCase):
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
         foundElementId = aElement.getElementsByUserAndMeeting('user1',idAMeeting)
         elementID = foundElementId[0].EM_idElementMeeting
-        result = aElement.getElements(idAMeeting)        
+        result = aElement.getElements(idAMeeting)
         self.assertTrue(result != [])
         # Eliminamos los datos insertados.
         aMeeting.deleteMeeting(date,idASprint)
@@ -607,7 +613,7 @@ class TestElementMeeting(unittest.TestCase):
         result = aElement.getElements(-23)
         self.assertTrue(result == [])
 
-    #############################################      
+    #############################################
     #  Pruebas para getElementsByUserAndMeeting #
     #############################################
 
@@ -620,16 +626,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.getElementsByUserAndMeeting('user1',idAMeeting)
@@ -646,16 +652,16 @@ class TestElementMeeting(unittest.TestCase):
     #    self.idBacklog = findId[0].BL_idBacklog
     #    # Creamos el sprint
     #    aSprint      = sprints()
-    #    aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+    #    aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
     #    findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
     #    idASprint = findIdSprint[0].S_idSprint
     #    # Creamos el meeting
-    #    aMeeting = meeting () 
+    #    aMeeting = meeting ()
     #    date = '2015-02-02'
     #    tipo = 'Presencial'
     #    aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
     #    findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-    #    idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+    #    idAMeeting = findIdMeeting[0].SM_idSprintMeeting
     #    # Creamos el elemento
     #    aElement = elementMeeting()
     #    result = aElement.getElementsByUserAndMeeting('user1',idAMeeting)
@@ -673,16 +679,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
@@ -704,16 +710,16 @@ class TestElementMeeting(unittest.TestCase):
         self.idBacklog = findId[0].BL_idBacklog
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+        aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog, TODAY, TOMORROW, STATES[1])
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        aMeeting = meeting () 
+        aMeeting = meeting ()
         date = '2015-02-02'
         tipo = 'Presencial'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', tipo,idASprint)
         findIdMeeting = aMeeting.searchMeeting(date, idASprint)
-        idAMeeting = findIdMeeting[0].SM_idSprintMeeting 
+        idAMeeting = findIdMeeting[0].SM_idSprintMeeting
         # Creamos el elemento
         aElement = elementMeeting()
         aElement.insertElement('challenges', 'planned', 'done', idAMeeting, 'user1')
