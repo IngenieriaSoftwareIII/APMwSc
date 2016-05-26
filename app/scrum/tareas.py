@@ -54,17 +54,16 @@ def ACrearTarea():
         miembro = None
 
     insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object)
-
-    insertedTask = oTask.searchTask(taskDesc)[0]
-
-    if miembro == None or miembro < 0:
-        oTask.deleteUserTask(int(insertedTask.HW_idTask))
-    else:
-        oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
-
-
     if insert:
         res = results[0]
+
+        insertedTask = oTask.searchTask(taskDesc)[0]
+
+        if miembro == None or miembro < 0:
+            oTask.deleteUserTask(int(insertedTask.HW_idTask))
+        else:
+            oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
+
     else:
         res = results[1]
     res['label'] = res['label'] + '/' + str(idHistory)
