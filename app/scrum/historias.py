@@ -727,6 +727,43 @@ def VPrelaciones():
 
 
 
+@historias.route('/historias/VDiagramaPrelaciones')
+def VDiagramaPrelaciones():
+    #GET parameter
+    res = {}
+
+    # Obtenemos el id del producto y de la historia.
+    idPila = int(request.args.get('idPila',1))
+
+    if "actor" in session:
+        res['actor'] = session['actor']
+
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
+    res['usuario'] = session['usuario']
+
+    # Obtenemos las precedencias de las tareas ("Tarea1","Tarea2)
+    oPrecedence = precedence()
+    precedencias = oPrecedence.tasksWithPrecedences(idPila)
+
+    res['edges'] = [{'from': p[0],'to': p[1]} for p in precedencias]
+    print(res['edges'])
+
+    nodes = oPrecedence.taskWithIdAndDescription(idPila)
+    res['nodes'] = [{'id': n[0], 'label': n[1]} for n in nodes]
+    print(res['nodes'])
+
+    session['idPila'] = idPila
+    res['idPila'] = idPila
+
+    return json.dumps(res)
+
+
+
 #Use case code starts here
 
 

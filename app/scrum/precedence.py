@@ -6,6 +6,8 @@ import sys
 sys.path.append('app/scrum')
 
 from model import *
+from task import *
+from userHistory import *
 
 class precedence(object):
     def getAllPrecedences(self, idPila):
@@ -88,3 +90,24 @@ class precedence(object):
 
         return noHayCiclo
 
+    def tasksWithPrecedences(self, idPila):
+        '''Devuelve tuplas de precedencia de la forma (idTarea1, idTarea2)'''
+
+        precedences = self.getAllPrecedences(idPila)
+
+        result = []
+        for t in precedences:
+            result.append((t.P_idFirstTask, t.P_idSecondTask))
+        return result
+
+    def taskWithIdAndDescription(self, idPila):
+        otask = task()
+        oHistory = userHistory()
+        result = []
+        historias = oHistory.getAllUserHistoryId(idPila)
+        for h in historias:
+            tareas = otask.getAllTask(h.UH_idUserHistory)
+            for t in tareas:
+                result.append((t.HW_idTask, t.HW_description + "\n(" + h.UH_codeUserHistory + ")"))
+
+        return result

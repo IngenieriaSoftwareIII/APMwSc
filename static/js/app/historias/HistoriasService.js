@@ -144,6 +144,19 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.VDiagramaPrelaciones = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'historias/VDiagramaPrelaciones',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.VPrioridades = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
