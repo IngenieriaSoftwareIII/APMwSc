@@ -14,6 +14,9 @@ scrumModule.config(function ($routeProvider) {
             }).when('/VPrioridades/:idPila', {
                 controller: 'VPrioridadesController',
                 templateUrl: 'app/historias/VPrioridades.html'
+            }).when('/VDiagramaPrelaciones/:idPila', {
+                controller: 'VDiagramaPrelacionesController',
+                templateUrl: 'app/historias/VDiagramaPrelaciones.html'
             });
 });
 
@@ -275,7 +278,6 @@ scrumModule.controller('VHistoriasController',
       $scope.VPrelaciones5 = function(idPila) {  // CAMBIO idPila -> idHistoria
         $location.path('/VPrelaciones/'+idPila);
       };
-
       $scope.VHistoria0 = function(idHistoria) {
         $location.path('/VHistoria/'+((typeof idHistoria === 'object')?JSON.stringify(idHistoria):idHistoria));
       };
@@ -296,7 +298,6 @@ scrumModule.controller('VPrelacionesController',
             $location.path('/');
         }
 
-
 $scope.agrPrelacion = function () {
   $scope.fPrelaciones.lista.push({antecedente:null, consecuente:null})
 }
@@ -304,8 +305,12 @@ $scope.elimPrelacion = function (index) {
   $scope.fPrelaciones.lista.splice(index, 1);
 }
 
-
       });
+
+      $scope.VDiagramaPrelaciones6 = function(idPila) { 
+        $location.path('/VDiagramaPrelaciones/'+idPila);
+      };
+
       $scope.VHistorias1 = function(idPila) {
         $location.path('/VHistorias/'+idPila);
       };
@@ -326,6 +331,78 @@ $scope.elimPrelacion = function (index) {
       };
 
     }]);
+scrumModule.controller('VDiagramaPrelacionesController',
+    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+      $scope.msg = '';
+        // create an array with nodes
+
+    var grafo = function (nodes, edges) {
+        // create a network
+        var container = document.getElementById('mynetwork');
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            interaction: {
+                dragNodes: false,
+                dragView: false
+            },
+            layout: {
+                hierarchical: {
+                    enabled: true,
+                    direction: 'LR',        // UD, DU, LR, RL
+                    sortMethod: 'directed'   // hubsize, directed
+                }
+            },
+            edges:{
+                arrows: {
+                    to:{enabled: true, scaleFactor:1}
+                }
+             }
+        }
+
+        // initialize your network!
+        var network = new vis.Network(container, data, options);
+    }
+      historiasService.VDiagramaPrelaciones({"idPila":$routeParams.idPila}).then(function (object) { 
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+              var VHistoria3Data = $scope.res.data;
+              if(typeof VHistoria3Data === 'undefined') VHistoria3Data=[];
+              $scope.tableParams3 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: VHistoria3Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(VHistoria3Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });
+          
+          grafo($scope.nodes, $scope.edges)
+      });
+
+        console.log($scope)
+
+      $scope.VPrelaciones1 = function(idPila) {
+        $location.path('/VPrelaciones/'+idPila);
+      };
+      $scope.VLogin4 = function() {
+        $location.path('/VLogin');
+      };
+    }]);
+
+
 scrumModule.controller('VPrioridadesController',
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
