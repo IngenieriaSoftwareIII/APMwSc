@@ -737,12 +737,16 @@ def VDiagramaPrelaciones():
     res['usuario'] = session['usuario']
 
     # Obtenemos las precedencias de las tareas ("Tarea1","Tarea2)
-    precedencias = precedence().tasksWithPrecedences(idPila)
+    oPrecedence = precedence()
+    precedencias = oPrecedence.tasksWithPrecedences(idPila)
 
-    res['precedences'] = [{'Tarea1': p[0] ,'Tarea2': p[1]} for p in precedencias]
-    print(res['precedences'])
+    res['edges'] = [{'from': p[0],'to': p[1]} for p in precedencias]
+    print(res['edges'])
 
-    res['data3'] = [{'idTarea':2, 'descripcion':'Tarea 2'},{'idTarea':1, 'descripcion':'Tarea 1'},{'idTarea':3, 'descripcion':'Tarea 3'}]
+    nodes = oPrecedence.taskWithIdAndDescription(idPila)
+    res['nodes'] = [{'id': n[0], 'label': n[1]} for n in nodes]
+    print(res['nodes'])
+
     session['idPila'] = idPila
     res['idPila'] = idPila
 

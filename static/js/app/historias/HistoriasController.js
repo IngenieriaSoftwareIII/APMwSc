@@ -335,6 +335,39 @@ scrumModule.controller('VDiagramaPrelacionesController',
     ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
+        // create an array with nodes
+
+    var grafo = function (nodes, edges) {
+        // create a network
+        var container = document.getElementById('mynetwork');
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            interaction: {
+                dragNodes: false,
+                dragView: false
+            },
+            layout: {
+                hierarchical: {
+                    enabled: true,
+                    direction: 'LR',        // UD, DU, LR, RL
+                    sortMethod: 'directed'   // hubsize, directed
+                }
+            },
+            edges:{
+                arrows: {
+                    to:{enabled: true, scaleFactor:1}
+                }
+             }
+        }
+
+        // initialize your network!
+        var network = new vis.Network(container, data, options);
+    }
       historiasService.VDiagramaPrelaciones({"idPila":$routeParams.idPila}).then(function (object) { 
         $scope.res = object.data;
         for (var key in object.data) {
@@ -356,7 +389,11 @@ scrumModule.controller('VDiagramaPrelacionesController',
                   }
               });
 
+          console.log($scope);
+          grafo($scope.nodes, $scope.edges)
       });
+
+        console.log($scope)
 
       $scope.VPrelaciones1 = function(idPila) {
         $location.path('/VPrelaciones/'+idPila);
@@ -364,7 +401,6 @@ scrumModule.controller('VDiagramaPrelacionesController',
       $scope.VLogin4 = function() {
         $location.path('/VLogin');
       };
-
     }]);
 
 
