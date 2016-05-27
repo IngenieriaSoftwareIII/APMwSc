@@ -40,11 +40,8 @@ class Test(unittest.TestCase):
         driver.find_element_by_id("fHistoria_codigo").send_keys("1a")
         sleep(1)
         Select(driver.find_element_by_id("fHistoria_actores")).select_by_visible_text("actor1");
-        sleep(1)
         Select(driver.find_element_by_id("fHistoria_tipo")).select_by_visible_text("Obligatoria")
-        sleep(1)
         Select(driver.find_element_by_id("fHistoria_accion")).select_by_visible_text("accion1")
-        sleep(1)
         Select(driver.find_element_by_id("fHistoria_objetivos")).select_by_visible_text("objetivo1");
         sleep(1)
         Select(driver.find_element_by_id("fHistoria_prioridad")).select_by_visible_text("18")
