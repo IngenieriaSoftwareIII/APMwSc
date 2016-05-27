@@ -51,12 +51,13 @@ def AModifProducto():
     newdescription = params['descripcion']
     newscale       = params['escala']
     idPila         = params['idPila'] 
+    newstatus      = params['Estado']
 
     oBacklog = backlog()
     
     # Buscamos el producto a modificar
     result = oBacklog.findIdProduct(idPila)
-    result = oBacklog.modifyBacklog(result.BL_name, newname, newdescription, newscale)      
+    result = oBacklog.modifyBacklog(result.BL_name, newname, newdescription, newscale, newstatus)      
     
     if result:
         res = results[0]
@@ -122,8 +123,9 @@ def VProducto():
     result = oBacklog.findIdProduct(idPila)
      
     # Mostramos los valores seleccionados
-    res['fPila'] = {'idPila':idPila,'nombre': result.BL_name,'descripcion':result.BL_description,'escala':result.BL_scaleType}
+    res['fPila'] = {'idPila':idPila,'nombre': result.BL_name,'descripcion':result.BL_description,'escala':result.BL_scaleType, 'Estado' : result.BL_statusType}
     res['fPila_opcionesEscala'] = [{'key':1,'value':'Alta/Media/Baja'}, {'key':2,'value':'Entre 1 y 20'}]
+    res['fPila_opcionesEstado']=[{'key':1,'value':'Por iniciar'}, {'key':2,'value':'En construcción'}, {'key':3,'value':'Culminado'}]
     
     # Guardamos el id del producto
     session['idPila'] = idPila
