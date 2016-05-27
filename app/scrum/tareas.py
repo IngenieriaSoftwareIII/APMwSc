@@ -45,6 +45,22 @@ def ACrearTarea():
     else:
         startingDate_object = None
 
+    if 'completed' in params:
+        completed = params['completed']
+    else:
+        completed = False
+
+    if 'fechaFin' in params:
+            finishingDate = params['fechaFin']
+            try:
+                finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
+            except ValueError:
+                res     = results[1]
+                res['label'] = res['label'] + '/'+str(idHistory)
+                return json.dumps(res)
+    else:
+        finishingDate_object = None
+
     oBackLog    = backlog()
     oTask       = task()
 
@@ -53,7 +69,7 @@ def ACrearTarea():
     else:
         miembro = None
 
-    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object)
+    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object, completed, finishingDate_object)
 
     insertedTask = oTask.searchTask(taskDesc)[0]
 
@@ -142,7 +158,7 @@ def AElimDoc():
 def AModifTarea():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VHistoria', 'msg':['No se pudo modificar esta tarea.']}, ]
+    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VHistoria', 'msg':['Error al modificar tarea']}, ]
     res     = results[1]
 
     # Obtenemos los parámetros
@@ -156,8 +172,12 @@ def AModifTarea():
     started     = params['iniciado']
     startingDate= params['fechaInicio']
 
+    completed     = params['completed']
+    finishingDate = params['fechaFin']
+
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+        finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
     except ValueError:
         res     = results[1]
         res['label'] = res['label'] + '/'+str(idHistoria)
@@ -168,8 +188,12 @@ def AModifTarea():
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
 
     # Modificamos la tarea
-
-    modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object)
+    if startingDate_object.date() <= finishingDate_object.date():
+        modify = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object,completed,finishingDate_object)
+    else:
+        modify = None
+        res = results[1]
+        res['msg'][0] = res['msg'][0] + ": La fecha de culminación debe ser mayor o igual que la de inicio."
 
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
@@ -301,10 +325,10 @@ def VTarea():
     miembroList = oTeam.getTeam(found.UH_idBacklog)
 
 
-    if result.HW_completed:
-        estado = 'completa'
-    else:
-        estado = 'incompleta'
+    # if result.HW_completed:
+    #     estado = 'completa'
+    # else:
+    #     estado = 'incompleta'
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -320,6 +344,7 @@ def VTarea():
       {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
     startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
+    finishingDate_object_new = datetime.strftime(result.HW_fechaFin, '%d/%m/%Y')
 
     res['fTarea'] = {'idHistoria':idHistoria,
                     'idTarea': idTarea,
@@ -327,9 +352,11 @@ def VTarea():
                     'categoria': result.HW_idCategory,
                     'peso':result.HW_weight,
                     'miembro': result.HW_idEquipo,
-                    'estado': estado,
+                    #'estado': estado,
                     'iniciado': result.HW_iniciado,
-                    'fechaInicio': startingDate_object_new }
+                    'fechaInicio': startingDate_object_new,
+                    'completed': result.HW_completed,
+                    'fechaFin': finishingDate_object_new }
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea

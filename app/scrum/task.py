@@ -29,7 +29,7 @@ class task(object):
             return otask
         return ([])
 
-    def insertTask(self, HW_description, C_idCategory, HW_weight, UH_idUserHistory, HW_iniciado, HW_fechaInicio):
+    def insertTask(self, HW_description, C_idCategory, HW_weight, UH_idUserHistory, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
         '''Permite insertar una tarea'''
 
         typedescription = (type(HW_description) == str)
@@ -37,8 +37,9 @@ class task(object):
         typeWeight      = (type(HW_weight) == int)
         typeid          = (type(UH_idUserHistory) == int)
         typeIniciado    = (type(HW_iniciado) == bool)
+        typeCompleted   = (type(HW_completed) == bool)
 
-        if (typedescription and typeidCategory and typeWeight and typeid and typeIniciado):
+        if (typedescription and typeidCategory and typeWeight and typeid and typeIniciado and typeCompleted):
             long_HW_description  = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
             min_C_idCategory     = C_idCategory >= MIN_ID
             min_HW_weight        = HW_weight >= MIN_WEIGHT
@@ -52,7 +53,7 @@ class task(object):
                 esEpica      = (oHistory.isEpic(UH_idUserHistory))
 
                 if ((oUserHistory != []) and (oCategory != []) and (oTask == []) and (not esEpica)):
-                    new_task = clsTask(HW_description,C_idCategory,HW_weight,UH_idUserHistory,HW_iniciado,HW_fechaInicio)
+                    new_task = clsTask(HW_description,C_idCategory,HW_weight,UH_idUserHistory,HW_iniciado,HW_fechaInicio,HW_completed,HW_fechaFin)
                     db.session.add(new_task)
                     db.session.commit()
                     return True
@@ -89,25 +90,25 @@ class task(object):
             return True
         return False
 
-    def completeTask(self,idTask):
-        '''Permite marcar una tarea como completa'''
+    # def completeTask(self,idTask):
+    #     '''Permite marcar una tarea como completa'''
 
-        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
-        if found != None:
-            found.HW_completed = True
-            db.session.commit()
-            return True
-        return False
+    #     found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+    #     if found != None:
+    #         found.HW_completed = True
+    #         db.session.commit()
+    #         return True
+    #     return False
 
-    def incompleteTask(self,idTask):
-        '''Permite marcar una tarea como incompleta'''
+    # def incompleteTask(self,idTask):
+    #     '''Permite marcar una tarea como incompleta'''
 
-        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
-        if found != None:
-            found.HW_completed = False
-            db.session.commit()
-            return True
-        return False
+    #     found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+    #     if found != None:
+    #         found.HW_completed = False
+    #         db.session.commit()
+    #         return True
+    #     return False
 
     def taskById(self,idTask):
         '''Permite actualizar la prioridad de una historia de usuario'''
@@ -127,7 +128,7 @@ class task(object):
         return oTask
 
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio):
+    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
         '''Permite actualizar la descripcion de una tarea'''
 
         typedescription    = (type(HW_description) == str)
@@ -137,7 +138,7 @@ class task(object):
         typeWeight         = (type(HW_weight) == int)
 
         typeIniciado    = (type(HW_iniciado) == bool)
-
+        typeCompleted   = (type(HW_completed) == bool)
 
         if (typedescription and typeNewdescription and typeidCategory and typeWeight):
             long_HW_description = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
@@ -150,16 +151,18 @@ class task(object):
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
 
-                if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
-                    oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
-                    oTask.HW_description = newDescription
-                    oTask.HW_idCategory  = C_idCategory
-                    oTask.HW_weight      = HW_weight
-                    oTask.HW_iniciado   = HW_iniciado
-                    oTask.HW_fechaInicio = HW_fechaInicio
-
-                    db.session.commit()
-                    return True
+                if HW_fechaInicio <= HW_fechaFin:
+                    if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
+                        oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
+                        oTask.HW_description = newDescription
+                        oTask.HW_idCategory  = C_idCategory
+                        oTask.HW_weight      = HW_weight
+                        oTask.HW_iniciado   = HW_iniciado
+                        oTask.HW_fechaInicio = HW_fechaInicio
+                        oTask.HW_completed   = HW_completed
+                        oTask.HW_fechaFin    = HW_fechaFin
+                        db.session.commit()
+                        return True
         return False
 
 

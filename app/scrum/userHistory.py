@@ -87,7 +87,7 @@ class userHistory(object):
         return succ
                
                 
-    def insertUserHistory(self,codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog, priority, iniciado, fechaInicio):
+    def insertUserHistory(self,codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog, priority, iniciado, fechaInicio, completed, fechaFin):
         '''Permite insertar una Historia de usuario'''
         
         checkCodUserHistory = type(codeUserHistory) == str
@@ -97,8 +97,9 @@ class userHistory(object):
         checkIdBacklog      = type(idBacklog) == int
         checkPriority       = type(priority) == int
         typeIniciado        = (type(iniciado) == bool)
+        typeCompleted       = (type(completed) == bool)
 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority and typeIniciado:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdBacklog and checkPriority and typeIniciado and typeCompleted:
             checkLenCodUserHistory = CONST_MIN_COD <= len(codeUserHistory) <= CONST_MAX_COD
             checkIdSuperHistory = CONST_MIN_IDHIST <= idSuperHistory 
             checkIdAccion       = CONST_MIN_ID <= idAccion 
@@ -113,7 +114,7 @@ class userHistory(object):
                     oBacklog  = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()
             
                     if oBacklog != [] and oHistorys != []:                         
-                        newUserHistory = clsUserHistory(codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog,priority, iniciado,fechaInicio)
+                        newUserHistory = clsUserHistory(codeUserHistory,idSuperHistory,accionType,idAccion,idBacklog, priority, iniciado, fechaInicio, completed, fechaFin)
                         db.session.add(newUserHistory)
                         db.session.commit()
 
@@ -153,7 +154,7 @@ class userHistory(object):
         return ([])    
     
 
-    def updateUserHistory(self,idUserHist,newCodeUserHistory,newIdSuperHistory,newAccionType,newIdAccion,newScale,iniciado,fechaInicio):
+    def updateUserHistory(self,idUserHist,newCodeUserHistory,newIdSuperHistory,newAccionType,newIdAccion,newScale,iniciado,fechaInicio, completed, fechaFin):
         '''Permite modificar una Historia de usuario'''
         
         checkCodUserHistory = type(newCodeUserHistory) == str
@@ -163,8 +164,9 @@ class userHistory(object):
         checkIdUser         = type(idUserHist) == int
         checkPriority       = type(newScale) == int
         typeIniciado        = (type(iniciado) == bool)
+        typeCompleted        = (type(completed) == bool)
                 
-        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority and typeIniciado:
+        if checkCodUserHistory and checkIdSuperHistory and checkTypeAccion and checkIdAccion and checkIdUser and checkPriority and typeIniciado and typeCompleted:
             checkLenCodUserHistory = CONST_MIN_COD <= len(newCodeUserHistory) <= CONST_MAX_COD
             checkIdHistory         = newIdSuperHistory >= CONST_MIN_IDHIST
             checkIdAccion          = newIdAccion >= CONST_MIN_ID
@@ -180,32 +182,35 @@ class userHistory(object):
                         checkSuperHistory = clsUserHistory.query.filter_by(UH_idSuperHistory = idUserHist).all()
 
                         if result != []:
-                            result[0].UH_codeUserHistory = newCodeUserHistory
-                            result[0].UH_accionType      = newAccionType
-                            result[0].UH_idAccion        = newIdAccion
-                            result[0].UH_scale           = newScale
-                            result[0].UH_iniciado        = iniciado
-                            result[0].UH_fechaInicio     = fechaInicio
-                             
-                            # Consideramos el caso en que una historia deje de ser epica y se le asigna un valor
-                            # arbitrario a la escala
-                            if result[0].UH_idSuperHistory != 0 and (checkSuperHistory == [] or newIdSuperHistory == 0):
-                                # Almacenamos el valor de la super historia
-                                idOldSuperHist              = result[0].UH_idSuperHistory
-                                result[0].UH_idSuperHistory = newIdSuperHistory
+                            if fechaInicio <= fechaFin:
+                                result[0].UH_codeUserHistory = newCodeUserHistory
+                                result[0].UH_accionType      = newAccionType
+                                result[0].UH_idAccion        = newIdAccion
+                                result[0].UH_scale           = newScale
+                                result[0].UH_iniciado        = iniciado
+                                result[0].UH_fechaInicio     = fechaInicio
+                                result[0].UH_completed       = completed
+                                result[0].UH_fechaFin        = fechaFin
+                                 
+                                # Consideramos el caso en que una historia deje de ser epica y se le asigna un valor
+                                # arbitrario a la escala
+                                if result[0].UH_idSuperHistory != 0 and (checkSuperHistory == [] or newIdSuperHistory == 0):
+                                    # Almacenamos el valor de la super historia
+                                    idOldSuperHist              = result[0].UH_idSuperHistory
+                                    result[0].UH_idSuperHistory = newIdSuperHistory
+                                    
+                                    # Verificamos si la vieja historia sigue siendo epica
+                                    epic = self.isEpic(idOldSuperHist)
+                                    if not epic:
+                                        self.updatePriority(idOldSuperHist,1)                          
+                                # Consideramos el caso normal de modificacion de la historia mas general        
+                                elif checkSuperHistory == [] or newIdSuperHistory == 0:
+                                    result[0].UH_idSuperHistory = newIdSuperHistory
+                                db.session.commit()
                                 
-                                # Verificamos si la vieja historia sigue siendo epica
-                                epic = self.isEpic(idOldSuperHist)
-                                if not epic:
-                                    self.updatePriority(idOldSuperHist,1)                          
-                            # Consideramos el caso normal de modificacion de la historia mas general        
-                            elif checkSuperHistory == [] or newIdSuperHistory == 0:
-                                result[0].UH_idSuperHistory = newIdSuperHistory
-                            db.session.commit()
-                            
-                            # Consideramos el caso en que la historia mas general se convierte en epica
-                            if newIdSuperHistory != 0:
-                                self.updatePriority(newIdSuperHistory,0)                          
+                                # Consideramos el caso en que la historia mas general se convierte en epica
+                                if newIdSuperHistory != 0:
+                                    self.updatePriority(newIdSuperHistory,0)                          
                         return True
         return False
     

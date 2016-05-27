@@ -1012,19 +1012,28 @@ def VDesempeno():
     oSprint = sprints()
     #Retrieve the sprint from the DB
     asociated_sprint = oSprint.searchIdSprint(int(idSprint),idPila)[0]
-    #Calculate duration (in days of sprint
+    
+    #Calculate duration (in days)
     sprint_start_date=asociated_sprint.S_fechini
     sprint_end_date=asociated_sprint.S_fechfin
     sprint_time=(sprint_end_date-sprint_start_date).days
-    sprint_tasks_total= sum(map(lambda x: x.HW_weight ,oSprint.getAssignedSprintTask(int(idSprint),idPila)))
-    ideal_delta= sprint_tasks_total/sprint_time
-    print(sprint_tasks_total,ideal_delta)
+    
+    #Sprint
+    sprint_tasks = oSprint.getAssignedSprintTask(int(idSprint),idPila)
+    sprint_index = map(lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight),sprint_tasks) 
+    sprint_index = dict(sprint_index)
+    print(sprint_index,sprint_time)
+    sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
+    ideal_delta= sprint_tasks_total//sprint_time
+    sprint_tasks_total_real=sprint_tasks_total
     #Building the bdchart
     rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
-    for x in range(2,sprint_time-1):
+    for x in range(2,sprint_time):
         sprint_tasks_total-=ideal_delta
-        rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total, },{"v": sprint_tasks_total,}]})
-    rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":0, },{"v": 0,}]})
+        sprint_tasks_total_real-=sprint_index.get(x,0)
+        rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})
+    sprint_tasks_total_real-=sprint_index.get(x+1,0)
+    rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
     #Building the JSON to be sent
     data={"cols": [{ "id":"days","label":"Dias del sprint","type":"string","p":{}},
               {"id": "actual_hours","label": "Peso de las tareas","type": "number","p": {}},
@@ -1037,7 +1046,7 @@ def VDesempeno():
           "options": {
                 "title": "Burn down chart del Sprint",
                 "vAxis": {
-                  "title": "Horas/hombre al dia empleadas"
+                  "title": "Peso acumulado de las tareas"
                 },
                 "hAxis": {
                   "title": "Dias"

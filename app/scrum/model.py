@@ -229,10 +229,11 @@ class clsUserHistory(db.Model):
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     UH_iniciado         = db.Column(db.Boolean, default=False)
     UH_fechaInicio      = db.Column(db.DateTime, default=datetime.datetime.now())
-    UH_completed        = db.Column(db.Boolean)
+    UH_completed        = db.Column(db.Boolean, default=False)
+    UH_fechaFin         = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
-    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio):
+    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio, completed, fechaFin):
         self.UH_codeUserHistory = codeUserHistory
         self.UH_idSuperHistory  = idSuperHistory
         self.UH_accionType      = accionType
@@ -243,11 +244,15 @@ class clsUserHistory(db.Model):
         self.UH_resume          = None
         self.UH_iniciado        = iniciado
         self.UH_fechaInicio     = fechaInicio
-
+        self.UH_completed       = completed
+        self.UH_fechaFin        = fechaFin
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, iniciado %r, fechaInicio %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio)
+        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, \
+                 iniciado %r, fechaInicio %r, completed %r, fechaFin %r, >' % (self.UH_idUserHistory, self.UH_codeUserHistory, \
+                 self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio, \
+                 self.UH_completed, self.UH_fechaFin)
 
 
 class clsAcceptanceTest(db.Model):
@@ -335,9 +340,12 @@ class clsTask(db.Model):
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     HW_iniciado      = db.Column(db.Boolean, default=False)
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_completed    = db.Column(db.Boolean)
+    HW_completed    = db.Column(db.Boolean, default = False)
+    HW_fechaFin  = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_refPrecedenceFirst = db.relationship('clsPrecedence', backref='FirstTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idFirstTask")
+    HW_refPrecedenceSecond = db.relationship('clsPrecedence', backref='SecondTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idSecondTask")
 
-    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio):
+    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
         self.HW_description   = description
         self.HW_idCategory    = idCategory
         self.HW_weight        = weight
@@ -345,13 +353,18 @@ class clsTask(db.Model):
         self.HW_idSprint      = None
         self.HW_iniciado      = iniciado
         self.HW_fechaInicio   = fechaInicio
+        self.HW_completed     = completed
+        self.HW_fechaFin      = fechaFin
 
     def getCompleted(self):
         return self.HW_completed
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, HW_iniciado %r, HW_fechaInicio %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, \
+                 HW_iniciado %r, HW_fechaInicio %r, HW_completed %r, HW_fechaFin %r>' % (self.HW_idTask, self.HW_idCategory, \
+                    self.HW_weight, self.HW_idUserHistory, elf.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio, \
+                    self.HW_completed, self.HW_fechaFin)
 
 
 class clsCategory(db.Model):
