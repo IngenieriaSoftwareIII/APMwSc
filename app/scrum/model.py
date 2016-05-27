@@ -228,10 +228,11 @@ class clsUserHistory(db.Model):
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     UH_iniciado         = db.Column(db.Boolean, default=False)
     UH_fechaInicio      = db.Column(db.DateTime, default=datetime.datetime.now())
-    UH_completed        = db.Column(db.Boolean)
+    UH_completed        = db.Column(db.Boolean, default=False)
+    UH_fechaFin         = db.Column(db.DateTime, default=datetime.datetime.now())
 
 
-    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio):
+    def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio, completed, fechaFin):
         self.UH_codeUserHistory = codeUserHistory
         self.UH_idSuperHistory  = idSuperHistory
         self.UH_accionType      = accionType
@@ -242,11 +243,15 @@ class clsUserHistory(db.Model):
         self.UH_resume          = None
         self.UH_iniciado        = iniciado
         self.UH_fechaInicio     = fechaInicio
-
+        self.UH_completed       = completed
+        self.UH_fechaFin        = fechaFin
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, iniciado %r, fechaInicio %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio)
+        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, \
+                 iniciado %r, fechaInicio %r, completed %r, fechaFin %r, >' % (self.UH_idUserHistory, self.UH_codeUserHistory, \
+                 self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio, \
+                 self.UH_completed, self.UH_fechaFin)
 
 
 class clsAcceptanceTest(db.Model):

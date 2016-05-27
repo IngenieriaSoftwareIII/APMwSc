@@ -73,8 +73,11 @@ def ACrearHistoria():
         started = False
         startingDate = None
 
+        completed = False
+        finishingDate = None
+
         # Insertamos los datos de la historia
-        inserted     = oUserHistory.insertUserHistory(codeHistory,idSuperHist,idType,idAccion,idPila,priority,started,startingDate)
+        inserted     = oUserHistory.insertUserHistory(codeHistory,idSuperHist,idType,idAccion,idPila,priority,started,startingDate,completed,finishingDate)
 
         # Asociamos los actores y objetivos a la historia.
         if inserted:
@@ -204,8 +207,12 @@ def AModifHistoria():
     started     = params['iniciado']
     startingDate = params['fechaInicio']
 
+    completed     = params['completed']
+    finishingDate = params['fechaFin']
+
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+        finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
     except ValueError:
         res     = results[1]
         res['label'] = res['label'] + '/'+str(idPila)
@@ -216,7 +223,8 @@ def AModifHistoria():
     if not(idSupHist in subHistories):
 
         # Actualizamos los datos de la historia
-        updated     = oUserHist.updateUserHistory(idHistory,codeHist,idSupHist,type,idaccion,priority,started,startingDate_object)
+        updated     = oUserHist.updateUserHistory(idHistory, codeHist, idSupHist, type, idaccion, priority, \
+                                                  started, startingDate_object, completed, finishingDate_object)
 
         if updated:
             # Buscamos los actores asociados
@@ -251,41 +259,41 @@ def AModifHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-@historias.route('/historias/ACompletarHistoria', methods=['GET'])
-def ACompletarHistoria():
-    params  = request.get_json()
-    idHistory    = request.args.get('idHistoria')
-    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como completada']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
-    res     = results[1]
+# @historias.route('/historias/ACompletarHistoria', methods=['GET'])
+# def ACompletarHistoria():
+#     params  = request.get_json()
+#     idHistory    = request.args.get('idHistoria')
+#     results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como completada']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+#     res     = results[1]
 
-    # Obtenemos el id del Producto.
-    idPila  = int(session['idPila'])
+#     # Obtenemos el id del Producto.
+#     idPila  = int(session['idPila'])
 
-    # Extraemos los valores
-    oUserHist    = userHistory()
+#     # Extraemos los valores
+#     oUserHist    = userHistory()
 
-    completed = oUserHist.completeHistory(int(idHistory))
-    if completed == True:
-        res = results[0]
-    return json.dumps(res)
+#     completed = oUserHist.completeHistory(int(idHistory))
+#     if completed == True:
+#         res = results[0]
+#     return json.dumps(res)
 
-@historias.route('/historias/AIncompletarHistoria', methods=['GET'])
-def AIncompletarHistoria():
-    params  = request.get_json()
-    idHistory    = request.args.get('idHistoria')
-    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como incompleta']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
-    res     = results[1]
+# @historias.route('/historias/AIncompletarHistoria', methods=['GET'])
+# def AIncompletarHistoria():
+#     params  = request.get_json()
+#     idHistory    = request.args.get('idHistoria')
+#     results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como incompleta']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+#     res     = results[1]
 
-    # Obtenemos el id del Producto.
-    idPila  = int(session['idPila'])
+#     # Obtenemos el id del Producto.
+#     idPila  = int(session['idPila'])
 
-    # Extraemos los valores
-    oUserHist    = userHistory()
+#     # Extraemos los valores
+#     oUserHist    = userHistory()
 
-    incompleted = oUserHist.incompleteHistory(int(idHistory))
-    if incompleted == True:
-        res = results[0]
-    return json.dumps(res)
+#     incompleted = oUserHist.incompleteHistory(int(idHistory))
+#     if incompleted == True:
+#         res = results[0]
+#     return json.dumps(res)
 
 
 @historias.route('/historias/VCrearHistoria')
@@ -444,17 +452,14 @@ def VHistoria():
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
 
-    if history.UH_completed:
-        estado = 'completa'
-    else:
-        estado = 'incompleta'
-
     startingDate_object_new = datetime.strftime(history.UH_fechaInicio, '%d/%m/%Y')
+    finishingDate_object_new = datetime.strftime(history.UH_fechaFin, '%d/%m/%Y')
 
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog,
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion,
                         'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale,
-                        'iniciado': history.UH_iniciado, 'fechaInicio': startingDate_object_new, 'estado': estado}
+                        'iniciado': history.UH_iniciado, 'fechaInicio': startingDate_object_new,
+                        'completed': history.UH_completed, 'fechaFin': finishingDate_object_new}
 
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
 
