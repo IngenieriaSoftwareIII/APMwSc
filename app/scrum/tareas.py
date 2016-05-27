@@ -69,7 +69,7 @@ def ACrearTarea():
     else:
         miembro = None
 
-    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object)
+    insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory, started, startingDate_object, completed, finishingDate_object)
     if insert:
         res = results[0]
 
