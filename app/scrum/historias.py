@@ -751,11 +751,9 @@ def VDiagramaPrelaciones():
     precedencias = oPrecedence.tasksWithPrecedences(idPila)
 
     res['edges'] = [{'from': p[0],'to': p[1]} for p in precedencias]
-    print(res['edges'])
 
     nodes = oPrecedence.taskWithIdAndDescription(idPila)
     res['nodes'] = [{'id': n[0], 'label': n[1]} for n in nodes]
-    print(res['nodes'])
 
     session['idPila'] = idPila
     res['idPila'] = idPila

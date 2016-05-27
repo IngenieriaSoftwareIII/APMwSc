@@ -388,8 +388,7 @@ scrumModule.controller('VDiagramaPrelacionesController',
                       $defer.resolve(VHistoria3Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });
-
-          console.log($scope);
+          
           grafo($scope.nodes, $scope.edges)
       });
 
