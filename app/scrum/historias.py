@@ -717,6 +717,55 @@ def VPrelaciones():
 
 
 
+@historias.route('/historias/VDiagramaPrelaciones')
+def VDiagramaPrelaciones():
+    #GET parameter
+    res = {}
+
+    # Obtenemos el id del producto y de la historia.
+    idPila = int(request.args.get('idPila',1))
+
+    if "actor" in session:
+        res['actor'] = session['actor']
+
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
+    res['usuario'] = session['usuario']
+
+    # Obtenemos el id del producto y de la historia.
+
+    #oBacklog          = backlog()
+    #oUserHistory      = userHistory()
+    #oTask             = task()
+    #oPrecedence       = precedence()
+
+
+    #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
+    #lista = []
+    #precedenceList = oPrecedence.getAllPrecedences(idPila)
+    #for object in precedenceList:
+    #    lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
+
+    #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
+    #userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
+    #taskList = []
+
+    #Se obtienen todas las tareas de las historias de usuarios
+    #for hist in userHistoriesList:
+    #    taskList.extend(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+
+    res['data3'] = [{'idTarea':2, 'descripcion':'Tarea 2'},{'idTarea':1, 'descripcion':'Tarea 1'},{'idTarea':3, 'descripcion':'Tarea 3'}]
+    session['idPila'] = idPila
+    res['idPila']     = idPila
+
+    return json.dumps(res)
+
+
+
 #Use case code starts here
 
 
