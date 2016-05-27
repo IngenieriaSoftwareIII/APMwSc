@@ -151,17 +151,18 @@ class task(object):
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
 
-                if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
-                    oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
-                    oTask.HW_description = newDescription
-                    oTask.HW_idCategory  = C_idCategory
-                    oTask.HW_weight      = HW_weight
-                    oTask.HW_iniciado   = HW_iniciado
-                    oTask.HW_fechaInicio = HW_fechaInicio
-                    oTask.HW_completed   = HW_completed
-                    oTask.HW_fechaFin    = HW_fechaFin
-                    db.session.commit()
-                    return True
+                if HW_fechaInicio <= HW_fechaFin:
+                    if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
+                        oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
+                        oTask.HW_description = newDescription
+                        oTask.HW_idCategory  = C_idCategory
+                        oTask.HW_weight      = HW_weight
+                        oTask.HW_iniciado   = HW_iniciado
+                        oTask.HW_fechaInicio = HW_fechaInicio
+                        oTask.HW_completed   = HW_completed
+                        oTask.HW_fechaFin    = HW_fechaFin
+                        db.session.commit()
+                        return True
         return False
 
 
