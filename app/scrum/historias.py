@@ -223,8 +223,13 @@ def AModifHistoria():
     if not(idSupHist in subHistories):
 
         # Actualizamos los datos de la historia
-        updated     = oUserHist.updateUserHistory(idHistory, codeHist, idSupHist, type, idaccion, priority, \
+        if startingDate_object.date() <= finishingDate_object.date():
+            updated = oUserHist.updateUserHistory(idHistory, codeHist, idSupHist, type, idaccion, priority, \
                                                   started, startingDate_object, completed, finishingDate_object)
+        else:
+            updated = None
+            res = results[1]
+            res['msg'][0] = res['msg'][0] + ": La fecha de culminación debe ser mayor o igual que la de inicio."
 
         if updated:
             # Buscamos los actores asociados

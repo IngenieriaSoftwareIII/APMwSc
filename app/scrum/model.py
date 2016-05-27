@@ -339,9 +339,10 @@ class clsTask(db.Model):
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     HW_iniciado      = db.Column(db.Boolean, default=False)
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_completed    = db.Column(db.Boolean)
-
-    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio):
+    HW_completed    = db.Column(db.Boolean, default = False)
+    HW_fechaFin  = db.Column(db.DateTime, default=datetime.datetime.now())
+    
+    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
         self.HW_description   = description
         self.HW_idCategory    = idCategory
         self.HW_weight        = weight
@@ -349,13 +350,18 @@ class clsTask(db.Model):
         self.HW_idSprint      = None
         self.HW_iniciado      = iniciado
         self.HW_fechaInicio   = fechaInicio
+        self.HW_completed     = completed
+        self.HW_fechaFin      = fechaFin
 
     def getCompleted(self):
         return self.HW_completed
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, HW_iniciado %r, HW_fechaInicio %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, \
+                 HW_iniciado %r, HW_fechaInicio %r, HW_completed %r, HW_fechaFin %r>' % (self.HW_idTask, self.HW_idCategory, \
+                    self.HW_weight, self.HW_idUserHistory, elf.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio, \
+                    self.HW_completed, self.HW_fechaFin)
 
 
 class clsCategory(db.Model):
