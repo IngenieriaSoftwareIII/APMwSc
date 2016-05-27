@@ -651,7 +651,8 @@ def APrelaciones():
 
     for i in params['lista']: # Los que van a ser agregados
         if (int(i['antecedente']) == int(i['consecuente'])): # Este if se puede quitar porque se esta haciendo la verficiacion en insertPrecedence
-            print('Error, la historia no debe prelarse a si misma')
+            #print('Error, la historia no debe prelarse a si misma')
+            res = {'label':'/VPrelaciones', 'msg':['Error, la historia no debe prelarse a si misma']}
         else:
             oPrecedence.insertPrecedence(int(i['antecedente']), int(i['consecuente']), session['idPila'])
 

@@ -341,7 +341,9 @@ class clsTask(db.Model):
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
     HW_completed    = db.Column(db.Boolean, default = False)
     HW_fechaFin  = db.Column(db.DateTime, default=datetime.datetime.now())
-    
+    HW_refPrecedenceFirst = db.relationship('clsPrecedence', backref='FirstTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idFirstTask")
+    HW_refPrecedenceSecond = db.relationship('clsPrecedence', backref='SecondTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idSecondTask")
+
     def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
         self.HW_description   = description
         self.HW_idCategory    = idCategory
