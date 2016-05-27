@@ -6,6 +6,7 @@ import sys
 sys.path.append('app/scrum')
 
 from model import *
+from task import *
 
 class precedence(object):
     def getAllPrecedences(self, idPila):
@@ -87,4 +88,16 @@ class precedence(object):
                         noHayCiclo = self.doesNotMakeLoops(idFirstTask,precedence.P_idSecondTask)
 
         return noHayCiclo
+
+    def tasksWithPrecedences(self, idPila):
+        '''Devuelve tuplas de precedencia de la forma (Tarea1,Tarea2)'''
+
+        precedences = self.getAllPrecedences(idPila)
+        otask = task()
+
+        result = []
+        for t in precedences:
+            result.append((otask.getTaskById(t.P_idFirstTask).HW_description,
+                           otask.getTaskById(t.P_idSecondTask).HW_description))
+        return result
 

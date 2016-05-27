@@ -736,31 +736,15 @@ def VDiagramaPrelaciones():
 
     res['usuario'] = session['usuario']
 
-    # Obtenemos el id del producto y de la historia.
+    # Obtenemos las precedencias de las tareas ("Tarea1","Tarea2)
+    precedencias = precedence().tasksWithPrecedences(idPila)
 
-    #oBacklog          = backlog()
-    #oUserHistory      = userHistory()
-    #oTask             = task()
-    #oPrecedence       = precedence()
-
-
-    #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
-    #lista = []
-    #precedenceList = oPrecedence.getAllPrecedences(idPila)
-    #for object in precedenceList:
-    #    lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
-
-    #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
-    #userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
-    #taskList = []
-
-    #Se obtienen todas las tareas de las historias de usuarios
-    #for hist in userHistoriesList:
-    #    taskList.extend(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+    res['precedences'] = [{'Tarea1': p[0] ,'Tarea2': p[1]} for p in precedencias]
+    print(res['precedences'])
 
     res['data3'] = [{'idTarea':2, 'descripcion':'Tarea 2'},{'idTarea':1, 'descripcion':'Tarea 1'},{'idTarea':3, 'descripcion':'Tarea 3'}]
     session['idPila'] = idPila
-    res['idPila']     = idPila
+    res['idPila'] = idPila
 
     return json.dumps(res)
 
