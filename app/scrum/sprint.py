@@ -726,12 +726,13 @@ def VSprint():
     oUserHistory = userHistory()
     sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
-    res['fSprint'] = {'idSprint':idSprint,
-                        'numero':sprint.S_numero,
-                        'descripcion':sprint.S_sprintDescription,
-                        'fechini':sprint.S_fechini.strftime(DATE_FORMAT),
-                        'fechfin':sprint.S_fechfin.strftime(DATE_FORMAT),
-                        'state':sprint.S_state }
+    res['fSprint'] = { 'idSprint':idSprint
+                     , 'numero':sprint.S_numero
+                     , 'descripcion':sprint.S_sprintDescription
+                     , 'fechini':sprint.S_fechini.strftime(DATE_FORMAT)
+                     , 'fechfin':sprint.S_fechfin.strftime(DATE_FORMAT)
+                     , 'state':sprint.S_state
+                     }
 
     #Obtenes las historias asignadas al sprint
     listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila)
@@ -785,10 +786,12 @@ def VSprint():
 
     #Lista de criterios
     listaCriterios = oSprint.getAssignedSprintAC(idSprint, idPila) # Criterios de aceptación asignados al Sprint
-    res['data11'] = [{'idCriterio':criterio.HAC_idAcceptanceCriteria, \
-                      'descripcion': "Historia " + \
-                        clsUserHistory.query.filter_by(UH_idUserHistory = criterio.HAC_idUserHistory).first().UH_codeUserHistory \
-                        + ": " + criterio.HAC_description} for criterio in listaCriterios]    
+    
+    res['data11'] = [{ 'idCriterio' : criterio.HAC_idAcceptanceCriteria
+                     , 'historia'   : clsUserHistory.query.filter_by(UH_idUserHistory = criterio.HAC_idUserHistory).first().UH_codeUserHistory
+                     , 'descripcion': criterio.HAC_description
+                     , 'enunciado'  : criterio.HAC_enunciado
+                     } for criterio in listaCriterios]    
 
     return json.dumps(res)
 
@@ -904,10 +907,11 @@ def ACriterioHistoria():
     #POST/PUT parameters
     params = request.get_json()
     
-    idPila = params['idPila']
-    idSprint = int(session['idSprint'])
-    idUserHistory = int(params['Historia'])
-    description = str(params['Descripcion'])
+    idPila          = params['idPila']
+    idSprint        = int(session['idSprint'])
+    idUserHistory   = int(params['Historia'])
+    description     = str(params['Descripcion'])
+    enunciado       = str(params['Enunciado'])
 
     results = [{'label':'/VSprint', 'msg':['Criterio agregado exitosamente']}, {'label':'/VCriterioHistoria/'+str(idSprint), 'msg':['Error al asignar criterio a la historia']}, ]
     res = results[0]
@@ -918,7 +922,7 @@ def ACriterioHistoria():
     oSprint = sprints()
     oAcceptanceCriteria = acceptanceCriteria()
 
-    insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description)
+    insert = oAcceptanceCriteria.insertAcceptanceCriteria(idUserHistory, description, enunciado)
 
     result = False
     if insert:

@@ -71,10 +71,10 @@ class sprints(object):
 						if num.S_numero  == newSprintNumber:
 							return False
 				foundSprint[0].S_sprintDescription = newDescription
-				foundSprint[0].S_numero = newSprintNumber
-				foundSprint[0].S_fechini = newfechini
-				foundSprint[0].S_fechfin = newfechfin
-				foundSprint[0].S_state = newstate
+				foundSprint[0].S_numero            = newSprintNumber
+				foundSprint[0].S_fechini           = newfechini
+				foundSprint[0].S_fechfin           = newfechfin
+				foundSprint[0].S_state             = newstate
 				db.session.commit()
 				return True
 		return False
@@ -121,8 +121,8 @@ class sprints(object):
 
 	def asignSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
 		''' Permite asignar a un Sprint una historia de usuario asociado al producto '''
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkSprintNumber  = type(sprintNumber)  == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog     = type(idBacklog)     == int and MIN_ID <= idBacklog
 		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
 		if checkSprintNumber and checkidBacklog and checkidUserHistory:
 			oUserHistory = userHistory()
@@ -138,7 +138,7 @@ class sprints(object):
 		'''Permite obtener las historias asociados a un determinado Sprint'''
 
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
 
 		if checkSprintNumber and checkidBacklog:
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
@@ -149,28 +149,28 @@ class sprints(object):
 	def deleteAssignedSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
 		''' Permite eliminar la asignacion de una historia asociado a un Sprint dado su id'''
 
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkSprintNumber  = type(sprintNumber)  == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog     = type(idBacklog)     == int and MIN_ID <= idBacklog
 		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
 		
 		if checkSprintNumber and checkidBacklog and checkidUserHistory:
 			oUserHistory = userHistory()
-			history = oUserHistory.searchIdUserHistory(idUserHistory)
+			history      = oUserHistory.searchIdUserHistory(idUserHistory)
 			if history != []:
 				history[0].UH_idSprint = None
-				history[0].UH_resume = None
+				history[0].UH_resume   = None
 				db.session.commit()
 				return True
 		return False
 
 	def asignSprintTask(self, sprintNumber, idBacklog, idTask):
 		''' Permite asignar a un Sprint una tarea asociado a sus historias'''
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
 		checkidTask = type(idTask) == int and MIN_ID <= idTask
 		if checkSprintNumber and checkidBacklog and checkidTask:
-			oTask = task()
-			tarea = oTask.getTaskById(idTask)
+			oTask  = task()
+			tarea  = oTask.getTaskById(idTask)
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
 			if tarea and sprint:
 				tarea.HW_idSprint = sprint[0].S_idSprint
@@ -205,9 +205,10 @@ class sprints(object):
 
 	def assignSprintAcceptanceCriteria(self, sprintNumber, idBacklog, idAC):
 		''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
 		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		
 		if checkSprintNumber and checkidBacklog and checkidAC:
 			oAcceptanceCriteria = acceptanceCriteria()
 			criterio = oAcceptanceCriteria.getACById(idAC)
@@ -220,8 +221,9 @@ class sprints(object):
 
 	def getAssignedSprintAC(self, sprintNumber, idBacklog):
 		'''Permite obtener los criterios de aceptación asociados a un determinado Sprint'''
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
+
 		if checkSprintNumber and checkidBacklog:
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
 			found = clsAcceptanceCriteria.query.filter_by(HAC_idSprint = sprint[0].S_idSprint).all()
@@ -230,9 +232,10 @@ class sprints(object):
 
 	def deleteAssignedSprintAC(self, sprintNumber, idBacklog, idAC):
 		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
-		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
-		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
-		checkidAC = type(idAC) == int and MIN_ID <= idAC
+		checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
+		checkidAC         = type(idAC)         == int and MIN_ID <= idAC
+
 		if checkSprintNumber and checkidBacklog and checkidAC:
 			oAcceptanceCriteria = acceptanceCriteria()
 			criterio = oAcceptanceCriteria.getACById(idAC)

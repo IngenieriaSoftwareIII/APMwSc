@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-.
 
 # Se importan las librerias necesarias.
@@ -312,19 +313,30 @@ class clsAcceptanceCriteria(db.Model):
 
     __tablename__ = 'acceptanceCriteria'
     HAC_idAcceptanceCriteria = db.Column(db.Integer, primary_key=True, index=True)
-    HAC_description   = db.Column(db.String(140), index=True)
-    HAC_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HAC_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    HAC_description          = db.Column(db.String(140), index=True)
+    HAC_enunciado            = db.Column(db.String(140))
+    HAC_idUserHistory        = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HAC_idSprint             = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
-    def __init__(self, idUserHistory, description):
-        self.HAC_description = description
+    def __init__(self, idUserHistory, description, enunciado):
+        self.HAC_description   = description
+        self.HAC_enunciado     = enunciado
         self.HAC_idUserHistory = idUserHistory
-        self.HAC_idSprint = None
+        self.HAC_idSprint      = None
 
     def __repr__(self):
         '''Representacion en string del criterio de aceptacion'''
         return '<HAC_idAcceptanceCriteria %r, HAC_idUserHistory %r, HAC_idSprint %r>' % (self.HAC_idAcceptanceCriteria, self.HAC_idUserHistory, self.HAC_idSprint)
 
+# sqlalchemy.exc.OperationalError: 
+#     (sqlite3.OperationalError) no such column: acceptanceCriteria.HAC_enunciado 
+#     [SQL: 'SELECT "acceptanceCriteria"."HAC_idAcceptanceCriteria" AS "acceptanceCriteria_HAC_idAcceptanceCriteria"
+#           , "acceptanceCriteria"."HAC_description"   AS "acceptanceCriteria_HAC_description"
+#           , "acceptanceCriteria"."HAC_enunciado"     AS "acceptanceCriteria_HAC_enunciado"
+#           , "acceptanceCriteria"."HAC_idUserHistory" AS "acceptanceCriteria_HAC_idUserHistory"
+#           , "acceptanceCriteria"."HAC_idSprint"      AS "acceptanceCriteria_HAC_idSprint" 
+#           \nFROM "acceptanceCriteria" \nWHERE "acceptanceCriteria"."HAC_idSprint" = ?'
+#     ] [parameters: (1,)]
 
 class clsTask(db.Model):
     '''Clase que define el modelo de la tabla Task'''

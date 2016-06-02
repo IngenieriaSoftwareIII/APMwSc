@@ -92,6 +92,8 @@
 <hr /><h3>Criterios de aceptación</h3>
         <table ng-table="tableParams11" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
+                <td data-title="'Historia'"    ng-bind="row['historia']"></td>
+                <td data-title="'Enunciado'"   ng-bind="row['enunciado']"></td>
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
                 <td ng-show="row['idCriterio']"><a ng-click="AElimCriterioHistoria11(row['idCriterio'])"  ng-show="actor=='desarrollador' || false">-criterio</a></td>
             </tr>
