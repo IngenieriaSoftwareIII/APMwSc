@@ -77,23 +77,25 @@ class backlog(object):
                     return True
         return False
 
-    def modifyBacklog(self, name, new_name, new_description, new_scale):
+    def modifyBacklog(self, name, new_name, new_description, new_scale,new_status):
         '''Permite actualizar los valores de un producto'''
 
-        checkTypeName = type(name) == str
+        checkTypeName = type(name) == str 
         checkTypeNewName = type(new_name) == str
         checkTypeDescription = type(new_description) == str
         checkTypeScale = type(new_scale) == int
+        checkTypeStatus = isinstance(new_status, int)
 
-        if checkTypeName and checkTypeNewName and checkTypeDescription and checkTypeScale:
+        if checkTypeName and checkTypeNewName and checkTypeDescription and checkTypeScale and checkTypeStatus:
             checkLongName = CONST_MIN_NAME <= len(name) <= CONST_MAX_NAME
             checkLongNewName = CONST_MIN_NAME <= len(
                 new_name) <= CONST_MAX_NAME
             checkLongNewDesc = CONST_MIN_DESCRIPTION <= len(
                 new_description) <= CONST_MAX_DESCRIPTION
             checkNewScale = new_scale in scale_type
+            checkNewStatus = new_status in (1,2,3)
 
-            if checkLongName and checkLongNewName and checkLongNewDesc and checkNewScale:
+            if checkLongName and checkLongNewName and checkLongNewDesc and checkNewScale and checkNewStatus:
                 foundName = self.findName(name)
                 foundNewName = self.findName(new_name)
 
@@ -121,6 +123,7 @@ class backlog(object):
                         newBacklog.BL_name = new_name
                         newBacklog.BL_description = new_description
                         newBacklog.BL_scaleType = new_scale
+                        newBacklog.BL_statusType = new_status
                         db.session.commit()
                         return True
         return False

@@ -44,6 +44,7 @@ class clsBacklog(db.Model):
     BL_name         = db.Column(db.String(50), unique=True)
     BL_description  = db.Column(db.String(140))
     BL_scaleType    = db.Column(db.Integer)
+    BL_statusType   = db.Column(db.Integer)
     BL_refObjective = db.relationship('clsObjective', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refActor     = db.relationship('clsActor', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refAccion    = db.relationship('clsAccion', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")

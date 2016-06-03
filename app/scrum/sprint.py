@@ -8,7 +8,8 @@ from app.scrum.userHistory       import *
 from app.scrum.user              import *
 from app.scrum.task              import *
 from app.scrum.acceptanceCriteria import *
-from datetime import datetime
+from datetime import datetime, timedelta
+from random import randint
 sprint = Blueprint('sprint', __name__)
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -1003,8 +1004,7 @@ def VCriterioHistoria():
 def VDesempeno():
     #GET parameter
     idSprint = request.args['idSprint']
-    print(request.args)
-    print(idSprint)
+    idPila = int(session["idPila"])
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -1012,8 +1012,58 @@ def VDesempeno():
     if 'usuario' not in session:
         res['logout'] = '/'
         return json.dumps(res)
+    print(idPila)
+    oSprint = sprints()
+    #Retrieve the sprint from the DB
+    asociated_sprint = oSprint.searchIdSprint(int(idSprint),idPila)[0]
+    
+    #Calculate duration (in days)
+    sprint_start_date=asociated_sprint.S_fechini
+    sprint_end_date=asociated_sprint.S_fechfin
+    sprint_time=(sprint_end_date-sprint_start_date).days
+    
+    #Sprint
+    sprint_tasks = oSprint.getAssignedSprintTask(int(idSprint),idPila)
+    sprint_index = map(lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight),sprint_tasks) 
+    sprint_index = dict(sprint_index)
+    print(sprint_index,sprint_time)
+    sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
+    ideal_delta= sprint_tasks_total//sprint_time
+    sprint_tasks_total_real=sprint_tasks_total
+    #Building the bdchart
+    rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
+    for x in range(2,sprint_time):
+        sprint_tasks_total-=ideal_delta
+        sprint_tasks_total_real-=sprint_index.get(x,0)
+        rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})
+    sprint_tasks_total_real-=sprint_index.get(x+1,0)
+    rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
+    #Building the JSON to be sent
+    data={"cols": [{ "id":"days","label":"Dias del sprint","type":"string","p":{}},
+              {"id": "actual_hours","label": "Peso de las tareas","type": "number","p": {}},
+              {"id": "ideal_hours","label": "Pesos estimados","type": "number", "p": {}},
+              ]}
+    data['rows']=rows
+    
+    bdchart = {
+          "type": "ComboChart",
+          "options": {
+                "title": "Burn down chart del Sprint",
+                "vAxis": {
+                  "title": "Peso acumulado de las tareas"
+                },
+                "hAxis": {
+                  "title": "Dias"
+                },
+                "seriesType":"bars",
+                "series":{1:{'type': 'line'}, 0: {'color': '#000000'}},
+            },
+            "formatters": {}
+        }
+    bdchart["data"]=data
     res['usuario'] = session['usuario']
     res['idSprint']=idSprint
+    res['bdchart']=bdchart
 
     #Action code ends here
     return json.dumps(res)
