@@ -19,14 +19,15 @@ arrayType = [True,False]
 class objective(object):
     '''Clase que permite manejar los objetivos de manera persistente'''
 
-    def insertObjective(self,descObjective, idBacklog, objType):
+    def insertObjective(self,descObjective, idBacklog,objFunc,objType):
         '''Permite insertar un Objetivo'''
         
         checkObjType = objType in arrayType
+        checkObjFunc = objFunc in arrayType
         checkDesc    = type(descObjective) == str
         checkId_BL   = type(idBacklog) == int 
         
-        if checkDesc and checkId_BL and checkObjType: 
+        if checkDesc and checkId_BL and checkObjType and checkObjFunc: 
             checkDescLen = CONST_MIN_DESC_OBJ <= len(descObjective) <= CONST_MAX_DESC_OBJ
             checkIdMin   = CONST_MIN_ID_BACKLOG <= idBacklog  
             
@@ -42,7 +43,7 @@ class objective(object):
                             break
                         
                     if foundObjectiveDesc == []:
-                        newObjective = clsObjective(descObjective, idBacklog, objType)
+                        newObjective = clsObjective(descObjective, idBacklog,objFunc, objType)
                         db.session.add(newObjective)
                         db.session.commit()
                         return True
@@ -79,13 +80,14 @@ class objective(object):
         return foundObjective 
     
             
-    def updateObjective(self, descObjective, newDescObjective,newObjType,idBacklog):
+    def updateObjective(self, descObjective, newDescObjective,newObjType,newFuncType,idBacklog):
         '''Permite actualizar la descripcion de un objetivo'''
         
         checkObjType       = newObjType in arrayType   
         checkDesc          = type(descObjective) == str 
         checkNewDesc       = type(newDescObjective) == str
         checkTypeIdBacklog = type(idBacklog) == int
+        checkFuncType      = isinstance(newFuncType, int)
         
         if checkDesc and checkNewDesc and checkObjType and checkTypeIdBacklog: 
             checkDescLen    = CONST_MIN_DESC_OBJ <= len(descObjective) <= CONST_MAX_DESC_OBJ
@@ -98,14 +100,22 @@ class objective(object):
                 # Buscamos si existe el objetivo por el cual se va a sustituir. 
                 foundNewObj    = clsObjective.query.filter_by(O_descObjective = newDescObjective,O_idBacklog = idBacklog).all()
                 
-                if foundObjective != [] and (foundNewObj == [] or descObjective == newDescObjective):
+                if foundObjective and (foundNewObj == [] or descObjective == newDescObjective):
                     foundObjective[0].O_descObjective = newDescObjective                 # Asignamos la nueva descripcion.
-                    typeObjective                     = int(foundObjective[0].O_objType) # Obtenemos si es transversal o no.
+                    typeFunc                          = foundObjective[0].O_objFunc #Obtenemos si es Funcional
+                    try:
+                        typeObjective                     = int(foundObjective[0].O_objType)
+                    except TypeError:
+                        typeObjective=False
                     
-                    if typeObj[typeObjective] == arrayType[0]:     # Si el objetivo es transversal
+                    foundObjective[0].O_objFunc = newFuncType
+                    if newFuncType:
+                        foundObjective[0].O_objType= not newFuncType
+            
+                    if typeObj.get(typeObjective,None) == arrayType[0] and not newFuncType :     # Si el objetivo es transversal
                         foundObjective[0].O_objType = newObjType
                         
-                    elif typeObj[typeObjective] == arrayType[1]:   # Si el objetivo no es tranversal.                 
+                    elif typeObj.get(typeObjective,None) == arrayType[1] and not newFuncType:   # Si el objetivo no es tranversal.                 
                         idObj       = foundObjective[0].O_idObjective
                         idHistories = clsUserHistory.query.filter_by(UH_idBacklog = idBacklog).all()
                         
