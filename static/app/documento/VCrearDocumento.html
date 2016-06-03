@@ -1,0 +1,39 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear Documento Vision</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VProducto0(idPila)">
+    Regresar</a></li>
+<li><a ng-click="VLogin1()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fDocumentoForm" ng-submit="ACrearDocumento2(fDocumentoForm.$valid)" novalidate>
+            <input id="fDocumento_idPila" type="hidden" name="idPila" ng-model="fDocumento.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid && fDocumentoForm.introduccion.$pristine && fDocumentoSubmitted}"><label for="fDocumento_introduccion">Introduccion</label><textarea id="fDocumento_introduccion" name="introduccion" class="form-control" ng-model="fDocumento.introduccion" placeholder="Introduccion" required></textarea><p ng-show="fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid" class="help-block">Error en campo Introduccion.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.justificacion.$invalid && fDocumentoForm.justificacion.$pristine && fDocumentoSubmitted}"><label for="fDocumento_justificacion">Justificacion</label><textarea id="fDocumento_justificacion" name="justificacion" class="form-control" ng-model="fDocumento.justificacion" placeholder="Justificacion" required></textarea><p ng-show="fDocumentoSubmitted && fDocumentoForm.justificacion.$invalid" class="help-block">Error en campo Justificacion.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear Documento
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
