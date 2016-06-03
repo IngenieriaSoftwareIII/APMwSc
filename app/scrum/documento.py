@@ -10,9 +10,25 @@ def ACrearDocumento():
     results = [{'label':'/VCrearDocumento', 'msg':['Error al crear el Documento']}, {'label':'/VProducto', 'msg':['Documento creado exitosamente']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
+    if request.method == 'POST':
+        introduccion      = params['introduccion']
+        justificacion = params['justificacion']
+        print(introduccion)
+        print(justificacion)
 
-    #Datos de prueba
-    res['label'] = res['label'] + '/1'
+    # Cambiar result dependiendo del resultado
+    res = results[0]
+    result = True
+    if result:
+        res = results[1]
+    # Paja para q funcione
+    idPila  = int(session['idPila'])
+    res['label'] = res['label'] + '/' + str(idPila)
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
 
     #Action code ends here
     if "actor" in res:
