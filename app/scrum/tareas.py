@@ -167,12 +167,15 @@ def AModifTarea():
     new_idCategoria = params['categoria']
     new_taskPeso    = params['peso']
     new_miembro = params['miembro']
+    
 
     started     = params['iniciado']
     startingDate= params['fechaInicio']
 
     completed     = params['completed']
     finishingDate = params['fechaFin']
+    
+    hours_spent = params['Horas_Trabajadas']
 
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
@@ -188,7 +191,7 @@ def AModifTarea():
 
     # Modificamos la tarea
     if startingDate_object.date() <= finishingDate_object.date():
-        modify = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object,completed,finishingDate_object)
+        modify = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object,completed,finishingDate_object,hours_spent)
     else:
         modify = None
         res = results[1]
@@ -341,9 +344,15 @@ def VTarea():
 
     res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
       {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
-
-    startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
-    finishingDate_object_new = datetime.strftime(result.HW_fechaFin, '%d/%m/%Y')
+    try:
+        startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
+    except TypeError:
+        startingDate_object_new = datetime.strftime(datetime.now(), '%d/%m/%Y')
+    
+    try:
+        finishingDate_object_new = datetime.strftime(result.HW_fechaFin, '%d/%m/%Y')
+    except TypeError:
+        finishingDate_object_new = datetime.strftime(datetime.now(), '%d/%m/%Y')
 
     res['fTarea'] = {'idHistoria':idHistoria,
                     'idTarea': idTarea,
@@ -355,7 +364,8 @@ def VTarea():
                     'iniciado': result.HW_iniciado,
                     'fechaInicio': startingDate_object_new,
                     'completed': result.HW_completed,
-                    'fechaFin': finishingDate_object_new }
+                    'fechaFin': finishingDate_object_new,
+                    'Horas_Trabajadas':result.HW_horasEmpleadas }
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea

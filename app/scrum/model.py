@@ -344,6 +344,7 @@ class clsTask(db.Model):
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
     HW_completed    = db.Column(db.Boolean, default = False)
     HW_fechaFin  = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_horasEmpleadas = db.Column(db.Integer)
     HW_refPrecedenceFirst = db.relationship('clsPrecedence', backref='FirstTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idFirstTask")
     HW_refPrecedenceSecond = db.relationship('clsPrecedence', backref='SecondTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idSecondTask")
 
@@ -357,6 +358,7 @@ class clsTask(db.Model):
         self.HW_fechaInicio   = fechaInicio
         self.HW_completed     = completed
         self.HW_fechaFin      = fechaFin
+        self.HW_horasEmpleadas= None
 
     def getCompleted(self):
         return self.HW_completed

@@ -128,7 +128,7 @@ class task(object):
         return oTask
 
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
+    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin, HW_horasEmpleadas):
         '''Permite actualizar la descripcion de una tarea'''
 
         typedescription    = (type(HW_description) == str)
@@ -145,22 +145,34 @@ class task(object):
             long_newDescription = MIN_TASK_DESCRIPTION <= len(newDescription) <= MAX_TASK_DESCRIPTION
             min_C_idCategory    = C_idCategory >= MIN_ID
             min_HW_weight       = HW_weight >= MIN_WEIGHT
+            hours_spent_positive =HW_horasEmpleadas is None  or  HW_horasEmpleadas>0
+            
 
-            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight):
+            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive ):
                 foundTask = self.searchTask(HW_description)
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
 
-                if HW_fechaInicio <= HW_fechaFin:
+                if HW_fechaFin is None or  HW_fechaInicio <= HW_fechaFin:
                     if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
                         oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
                         oTask.HW_description = newDescription
                         oTask.HW_idCategory  = C_idCategory
                         oTask.HW_weight      = HW_weight
                         oTask.HW_iniciado   = HW_iniciado
-                        oTask.HW_fechaInicio = HW_fechaInicio
+                        if HW_iniciado:
+                            oTask.HW_fechaInicio = HW_fechaInicio
+                        else:
+                            oTask.HW_fechaInicio = None
                         oTask.HW_completed   = HW_completed
-                        oTask.HW_fechaFin    = HW_fechaFin
+                        if HW_completed:
+                            oTask.HW_fechaFin = HW_fechaFin
+                        else:
+                            oTask.HW_fechaFin = None
+                        if  (HW_completed and HW_iniciado):
+                            oTask.HW_horasEmpleadas = HW_horasEmpleadas
+                        else:
+                            oTask.HW_horasEmpleadas = None
                         db.session.commit()
                         return True
         return False

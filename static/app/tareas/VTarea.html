@@ -48,7 +48,8 @@
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.completed.$invalid && fTareaForm.completed.$pristine && fTareaSubmitted}" ng-show="fTarea.iniciado"><label for="fTarea_completed">Completada:&nbsp;</label><input id="fTarea_completed" type="checkbox" name="completed" ng-model="fTarea.completed" placeholder="Culminada"/><p ng-show="fTareaSubmitted && fTareaForm.culminada.$invalid" class="help-block">Error en campo Culminada.</p></div>
 
            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.fechaFin.$invalid && fTareaForm.fechaFin.$pristine && fTareaSubmitted}" ng-show="fTarea.completed && fTarea.iniciado"><label for="fTarea_fechaFin">Fecha de Culminación</label><input id="fTarea_fechaFin" type="text" name="fechaFin" class="form-control" ng-model="fTarea.fechaFin" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechaFin.$invalid" class="help-block">Error en campo Fecha de culminación.</p></div>
-
+           
+           <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.Horas_Trabajadas.$invalid && fTareaForm.Horas_Trabajadas.$pristine && fTareaSubmitted}" ng-show="(actor=='desarrollador' && fTarea.completed) || false "><label for="fTarea_Horas_Trabajadas">Horas Trabajas Reales</label><input id="fTarea_Horas_Trabajadas" name="Horas_Trabajadas" type="number" class="form-control" ng-model="fTarea.Horas_Trabajadas" placeholder="Horas Trabajas Reales"  ng-minlength="1" /><p ng-show="fTareaSubmitted && fTareaForm.Horas_Trabajadas.$invalid" class="help-block">Error en campo Horas Trabajas Reales.</p></div>
 
 
         <button type="submit" class="btn btn-perso btn-lg btn-block">
