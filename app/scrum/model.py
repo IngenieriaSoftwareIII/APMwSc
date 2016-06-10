@@ -230,10 +230,10 @@ class clsUserHistory(db.Model):
     UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_resume            = db.Column(db.String(200), nullable=True)
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
-    UH_iniciado         = db.Column(db.Boolean, default=False)
-    UH_fechaInicio      = db.Column(db.DateTime, default=datetime.datetime.now())
-    UH_completed        = db.Column(db.Boolean, default=False)
-    UH_fechaFin         = db.Column(db.DateTime, default=datetime.datetime.now())
+    UH_iniciado          = db.Column(db.Boolean,  default = False)
+    UH_fechaInicio       = db.Column(db.DateTime, default = datetime.datetime.now())
+    UH_completed         = db.Column(db.Boolean,  default = False)
+    UH_fechaFin          = db.Column(db.DateTime, default = datetime.datetime.now())
 
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio, completed, fechaFin):
@@ -252,10 +252,19 @@ class clsUserHistory(db.Model):
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, resume %r, \
-                 iniciado %r, fechaInicio %r, completed %r, fechaFin %r, >' % (self.UH_idUserHistory, self.UH_codeUserHistory, \
-                 self.UH_idSuperHistory, self.UH_scale, self.UH_idSprint, self.UH_resume, self.UH_iniciado, self.UH_fechaInicio, \
-                 self.UH_completed, self.UH_fechaFin)
+        return ( '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r'+
+                 ', resume %r, iniciado %r, fechaInicio %r, completed %r, fechaFin %r >') %\
+                   ( self.UH_idUserHistory
+                   , self.UH_codeUserHistory
+                   , self.UH_idSuperHistory
+                   , self.UH_scale
+                   , self.UH_idSprint
+                   , self.UH_resume
+                   , self.UH_iniciado
+                   , self.UH_fechaInicio
+                   , self.UH_completed
+                   , self.UH_fechaFin
+                   )
 
 
 class clsAcceptanceTest(db.Model):
@@ -274,7 +283,8 @@ class clsAcceptanceTest(db.Model):
 
     def __repr__(self):
         '''Representacion en string del modelo AcceptanceTest'''
-        return '<idAT %r, idUserHistory %r, description %r, urlScript %r >' % (self.AT_idAT, self.AT_idUserHistory, self.AT_description, self.AT_urlScript)
+        return ('<idAT %r, idUserHistory %r, description %r, urlScript %r >') %\
+                 (self.AT_idAT, self.AT_idUserHistory, self.AT_description, self.AT_urlScript)
 
 
 
@@ -329,17 +339,8 @@ class clsAcceptanceCriteria(db.Model):
 
     def __repr__(self):
         '''Representacion en string del criterio de aceptacion'''
-        return '<HAC_idAcceptanceCriteria %r, HAC_idUserHistory %r, HAC_idSprint %r>' % (self.HAC_idAcceptanceCriteria, self.HAC_idUserHistory, self.HAC_idSprint)
-
-# sqlalchemy.exc.OperationalError: 
-#     (sqlite3.OperationalError) no such column: acceptanceCriteria.HAC_enunciado 
-#     [SQL: 'SELECT "acceptanceCriteria"."HAC_idAcceptanceCriteria" AS "acceptanceCriteria_HAC_idAcceptanceCriteria"
-#           , "acceptanceCriteria"."HAC_description"   AS "acceptanceCriteria_HAC_description"
-#           , "acceptanceCriteria"."HAC_enunciado"     AS "acceptanceCriteria_HAC_enunciado"
-#           , "acceptanceCriteria"."HAC_idUserHistory" AS "acceptanceCriteria_HAC_idUserHistory"
-#           , "acceptanceCriteria"."HAC_idSprint"      AS "acceptanceCriteria_HAC_idSprint" 
-#           \nFROM "acceptanceCriteria" \nWHERE "acceptanceCriteria"."HAC_idSprint" = ?'
-#     ] [parameters: (1,)]
+        return '<HAC_idAcceptanceCriteria %r, HAC_idUserHistory %r, HAC_idSprint %r>' %\
+               (self.HAC_idAcceptanceCriteria, self.HAC_idUserHistory, self.HAC_idSprint)
 
 class clsTask(db.Model):
     '''Clase que define el modelo de la tabla Task'''
@@ -350,15 +351,26 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HW_idEquipo     = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
+    HW_idEquipo      = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     HW_estimatedTime = db.Column(db.Integer)
     HW_iniciado      = db.Column(db.Boolean, default=False)
-    HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_completed    = db.Column(db.Boolean, default = False)
-    HW_fechaFin  = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_refPrecedenceFirst = db.relationship('clsPrecedence', backref='FirstTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idFirstTask")
-    HW_refPrecedenceSecond = db.relationship('clsPrecedence', backref='SecondTask', lazy='dynamic', cascade="all, delete, delete-orphan", foreign_keys="clsPrecedence.P_idSecondTask")
+    HW_fechaInicio   = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_completed     = db.Column(db.Boolean, default = False)
+    HW_fechaFin      = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_refPrecedenceFirst  = db.relationship( 'clsPrecedence'
+                                            , backref      = 'FirstTask'
+                                            , lazy         = 'dynamic'
+                                            , cascade      = "all, delete, delete-orphan"
+                                            , foreign_keys = "clsPrecedence.P_idFirstTask"
+                                            )
+
+    HW_refPrecedenceSecond = db.relationship('clsPrecedence'
+                                            , backref      = 'SecondTask'
+                                            , lazy         = 'dynamic'
+                                            , cascade      = "all, delete, delete-orphan"
+                                            , foreign_keys = "clsPrecedence.P_idSecondTask"
+                                            )
 
     def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
         self.HW_description   = description
@@ -411,8 +423,8 @@ class clsSprint(db.Model):
     S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
     S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
     S_fechini           = db.Column(db.DateTime, default=datetime.datetime.now())
-    S_fechfin          = db.Column(db.DateTime, default=datetime.datetime.now())
-    S_state            = db.Column(db.String(30))
+    S_fechfin           = db.Column(db.DateTime, default=datetime.datetime.now())
+    S_state             = db.Column(db.String(30))
 
     def __init__(self, numero, sprintDescription, idBacklog, fechini, fechfin, state):
         self.S_numero            = numero
@@ -496,10 +508,10 @@ class clsPrecedence(db.Model):
 class clsTaskDoc(db.Model):
     '''Clase que define el modelo de la tabla TaskDoc'''
 
-    __tablename__ = 'taskDoc'
-    HWD_idTaskDoc = db.Column(db.Integer, primary_key=True, index=True)
-    HWD_idTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
-    HWD_docName = db.Column(db.String(50), unique=True, index=True)
+    __tablename__      = 'taskDoc'
+    HWD_idTaskDoc      = db.Column(db.Integer, primary_key=True, index=True)
+    HWD_idTask         = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    HWD_docName        = db.Column(db.String(50), unique=True, index=True)
     HWD_docDescription = db.Column(db.String(140), unique=False, index=True)
 
     def __init__(self, idTask, docName, docDescription):
