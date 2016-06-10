@@ -1,15 +1,16 @@
-from flask import request, session, Blueprint, json
-from app.scrum.sprintClass       import *
-from app.scrum.meetingClass      import *
-from app.scrum.elementMeetingClass   import *
-from app.scrum.backLog           import *
-from app.scrum.subEquipoClass           import *
-from app.scrum.userHistory       import *
-from app.scrum.user              import *
-from app.scrum.task              import *
-from app.scrum.acceptanceCriteria import *
-from datetime import datetime, timedelta
-from random import randint
+from flask                          import request, session, Blueprint, json
+from app.scrum.sprintClass          import *
+from app.scrum.meetingClass         import *
+from app.scrum.elementMeetingClass  import *
+from app.scrum.backLog              import *
+from app.scrum.subEquipoClass       import *
+from app.scrum.userHistory          import *
+from app.scrum.user                 import *
+from app.scrum.task                 import *
+from app.scrum.acceptanceCriteria   import *
+from datetime                       import datetime, timedelta
+from random                         import randint
+
 sprint = Blueprint('sprint', __name__)
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -17,19 +18,19 @@ DATE_FORMAT = '%Y-%m-%d'
 @sprint.route('/sprint/AActualizarEquipoSprint', methods=['POST'])
 def AActualizarEquipoSprint():
     #POST/PUT parameters
-    params = request.get_json()
+    params  = request.get_json()
     results = [{'label':'/VEquipoSprint', 'msg':['Sub Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar el Sub equipo']}, ]
-    res = results[1]
+    res     = results[1]
+    
     #Action code goes here, res should be a list with a label and a message
-
     idSprint  = int(session['idSprint'])
-    idPila  = int(session['idPila'])
-    obTeam = team()
-    idEquipo = obTeam.getTeamId(idPila)
+    idPila    = int(session['idPila'])
+    obTeam    = team()
+    idEquipo  = obTeam.getTeamId(idPila)
+    lista     = params['lista']    
+    oTeam     = subEquipoClass()
+    exito     = oTeam.actualizar(lista,idSprint)
 
-    lista = params['lista']    
-    oTeam = subEquipoClass()
-    exito = oTeam.actualizar(lista,idSprint)
     if exito:
         res = results[0]
     res['label'] = res['label'] + '/' + repr(1)
@@ -50,26 +51,33 @@ def VEquipoSprint():
     res = {}
     #Action code goes here, res should be a JSON structure
     if "actor" in session:
-        res['actor']=session['actor']
+        res['actor'] = session['actor']
    # #Action code goes here, res should be a JSON structure
     if 'usuario' not in session:
         res['logout'] = '/'
         return json.dumps(res)
    
-    obTeam = team()
-    teamList = obTeam.getTeamDevs(idPila)
-    oTeam = subEquipoClass()
+    obTeam      = team()
+    teamList    = obTeam.getTeamDevs(idPila)
+    oTeam       = subEquipoClass()
     SubteamList = oTeam.getSubEquipo(idSprint)
 
-    res['fEquipo'] = {'lista':[{'miembro':team.SEQ_username, 'rol': team.SEQ_rol} for team in SubteamList]}
-    res['usuario'] = session['usuario']
+    res['fEquipo']  =   { 'lista' : [ { 'miembro' : team.SEQ_username
+                                      , 'rol'     : team.SEQ_rol
+                                      } for team in SubteamList
+                                    ]
+                        }
+    res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
 
     res['fEquipo_opcionesRol'] =[
         {'key':'Desarrollador', 'value':'Desarrollador'}
       ]
 
-    res['fEquipo_opcionesMiembros'] =[{'key':user.EQ_username,'value': user.EQ_username} for user in teamList]
+    res['fEquipo_opcionesMiembros'] = [ { 'key'   : user.EQ_username
+                                        , 'value' : user.EQ_username
+                                        } for user in teamList
+                                      ]
 
     #Action code ends here
     return json.dumps(res)
@@ -558,7 +566,13 @@ def VCrearReunionSprint():
 def ASprintTarea():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VSprint', 'msg':['Tarea asignada']}, {'label':'/VSprint', 'msg':['Error al asignar tarea']}, ]
+    results =   [ { 'label' : '/VSprint'
+                  , 'msg'   : ['Tarea asignada']
+                  }
+                , { 'label' : '/VSprint'
+                  , 'msg'   : ['Error al asignar tarea']
+                  } 
+                ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
@@ -590,7 +604,7 @@ def VCrearSprint():
     idPila = int(request.args.get('idPila',1))
 
     if "actor" in session:
-        res['actor']=session['actor']
+        res['actor'] = session['actor']
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -620,13 +634,14 @@ def VResumenHistoria():
     idPila = int(session['idPila'])
     idSprint = int(session['idSprint'])
 #
-    oSprint = sprints()
+    oSprint         = sprints()
     historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
-    res['fResumenHistoria_opcionesHistoria'] = [
-        {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasSprint
-    ]
+    res['fResumenHistoria_opcionesHistoria'] =  [ { 'key'   : historia.UH_idUserHistory
+                                                  , 'value' : historia.UH_codeUserHistory
+                                                  } for historia in historiasSprint
+                                                ]
 
-    res['idSprint'] = idSprint
+    res['idSprint']        = idSprint
     res['fSprintHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
     #Action code ends here
@@ -651,24 +666,18 @@ def VElementoMeeting():
       return json.dumps(res)
 
     res['usuario'] = session['usuario']
-    u = session['usuario']['username']
+    u              = session['usuario']['username']
 
-    oElementMeeting = elementMeeting()
-    anElement = oElementMeeting.getElementID(idMeeting,idReunion)[0]
-    res['fElementoMeeting'] = {
-        'challenge' : anElement.EM_challenges,
-        'planed' : anElement.EM_planned,
-        'done' : anElement.EM_done,
-#      'challenge' :'Carrera inicial. Modelo de datos, MVC, identificación',
-#      'planed':'planificado',
-#      'done':'realizado',
-#      'idReunion':1,
-#      'idUser':1,
-      }
-    res['idElementMeeting'] = anElement.EM_idElementMeeting
+    oElementMeeting         = elementMeeting()
+    anElement               = oElementMeeting.getElementID(idMeeting,idReunion)[0]
+    res['fElementoMeeting'] =   { 'challenge' : anElement.EM_challenges
+                                , 'planed'    : anElement.EM_planned
+                                , 'done'      : anElement.EM_done
+                                }
+    res['idElementMeeting']     = anElement.EM_idElementMeeting
     session['idElementMeeting'] = anElement.EM_idElementMeeting
-    res['idReunion'] =  idReunion
-    session['idReunion'] =  idReunion
+    res['idReunion']            = idReunion
+    session['idReunion']        = idReunion
 
     #Action code ends here
     return json.dumps(res)
@@ -691,12 +700,22 @@ def VReunion():
 
     oElementMeeting = elementMeeting()
     elements  = oElementMeeting.getElements(idReunion)
-    res['data4'] = [{'id': e.EM_idElementMeeting, 'user': e.EM_user} for e in elements]
+    res['data4'] =  [ { 'id'   : e.EM_idElementMeeting
+                      , 'user' : e.EM_user
+                      } for e in elements
+                    ]
 
-    res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
-    res['idReunion'] = idReunion
+    res['fReunion'] =   { 'idReunion'   : idReunion
+                        , 'idSprint'    : idSprint
+                        , 'Actividades' : result[0].SM_activities
+                        , 'Sugerencias' : result[0].SM_suggestions
+                        , 'Retos'       : result[0].SM_challenges
+                        , 'Tipo'        : result[0].SM_typeMeeting
+                        }
+
+    res['idReunion']     = idReunion
     session['idReunion'] = idReunion
-    res['idSprint'] = idSprint
+    res['idSprint']      = idSprint
     #Action code ends here
     return json.dumps(res)
 
@@ -1054,31 +1073,41 @@ def VDesempeno():
     sprint_tasks_total_real-=sprint_index.get(x+1,0)
     rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
     #Building the JSON to be sent
-    data={"cols": [{ "id":"days","label":"Dias del sprint","type":"string","p":{}},
-              {"id": "actual_hours","label": "Peso de las tareas","type": "number","p": {}},
-              {"id": "ideal_hours","label": "Pesos estimados","type": "number", "p": {}},
-              ]}
+    data={"cols":   [ { "id"    : "days"
+                      , "label" : "Dias del sprint"
+                      , "type"  : "string"
+                      , "p"     : {}
+                      }
+                    , { "id"    : "actual_hours"
+                      , "label" : "Peso de las tareas"
+                      , "type"  : "number"
+                      , "p"     : {}
+                      }
+                    , { "id"    : "ideal_hours"
+                      , "label" : "Pesos estimados"
+                      , "type"  : "number"
+                      , "p"     : {}
+                      }
+                    ]
+         }
     data['rows']=rows
     
-    bdchart = {
-          "type": "ComboChart",
-          "options": {
-                "title": "Burn down chart del Sprint",
-                "vAxis": {
-                  "title": "Peso acumulado de las tareas"
-                },
-                "hAxis": {
-                  "title": "Dias"
-                },
-                "seriesType":"bars",
-                "series":{1:{'type': 'line'}, 0: {'color': '#000000'}},
-            },
-            "formatters": {}
-        }
-    bdchart["data"]=data
-    res['usuario'] = session['usuario']
-    res['idSprint']=idSprint
-    res['bdchart']=bdchart
+    bdchart =   { "type"    : "ComboChart"
+                , "options" : 
+                    { "title"      : "Burn down chart del Sprint"
+                    , "vAxis"      : { "title": "Peso acumulado de las tareas" }
+                    , "hAxis"      : { "title": "Dias" }
+                    , "seriesType" : "bars"
+                    , "series"     : { 1 : {'type'  : 'line' }
+                                     , 0 : {'color' : '#000000' }
+                                     }
+                    }   
+                , "formatters" : {}
+                }
+    bdchart["data"] = data
+    res['usuario']  = session['usuario']
+    res['idSprint'] = idSprint
+    res['bdchart']  = bdchart
 
     #Action code ends here
     return json.dumps(res)
