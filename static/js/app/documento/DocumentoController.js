@@ -5,7 +5,7 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
             });
 }]);
 
-scrumModule.controller('VCrearDocumentoController', 
+scrumModule.controller('VCrearDocumentoController',
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'documentoService', 'identService', 'prodService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, documentoService, identService, prodService) {
       $scope.msg = '';
@@ -33,13 +33,14 @@ scrumModule.controller('VCrearDocumentoController',
       $scope.ACrearDocumento2 = function(isValid) {
         $scope.fDocumentoSubmitted = true;
         if (isValid) {
-          
+
           documentoService.ACrearDocumento($scope.fDocumento).then(function (object) {
-              var msg = object.data["msg"];
-              if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
-              $route.reload();
+              window.open("../../../temp/Documento-Vision.pdf")
+              // var msg = object.data["msg"];
+              // if (msg) flash(msg);
+              // var label = object.data["label"];
+              // $location.path(label);
+              // $route.reload();
           });
         }
       };
