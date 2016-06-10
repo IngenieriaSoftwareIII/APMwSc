@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
+            <button type="button" class="navbar-toggle"
+                    data-toggle="collapse"
                     data-target="#contenido-plegable">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -27,8 +27,48 @@
 
     <form name="fDocumentoForm" ng-submit="ACrearDocumento2(fDocumentoForm.$valid)" novalidate>
             <input id="fDocumento_idPila" type="hidden" name="idPila" ng-model="fDocumento.idPila" />
-            <div class="form-group" ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid && fDocumentoForm.introduccion.$pristine && fDocumentoSubmitted}"><label for="fDocumento_introduccion">Introduccion</label><textarea id="fDocumento_introduccion" name="introduccion" class="form-control" ng-model="fDocumento.introduccion" placeholder="Introduccion" required></textarea><p ng-show="fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid" class="help-block">Error en campo Introduccion.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.justificacion.$invalid && fDocumentoForm.justificacion.$pristine && fDocumentoSubmitted}"><label for="fDocumento_justificacion">Justificacion</label><textarea id="fDocumento_justificacion" name="justificacion" class="form-control" ng-model="fDocumento.justificacion" placeholder="Justificacion" required></textarea><p ng-show="fDocumentoSubmitted && fDocumentoForm.justificacion.$invalid" class="help-block">Error en campo Justificacion.</p></div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid && fDocumentoForm.introduccion.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Introduccion</label>
+                 <textarea id="fDocumento_introduccion" name="introduccion" class="form-control" ng-model="fDocumento.introduccion" placeholder="Introduccion" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.introduccion.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.proposito.$invalid && fDocumentoForm.proposito.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Proposito del Documento</label>
+                 <textarea id="fDocumento_introduccion" name="proposito" class="form-control" ng-model="fDocumento.proposito" placeholder="Proposito del Documento" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.proposito.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.motivacion.$invalid && fDocumentoForm.motivacion.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Motivacion</label>
+                 <textarea id="fDocumento_introduccion" name="motivacion" class="form-control" ng-model="fDocumento.motivacion" placeholder="Motivacion" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.motivacion.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.estado.$invalid && fDocumentoForm.estado.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Estado del Proyecto</label>
+                 <textarea id="fDocumento_introduccion" name="estado" class="form-control" ng-model="fDocumento.estado" placeholder="Estado del Proyecto" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.estado.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.alcance.$invalid && fDocumentoForm.alcance.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Alcance</label>
+                 <textarea id="fDocumento_introduccion" name="alcance" class="form-control" ng-model="fDocumento.alcance" placeholder="Alcance" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.alcance.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.fundamentacion.$invalid && fDocumentoForm.fundamentacion.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Fundamentacion</label>
+                 <textarea id="fDocumento_introduccion" name="fundamentacion" class="form-control" ng-model="fDocumento.fundamentacion" placeholder="Fundamentacion" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.fundamentacion.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
+            <div class="form-group"
+                 ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.valores.$invalid && fDocumentoForm.valores.$pristine && fDocumentoSubmitted}">
+                 <label for="fDocumento_introduccion">Valores del Equipo</label>
+                 <textarea id="fDocumento_introduccion" name="valores" class="form-control" ng-model="fDocumento.valores" placeholder="Valores del Equipo" required></textarea>
+                 <p ng-show="fDocumentoSubmitted && fDocumentoForm.valores.$invalid" class="help-block">Error en campo Introduccion.</p>
+            </div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear Documento
         </button>
