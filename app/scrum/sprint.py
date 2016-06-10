@@ -758,30 +758,39 @@ def VSprint():
         userHistories.append(result)
 
     #Lista de Historias
-    res['data6'] = [
-        {'idHistoria':hist['idHistory'],
-         'prioridad' :hist['priority'],
-         'enunciado' :'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives'],
-         'resumen'   :hist['resume']}for hist in userHistories
-    ]
+    res['data6'] =  [ { 'idHistoria' : hist['idHistory']
+                      , 'prioridad'  : hist['priority']
+                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']
+                      , 'resumen'    : hist['resume']
+                      } for hist in userHistories
+                    ]
 
     listaTareas = oSprint.getAssignedSprintTask(idSprint, idPila) # Tareas asignadas al Sprint
     #Lista de tareas
-    res['data8'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in listaTareas]
+    res['data8'] =  [ { 'idTarea'       : tarea.HW_idTask
+                      , 'descripcion'   : tarea.HW_description
+                      , 'estimatedTime' : tarea.HW_estimatedTime
+                      } for tarea in listaTareas
+                    ]
 
     session['idSprint'] = idSprint
-    res['idSprint'] = idSprint
-    res['idPila'] = idPila
+    res['idSprint']     = idSprint
+    res['idPila']       = idPila
 
-    oMeeting = meeting()
-    result  = oMeeting.getMeetings(idSprint)
-    res['data5'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]  
+    oMeeting     = meeting()
+    result       = oMeeting.getMeetings(idSprint)
+    res['data5'] =  [ { 'id'          : res.SM_idSprintMeeting
+                      , 'fecha'       : res.SM_meetingDate
+                      , 'actividades' : res.SM_activities
+                      , 'tipo'        : res.SM_typeMeeting 
+                      } for res in result
+                    ]  
 
     session['idSprint'] = idSprint
-    res['idSprint'] = idSprint
+    res['idSprint']     = idSprint
 
-    session['idPila'] = idPila
-    res['idPila'] = idPila
+    session['idPila']   = idPila
+    res['idPila']       = idPila
 
     #print(res['data4'])
 
@@ -789,9 +798,11 @@ def VSprint():
     listaCriterios = oSprint.getAssignedSprintAC(idSprint, idPila) # Criterios de aceptación asignados al Sprint
     
     res['data11'] = [{ 'idCriterio' : criterio.HAC_idAcceptanceCriteria
-                     , 'historia'   : clsUserHistory.query.filter_by(UH_idUserHistory = criterio.HAC_idUserHistory).first().UH_codeUserHistory
                      , 'descripcion': criterio.HAC_description
                      , 'enunciado'  : criterio.HAC_enunciado
+                     , 'historia'   : clsUserHistory.query.filter_by(
+                                            UH_idUserHistory = criterio.HAC_idUserHistory
+                                        ).first().UH_codeUserHistory
                      } for criterio in listaCriterios]    
 
     return json.dumps(res)
@@ -880,11 +891,15 @@ def VSprints():
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
-    res['data1'] = [{'numero':spr.S_numero,
-                    'descripcion':spr.S_sprintDescription,
-                    'fechini':spr.S_fechini.strftime(DATE_FORMAT),
-                    'fechfin':spr.S_fechfin.strftime(DATE_FORMAT),
-                    'state':spr.S_state } for spr in sprintList]
+    s = sprints()
+    res['data1'] =  [ { 'numero'        : spr.S_numero
+                      , 'descripcion'   : spr.S_sprintDescription
+                      , 'fechini'       : spr.S_fechini.strftime(DATE_FORMAT)
+                      , 'fechfin'       : spr.S_fechfin.strftime(DATE_FORMAT)
+                      , 'estimatedTime' : s.getEstimatedTime(spr.S_numero, idPila)
+                      , 'state'         : spr.S_state 
+                      } for spr in sprintList
+                    ]
 
 
     session['idPila'] = idPila

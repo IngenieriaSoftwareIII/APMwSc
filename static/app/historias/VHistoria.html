@@ -190,8 +190,13 @@
     <hr /><h3>Tareas <span class="badge" ng-bind="numTareas"></span></h3>
         <table ng-table="tableParams2" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
-                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
+                <td align="center" data-title="'Descripción'">
+                    {{row['descripcion']}}
+                </td>
+                <td align="center" data-title="'Horas Estimadas'">
+                    {{row['estimatedTime']}} h
+                </td>
+                <td align="center" ><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
             </tr>
         </table>
         <!--button name="complete" class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
@@ -203,9 +208,9 @@
     <hr /><h3>Pruebas de aceptación <span class="badge" ng-bind="numPruebas"></span></h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
-                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="downloadAcceptanceTest(row['url'])">Descargar script</a></td>
-                <td ><a ng-click="AElimPrueba2(row['idTarea'])">-prueba</a></td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td align="center" ><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="downloadAcceptanceTest(row['url'])">Descargar script</a></td>
+                <td align="center" ><a ng-click="AElimPrueba2(row['idTarea'])">-prueba</a></td>
             </tr>
         </table>
 <hr />

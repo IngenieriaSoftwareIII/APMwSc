@@ -352,6 +352,7 @@ class clsTask(db.Model):
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
     HW_idEquipo     = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    HW_estimatedTime = db.Column(db.Integer)
     HW_iniciado      = db.Column(db.Boolean, default=False)
     HW_fechaInicio  = db.Column(db.DateTime, default=datetime.datetime.now())
     HW_completed    = db.Column(db.Boolean, default = False)
@@ -369,6 +370,7 @@ class clsTask(db.Model):
         self.HW_fechaInicio   = fechaInicio
         self.HW_completed     = completed
         self.HW_fechaFin      = fechaFin
+        self.HW_estimatedTime = 1
 
     def getCompleted(self):
         return self.HW_completed

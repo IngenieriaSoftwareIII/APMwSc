@@ -188,6 +188,18 @@ class sprints(object):
 			return found
 		return []
 
+	def getEstimatedTime(self, sprintNumber, idBacklog):
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		if checkSprintNumber and checkidBacklog:
+		    taskList = self.getAssignedSprintTask(sprintNumber, idBacklog)
+		    time = 0
+		    for task in taskList:
+		        time = time + task.HW_estimatedTime
+		    return time
+		else:
+			return 0
+
 		#Nuevo metodo Sprint 2
 	def deleteAssignedSprintTask(self, sprintNumber, idBacklog, idTask):
 		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''

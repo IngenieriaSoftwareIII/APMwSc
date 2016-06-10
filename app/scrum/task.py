@@ -128,23 +128,24 @@ class task(object):
         return oTask
 
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
+    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_estimatedTime, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
         '''Permite actualizar la descripcion de una tarea'''
 
-        typedescription    = (type(HW_description) == str)
-        typeNewdescription = (type(newDescription) == str)
+        typedescription    = (type(HW_description)  == str)
+        typeNewdescription = (type(newDescription)  == str)
 
-        typeidCategory     = (type(C_idCategory) == int)
-        typeWeight         = (type(HW_weight) == int)
+        typeidCategory     = (type(C_idCategory)    == int)
+        typeWeight         = (type(HW_weight)       == int)
+        typeEstimatedTime  = (type(HW_estimatedTime == int))
 
-        typeIniciado    = (type(HW_iniciado) == bool)
-        typeCompleted   = (type(HW_completed) == bool)
+        typeIniciado       = (type(HW_iniciado)     == bool)
+        typeCompleted      = (type(HW_completed)    == bool)
 
-        if (typedescription and typeNewdescription and typeidCategory and typeWeight):
+        if (typedescription and typeNewdescription and typeidCategory and typeWeight and typeEstimatedTime):
             long_HW_description = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
             long_newDescription = MIN_TASK_DESCRIPTION <= len(newDescription) <= MAX_TASK_DESCRIPTION
             min_C_idCategory    = C_idCategory >= MIN_ID
-            min_HW_weight       = HW_weight >= MIN_WEIGHT
+            min_HW_weight       = HW_weight    >= MIN_WEIGHT
 
             if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight):
                 foundTask = self.searchTask(HW_description)
@@ -152,15 +153,18 @@ class task(object):
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
 
                 if HW_fechaInicio <= HW_fechaFin:
-                    if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
-                        oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
-                        oTask.HW_description = newDescription
-                        oTask.HW_idCategory  = C_idCategory
-                        oTask.HW_weight      = HW_weight
-                        oTask.HW_iniciado   = HW_iniciado
-                        oTask.HW_fechaInicio = HW_fechaInicio
-                        oTask.HW_completed   = HW_completed
-                        oTask.HW_fechaFin    = HW_fechaFin
+                    if ((foundTask != []) and 
+                        (foundCat  != []) and 
+                        ((foundNew == []) or (HW_description == newDescription))):
+                        oTask                   = clsTask.query.filter_by(HW_description = HW_description).first()
+                        oTask.HW_description    = newDescription
+                        oTask.HW_idCategory     = C_idCategory
+                        oTask.HW_weight         = HW_weight
+                        oTask.HW_estimatedTime  = HW_estimatedTime
+                        oTask.HW_iniciado       = HW_iniciado
+                        oTask.HW_fechaInicio    = HW_fechaInicio
+                        oTask.HW_completed      = HW_completed
+                        oTask.HW_fechaFin       = HW_fechaFin
                         db.session.commit()
                         return True
         return False
@@ -197,6 +201,22 @@ class task(object):
             peso = ''
         return peso
 
+    def historyEstimatedTime(self, idUserHistory):
+        checkTypeId     = type(idUserHistory) == int
+        time            = 0
+        oUserHistory    = userHistory()
+        esEpica         = oUserHistory.isEpic(idUserHistory)
+
+        if not esEpica:
+            if checkTypeId:
+                taskList = self.taskAsociatedToUserHistory(idUserHistory)
+
+                if taskList != []:
+                    for task in taskList:
+                        time = time + task.HW_estimatedTime
+        else:
+            time = 1
+        return time
 
     def lookup(self,tupleList,idUserHistory):
         ''' Permite obtener el valor asociado a una clave en una lista de tuplas '''

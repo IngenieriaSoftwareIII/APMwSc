@@ -27,14 +27,110 @@
 </nav>
 
     <form name="fTareaForm" ng-submit="ACrearTarea0(fTareaForm.$valid)" novalidate>
+        <table class="table"  >
+            
             <input id="fTarea_idHistoria" type="hidden" name="idHistoria" ng-model="fTarea.idHistoria" />
             <input id="fTarea_idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" />
-            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.miembro.$invalid && fTareaForm.miembro.$pristine && fTareaSubmitted}"><label for="fTarea_miembro">Miembro asignado</label>:&nbsp;<select id="fTarea_miembro" ng-model="fTarea.miembro"  ng-options="item.key as item.value for item in fTarea_opcionesMiembro"></select><p ng-show="fTareaSubmitted && fTareaForm.miembro.$invalid" class="help-block">Error en la asignación.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.descripcion.$invalid && fTareaForm.descripcion.$pristine && fTareaSubmitted}"><label for="fTarea_descripcion">Descripción</label><textarea id="fTarea_descripcion" name="descripcion" class="form-control" ng-model="fTarea.descripcion" placeholder="Descripción" required></textarea><p ng-show="fTareaSubmitted && fTareaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.categoria.$invalid && fTareaForm.categoria.$pristine && fTareaSubmitted}"><label for="fTarea_categoria">Categoría</label>:&nbsp;<select id="fTarea_categoria" ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Categoría.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}"><label for="fTarea_peso">Peso</label><input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.iniciada.$invalid && fTareaForm.iniciada.$pristine && fTareaSubmitted}"><label for="fTarea_iniciada">Iniciada:</label><input id="fTarea_iniciado" type="checkbox" name="iniciado" ng-model="fTarea.iniciado" placeholder="Iniciada"/><p ng-show="fTareaSubmitted && fTareaForm.iniciado.$invalid" class="help-block">Error en campo Iniciada.</p></div>
-           <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.fechini.$invalid && fTareaForm.fechini.$pristine && fTareaSubmitted}" ng-show="fTarea.iniciado"><label for="fTarea_fechini">Fecha de Inicio</label><input id="fTarea_fechini" type="text" name="fechini" class="form-control" ng-model="fTarea.fechaInicio" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p></div>            
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.miembro.$invalid && fTareaForm.miembro.$pristine && fTareaSubmitted}">
+                    <td width="400">
+                        <label for="fTarea_miembro">Miembro asignado</label>:&nbsp;
+                    </td>
+                    <td>
+                        <select id="fTarea_miembro" ng-model="fTarea.miembro"  
+                                ng-options="item.key as item.value for item in fTarea_opcionesMiembro"> 
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.miembro.$invalid" class="help-block">
+                           Error en la asignación.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.descripcion.$invalid && fTareaForm.descripcion.$pristine && fTareaSubmitted}">
+                    <td width="400">
+                        <label for="fTarea_descripcion">Descripción</label>
+                    </td>
+                    <td>
+                        <textarea id="fTarea_descripcion" name="descripcion" class="form-control" ng-model="fTarea.descripcion" placeholder="Descripción" required></textarea><p ng-show="fTareaSubmitted && fTareaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.categoria.$invalid && fTareaForm.categoria.$pristine && fTareaSubmitted}">
+                    <td width="400">
+                        <label for="fTarea_categoria">Categoría</label>:&nbsp;
+                    </td>
+                    <td>
+                        <select id="fTarea_categoria" ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Categoría.</p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}">
+                    <td width="400">
+                        <label for="fTarea_peso">
+                            Peso
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.iniciada.$invalid && fTareaForm.iniciada.$pristine && fTareaSubmitted}">
+                    <td width="400">
+                        <label for="fTarea_iniciada">
+                            Iniciada:
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fTarea_iniciado" type="checkbox" name="iniciado" ng-model="fTarea.iniciado" placeholder="Iniciada"/><p ng-show="fTareaSubmitted && fTareaForm.iniciado.$invalid" class="help-block">Error en campo Iniciada.</p>
+                    </td>
+                </div>
+            </tr>
+        </table>
+        <table class="table" ng-show="fTarea.iniciado">
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.fechini.$invalid && fTareaForm.fechini.$pristine && fTareaSubmitted}" ng-show="fTarea.iniciado">
+                    <td width="400">
+                        <label for="fTarea_fechini">
+                            Fecha de Inicio
+                        </label>
+                    </td>
+                    <td>
+                       <input id="fTarea_fechini" type="text" name="fechini" class="form-control" ng-model="fTarea.fechaInicio" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p>
+                    </td>
+                </div>
+            </tr>
+        </table>
+        <table class="table" ng-show="fTarea.iniciado ">
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.completed.$invalid && fTareaForm.completed.$pristine && fTareaSubmitted}" ng-show="fTarea.iniciado">
+                    <td width="400">
+                        <label for="fTarea_completed">
+                            Completada:
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fTarea_completed" type="checkbox" name="completed" ng-model="fTarea.completed" placeholder="Culminada"/><p ng-show="fTareaSubmitted && fTareaForm.culminada.$invalid" class="help-block">Error en campo Culminada.</p>
+                    </td>
+                </div>
+            </tr>
+        </table>
+        <table class="table" ng-show="fTarea.completed && fTarea.iniciado ">
+            <tr >
+                <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.fechaFin.$invalid && fTareaForm.fechaFin.$pristine && fTareaSubmitted}" >
+                    <td width="400">
+                        <label for="fTarea_fechaFin">Fecha de Culminación</label>
+                    </td>
+                    <td>
+                        <input id="fTarea_fechaFin" type="text" name="fechaFin" class="form-control" ng-model="fTarea.fechaFin" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechaFin.$invalid" class="help-block">Error en campo Fecha de culminación.</p>
+                    </td>
+                </div>
+            </tr>
+        </table>           
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear
         </button>
