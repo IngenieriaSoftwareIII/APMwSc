@@ -460,13 +460,24 @@ def VHistoria():
     startingDate_object_new = datetime.strftime(history.UH_fechaInicio, '%d/%m/%Y')
     finishingDate_object_new = datetime.strftime(history.UH_fechaFin, '%d/%m/%Y')
 
-    res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog,
-                        'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion,
-                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale,
-                        'iniciado': history.UH_iniciado, 'fechaInicio': startingDate_object_new,
-                        'completed': history.UH_completed, 'fechaFin': finishingDate_object_new}
+    res['fHistoria'] = {'super':history.UH_idSuperHistory 
+                       , 'idHistoria':idHistory
+                       , 'idPila':history.UH_idBacklog
+                       , 'codigo':history.UH_codeUserHistory
+                       , 'actores':actors
+                       , 'accion':history.UH_idAccion
+                       , 'objetivos':objectives
+                       , 'tipo':history.UH_accionType
+                       , 'prioridad':history.UH_scale
+                       , 'iniciado': history.UH_iniciado
+                       , 'fechaInicio': startingDate_object_new
+                       , 'completed': history.UH_completed
+                       , 'fechaFin': finishingDate_object_new}
 
-    res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
+    res['data2'] = [ { 'idTarea'       : tarea.HW_idTask
+                     , 'descripcion'   : tarea.HW_description
+                     , 'estimatedTime' : tarea.HW_estimatedTime
+                     } for tarea in taskList]
 
     res['pruebas'] = [{'idTarea':test.AT_idAT,
                         'descripcion':test.AT_description,

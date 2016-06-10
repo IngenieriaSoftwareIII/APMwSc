@@ -125,20 +125,26 @@ def AElimTarea():
 def AElimDoc():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Documento borrado']}, {'label':'/VHistoria', 'msg':['No se pudo eliminar el documento']}, ]
+    results = [ { 'label' : '/VHistoria'
+                , 'msg'   : ['Documento borrado']
+                }
+              , { 'label' : '/VHistoria'
+                , 'msg'   : ['No se pudo eliminar el documento']
+                } 
+              ]
     res     = results[1]
 
     # Obtenemos los parámetros
-    docName= request.args.get('name')
-    taskId= request.args.get('tarea')
-    docsDir=basedir+"/TaskDocuments"
-    dirName=docsDir+"/"+taskId
+    docName = request.args.get('name')
+    taskId  = request.args.get('tarea')
+    docsDir = basedir + "/TaskDocuments"
+    dirName = docsDir + "/" + taskId
 
     # Eliminamos la tarea
     oTarea     = task()
     delete     = oTarea.deleteDoc(taskId,docName)
-    if os.path.exists(dirName+"/"+docName):
-        os.remove(dirName+"/"+docName)
+    if os.path.exists(dirName + "/" + docName):
+        os.remove(dirName + "/" + docName)
     if delete:
         res = results[0]
 
@@ -157,22 +163,27 @@ def AElimDoc():
 def AModifTarea():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Tarea modificada']}, {'label':'/VHistoria', 'msg':['Error al modificar tarea']}, ]
+    results =   [ { 'label' : '/VHistoria'
+                  , 'msg'   : ['Tarea modificada']
+                  }
+                , { 'label' : '/VHistoria'
+                  , 'msg'   : ['Error al modificar tarea']
+                  }
+                ]
     res     = results[1]
 
     # Obtenemos los parámetros
-    idHistoria  = int(session['idHistoria'])
-    new_description = params['descripcion']
-    idTarea         = params['idTarea']
-    new_idCategoria = params['categoria']
-    new_taskPeso    = params['peso']
-    new_miembro = params['miembro']
-
-    started     = params['iniciado']
-    startingDate= params['fechaInicio']
-
-    completed     = params['completed']
-    finishingDate = params['fechaFin']
+    idHistoria          = int(session['idHistoria'])
+    new_description     = params['descripcion']
+    idTarea             = params['idTarea'    ]
+    new_idCategoria     = params['categoria'  ]
+    new_taskPeso        = params['peso'       ]
+    new_estimatedTime   = params['tiempo'     ]
+    new_miembro         = params['miembro'    ]
+    started             = params['iniciado'   ]
+    startingDate        = params['fechaInicio']
+    completed           = params['completed'  ]
+    finishingDate       = params['fechaFin'   ]
 
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
@@ -185,10 +196,20 @@ def AModifTarea():
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
-
+    if new_estimatedTime != int :
+        new_estimatedTime = oTarea.HW_estimatedTime
     # Modificamos la tarea
     if startingDate_object.date() <= finishingDate_object.date():
-        modify = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso,started,startingDate_object,completed,finishingDate_object)
+        modify = oTarea.updateTask( result.HW_description
+                                  , new_description
+                                  , new_idCategoria
+                                  , new_taskPeso
+                                  , new_estimatedTime
+                                  , started
+                                  , startingDate_object
+                                  , completed
+                                  , finishingDate_object
+                                  )
     else:
         modify = None
         res = results[1]
@@ -215,7 +236,13 @@ def AModifTarea():
 def ACompletarTarea():
     params  = request.get_json()
     idTarea    = request.args.get('idTarea')
-    results = [{'label':'/VTarea/'+idTarea, 'msg':['La tarea fue marcada como completada']}, {'label':'/VTarea/'+idTarea, 'msg':['Error al modificar tarea']}, ]
+    results = [ { 'label' : '/VTarea/' + idTarea
+                , 'msg'   : ['La tarea fue marcada como completada']
+                }
+              , { 'label' : '/VTarea/' + idTarea
+                , 'msg'   : ['Error al modificar tarea']
+                }
+              ]
     res     = results[1]
 
     # Obtenemos el id del Producto.
@@ -233,7 +260,13 @@ def ACompletarTarea():
 def AIncompletarTarea():
     params  = request.get_json()
     idTarea    = request.args.get('idTarea')
-    results = [{'label':'/VTarea/'+idTarea, 'msg':['La tarea fue marcada como incompleta']}, {'label':'/VTarea/'+idTarea, 'msg':['Error al modificar tarea']}, ]
+    results = [ { 'label' : '/VTarea/' + idTarea
+                , 'msg'   : ['La tarea fue marcada como incompleta']
+                }
+              , { 'label' : '/VTarea/' + idTarea
+                , 'msg'   : ['Error al modificar tarea']
+                }
+              ]
     res     = results[1]
 
     # Obtenemos el id del Producto.
@@ -270,13 +303,13 @@ def VCrearTarea():
     res['codHistoria']    = hist[0].UH_codeUserHistory
 
     # Obtenemos una lista con los datos asociados a las categorías
-    cateList  = clsCategory.query.all()
+    cateList    = clsCategory.query.all()
 
-    idTarea = request.args.get('idTarea')
-    result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
-    cateList     = clsCategory.query.all()
-    oTeam = team()
-    found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+    idTarea     = request.args.get('idTarea')
+    result      = clsTask.query.filter_by(HW_idTask = idTarea).first()
+    cateList    = clsCategory.query.all()
+    oTeam       = team()
+    found       = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
     miembroList = oTeam.getTeam(found.UH_idBacklog)
 
     # Mostramos los datos en la vista
@@ -287,16 +320,25 @@ def VCrearTarea():
     decorated = [(tup[2], tup) for tup in ListaCompleta]
     decorated.sort()
 
-    res['fTarea_opcionesCategoria'] = [
-     {'key':cat[1][0] ,'value':cat[1][1]+" ("+str(cat[1][2])+")",'peso':cat[1][2]} for cat in decorated]
+    res['fTarea_opcionesCategoria'] = [ { 'key':cat[1][0]
+                                        , 'value':cat[1][1] + " (" + str(cat[1][2]) + ")"
+                                        , 'peso':cat[1][2]
+                                        } for cat in decorated
+                                      ]
 
-    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
-      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
+    res['fTarea_opcionesMiembro'] = [ { 'key'   : -1
+                                      , 'value' : 'Sin asignacion'
+                                      }
+                                    ] + [ 
+                                      { 'key'   : miembro.EQ_idEquipo 
+                                      , 'value' : miembro.EQ_username
+                                      } for miembro in miembroList
+                                    ]
 
-    res['fTarea'] = {'idHistoria':idHistory}
-
-    session['idHistoria'] = idHistory
+    res['fTarea']         = {'idHistoria' : idHistory}
     res['idHistoria']     = idHistory
+    session['idHistoria'] = idHistory
+    
 
     return json.dumps(res)
 
@@ -306,28 +348,22 @@ def VTarea():
     #GET parameter
 
     # Obtenemos el id de la historia y de la tarea
-    idTarea    = int(request.args['idTarea'])
-    idHistoria    = int(request.args['idHistoria'])
+    idTarea     = int(request.args['idTarea'])
+    idHistoria  = int(request.args['idHistoria'])
 
-    found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistoria).first()
+    found       = clsUserHistory.query.filter_by(UH_idUserHistory = idHistoria).first()
     codHistoria = found.UH_codeUserHistory
 
     res = {}
     if "actor" in session:
-        res['actor']=session['actor']
+        res['actor'] = session['actor']
 
-    idTarea = request.args.get('idTarea')
-    oTarea = task()
-    result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
-    categoryList     = clsCategory.query.all()
-    oTeam = team()
-    miembroList = oTeam.getTeam(found.UH_idBacklog)
-
-
-    # if result.HW_completed:
-    #     estado = 'completa'
-    # else:
-    #     estado = 'incompleta'
+    idTarea         = request.args.get('idTarea')
+    oTarea          = task()
+    result          = clsTask.query.filter_by(HW_idTask = idTarea).first()
+    categoryList    = clsCategory.query.all()
+    oTeam           = team()
+    miembroList     = oTeam.getTeam(found.UH_idBacklog)
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -336,40 +372,53 @@ def VTarea():
     res['usuario']      = session['usuario']
     res['codHistoria']  = codHistoria
 
-    res['fTarea_opcionesCategoria'] = [
-      {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
+    res['fTarea_opcionesCategoria'] = [ { 'key'   : cat.C_idCategory
+                                        , 'value' : cat.C_nameCate + " (" + str(cat.C_weight) + ")"
+                                        , 'peso'  : result.HW_weight
+                                        } for cat in categoryList
+                                      ]
 
-    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
-      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
+    res['fTarea_opcionesMiembro'] = [ { 'key'   : -1
+                                      , 'value' : 'Sin asignacion'
+                                      }
+                                    ] + [ 
+                                      { 'key'   : miembro.EQ_idEquipo 
+                                      , 'value' : miembro.EQ_username
+                                      } for miembro in miembroList
+                                    ]
 
-    startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
-    finishingDate_object_new = datetime.strftime(result.HW_fechaFin, '%d/%m/%Y')
+    startingDate_object_new  = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
+    finishingDate_object_new = datetime.strftime(result.HW_fechaFin,    '%d/%m/%Y')
 
-    res['fTarea'] = {'idHistoria':idHistoria,
-                    'idTarea': idTarea,
-                    'descripcion': result.HW_description,
-                    'categoria': result.HW_idCategory,
-                    'peso':result.HW_weight,
-                    'miembro': result.HW_idEquipo,
-                    #'estado': estado,
-                    'iniciado': result.HW_iniciado,
-                    'fechaInicio': startingDate_object_new,
-                    'completed': result.HW_completed,
-                    'fechaFin': finishingDate_object_new }
+    res['fTarea'] = { 'idHistoria'  : idHistoria
+                    , 'idTarea'     : idTarea
+                    , 'descripcion' : result.HW_description
+                    , 'categoria'   : result.HW_idCategory
+                    , 'peso'        : result.HW_weight
+                    , 'miembro'     : result.HW_idEquipo
+                    , 'tiempo'      : result.HW_estimatedTime
+                    , 'iniciado'    : result.HW_iniciado
+                    , 'fechaInicio' : startingDate_object_new
+                    , 'completed'   : result.HW_completed
+                    , 'fechaFin'    : finishingDate_object_new 
+                    }
 
-    session['idTarea'] = idTarea
-    res['idTarea']     = idTarea
-    res['idHistoria']  = idHistoria
+    session['idTarea']    = idTarea
+    res    ['idTarea']    = idTarea
+    res    ['idHistoria'] = idHistoria
 
     documentos = taskDocs_by_taskId(idTarea)
     if documentos is None:
         print("documentos esta vacio")
-        res = {'msg':'No hay documentos para adjuntos a esta tarea'}
+        res = {'msg' : 'No hay documentos para adjuntos a esta tarea'}
     else:
         docsJson = []
         for documento in documentos:
-            docsJson.append({'name': documento.getName(), 'descripcion': documento.getDescription(), 'url':'TaskDocuments/'+idTarea+'/'+documento.getName()})
-        res['documentos']=docsJson
+            docsJson.append( { 'name'        : documento.getName()
+                             , 'descripcion' : documento.getDescription()
+                             , 'url'         : 'TaskDocuments/' + idTarea + '/' + documento.getName()
+                             })
+        res['documentos'] = docsJson
 
     return json.dumps(res)
 
