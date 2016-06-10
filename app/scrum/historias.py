@@ -554,7 +554,7 @@ def VHistorias():
     res['data0']      = [{'idHistoria':hist['idHistory'],
                           'prioridad' :hist['priority'],
                           'peso'      :oTask.lookup(pesos,hist['idHistory']),
-                          'enunciado' :'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']}for hist in historiesSortedByPriority]
+                          'enunciado' :'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']}for hist in historiesSortedByPriority]
     session['idPila'] = idPila
     res['idPila']     = idPila
 

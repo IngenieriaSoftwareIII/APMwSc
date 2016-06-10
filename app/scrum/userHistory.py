@@ -381,7 +381,7 @@ class userHistory(object):
                 
                     # Obtenemos el tipo de accion de la historia.
                     option    = foundHistory.UH_accionType
-                    historyDict['accions'] = ' ' + options[option] + str(foundAccion[0].AC_accionDescription).lower() + ' ' 
+                    historyDict['actions'] = ' ' + options[option] + str(foundAccion[0].AC_accionDescription).lower() + ' ' 
             
                     # Obtenemos los id de los objetivos que componen la historia.
                     result  = clsObjectivesUserHistory.query.filter_by(OUH_idUserHistory = idUserHistory)

@@ -11,7 +11,7 @@ def ACrearDocumento():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     if request.method == 'POST':
-        introduccion      = params['introduccion']
+        introduccion  = params['introduccion']
         justificacion = params['justificacion']
         print(introduccion)
         print(justificacion)

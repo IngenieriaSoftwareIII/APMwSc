@@ -148,8 +148,8 @@ def VProductos():
 
     # Obtenemos la lista de productos
     oBacklog    = backlog() 
-    productList = oBacklog.getAllProducts()
-    
+    productList = oBacklog.getAllProducts()   
+
     res['data0'] = [{'idPila':prod.BL_idBacklog,'nombre':prod.BL_name, 'descripcion': prod.BL_description, 'prioridad': prod.BL_scaleType}for prod in productList]
 
     return json.dumps(res)
