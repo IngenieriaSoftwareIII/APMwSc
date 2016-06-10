@@ -196,8 +196,6 @@ def AModifTarea():
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
-    if new_estimatedTime != int :
-        new_estimatedTime = oTarea.HW_estimatedTime
     # Modificamos la tarea
     if startingDate_object.date() <= finishingDate_object.date():
         modify = oTarea.updateTask( result.HW_description
