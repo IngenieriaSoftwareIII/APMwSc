@@ -11,7 +11,11 @@ def ACrearDocumento():
     params = request.get_json()
     results = [{'label':'/VCrearDocumento', 'msg':['Error al crear el Documento']}, {'label':'/VProducto', 'msg':['Documento creado exitosamente']}, ]
     res = results[0]
+
+    idPila  = int(session['idPila'])
+
     #Action code goes here, res should be a list with a label and a message
+
     if request.method == 'POST':
         introduccion   = params['introduccion']
         proposito      = params['proposito']
@@ -22,7 +26,7 @@ def ACrearDocumento():
         valores        = params['valores']
 
         pathDocument = "./static/temp/"
-        result = generateDocument(1,1,pathDocument)
+        result = generateDocument(idPila,pathDocument)
 
     # Cambiar result dependiendo del resultado
     res = results[0]
@@ -30,7 +34,6 @@ def ACrearDocumento():
     if result:
         res = results[1]
 
-    idPila  = int(session['idPila'])
     res['label'] = res['label'] + '/' + str(idPila)
     if "actor" in res:
         if res['actor'] is None:

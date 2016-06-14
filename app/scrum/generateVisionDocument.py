@@ -137,22 +137,52 @@ stylesTable1 = [('ALIGN',(0,0),(-1,-1),'RIGHT'),
                 ('INNERGRID',(0,0),(-1,-1),1,black),
                 ('BACKGROUND',(0,0),(-1,0),lightgrey)]
 
+#Para los encabezados de las tablas.
 stylesTable2 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('VALIGN', (0,0),(-1,-1),'TOP'),
-                ('BACKGROUND',(0,0),(0,0),lightgrey)]
+                ('BACKGROUND',(0,0),(-1,-1),lightgrey),
+                ('GRID',(0,0),(-1,-1),1.5,black),
+                ('BOX',(0,0),(-1,-1),1.5,black),]
 
-stylesTable3 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
-                ('VALIGN', (0,0),(-1,-1),'TOP'),
-                ('BOX',(0,0),(-1,-1),1,black),
-                ('GRID',(0,0),(1,2),1,lightgrey),
-                ('GRID',(2,3),(3,3),1,black),
-                ('BACKGROUND',(0,0),(0,0),lightgrey)]
+#Para las epicas.
+stylesTable3 = [('ALIGN',(0,0),(-1,-1),'LEFT'),    
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEABOVE',(0,0),(-1,0),1.5,black),
+                ('LINEBEFORE',(0,0),(0,0),1.5,black),
+                ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
+                ('GRID',(0,0),(-1,-1),0.8,black)
+                ]
+
+#Para las historias que son parte de una epica.
+stylesTable4 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEBEFORE',(0,0),(0,0),1.5,black),
+                ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
+                ('GRID',(0,0),(-1,-1),0.8,black)
+                ]
+
+#Para la ultima historia que es parte de una epica.
+stylesTable5 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEBEFORE',(0,0),(0,0),1.5,black),
+                ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
+                ('LINEBELOW',(0,0),(-1,0),5,black),
+                ('GRID',(0,0),(-1,-1),0.8,black)
+                ]
+
+#Para las historias de usuario que no son parte de una epica.
+stylesTable6 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('BOX',(0,0),(-1,-1),1.5,black),
+                ('GRID',(0,0),(-1,-1),0.8,black)
+                ]
+
 
 
 #----------------------- Generar Documento Vision -----------------------------
 #==============================================================================
 
-def generateDocument(idProduct,idHistory,path):
+def generateDocument(idProduct,path):
 
     width, height = letter #Tipo de hoja del documento.
     documentName  = path + "Documento-Vision.pdf" #Ruta donde se creara el documento. 
@@ -190,7 +220,7 @@ def generateDocument(idProduct,idHistory,path):
             canvas.drawString(width - 180, 1 * cm, "Página %d" %document.page)
         canvas.restoreState()
 
-    #Importamos las clases a usar.
+    #------------------ Clases a usar -----------------------------------------
     oBacklog     = backlog()
     oActor       = role()
     oAccion      = accions()
@@ -201,15 +231,14 @@ def generateDocument(idProduct,idHistory,path):
     oObjUserHist = objectivesUserHistory()
 
 
-    #------------------ Datos del proyecto --------------------------------
-
+    #------------------ Datos del proyecto ------------------------------------
     result = oBacklog.findIdProduct(idProduct)
     projectName        = result.BL_name
     projectDescription = result.BL_description
     projectScaleType   = result.BL_scaleType
 
 
-    #-------------- Datos de las historias de usuario ---------------------
+    #-------------- Datos de las historias de usuario -------------------------
 
     #Obtenemos las historias asociadas al producto.
     userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idProduct)
@@ -243,9 +272,10 @@ def generateDocument(idProduct,idHistory,path):
         for hist in userHistories:
             hist['priority'] = priorities[hist['priority']]
 
-    #------------------ Personas y roles del proyecto ---------------------
 
-    #------------------ Descripcion de la metodologia ---------------------
+    #------------------ Personas y roles del proyecto -------------------------
+
+    #------------------ Descripcion de la metodologia -------------------------
     section1      = "Descripción de la metodología"
     introduction  = "Este documento describe la implementación del método de desarrollo de software scrum para la gerencia del desarrollo el proyecto APMwSc."
     porpose       = ""       
@@ -304,30 +334,32 @@ def generateDocument(idProduct,idHistory,path):
     story.append(Spacer(0,10))
     story.append(Paragraph("Pila del producto", styles['content'])) 
 
+    #Cabecera de la tabla.
     t1 = Paragraph("ID", styles['subtittle'])
     t2 = Paragraph("Prioridad", styles['subtittle'])
     t3 = Paragraph("Épicas e Historias de Usuario", styles['subtittle'])
 
     tam_colums       = [2*cm,2*cm,12*cm]
     dataTableHist    = [[t1,t2,t3]]
-    t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable3,hAlign='CENTER')
+    t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable2,hAlign='CENTER')
     story.append(t_user_histories)
 
     tam_colums1 = [2*cm,14*cm]
 
+    #Mostramos las epicas.
     for e in epics:
         #Construimos el enunciado.
         statement = "En tanto" + e['actors'] + e['actions'] + "para" + e['objectives']
 
-        n = len(statement) // 78
-		   
+        n = len(statement) // 75
+
         #Establecemos saltos de linea para que el contenido no se laga de la tabla.
         for i in range(n,0,-1):
-            for j in range(n*78,0,-1):
+            for j in range(i*75,-1,-1):
+                print(j)
                 if statement[j] == " ":
-                    statement = statement[:j] + "\n" + statement[j:] 
+                    statement = statement[:j] + "\n" + statement[j+1:] 
                     break
-                if j == (n-1)*78: statement = statement[:n*78] + "\n" + statement[n*78:]
 
         dataTableHist    = [[e['code'],statement]]
         t_user_histories = Table(dataTableHist,tam_colums1,style=stylesTable3,hAlign='CENTER')
@@ -337,8 +369,10 @@ def generateDocument(idProduct,idHistory,path):
         epics.remove(e)
 
 
-	    #Obtenemos los hijos de la epica y los mostramos.
+	    #Obtenemos los hijos de la epica y los mostramos asociados a la epica.
         succesors = oUserHistory.succesors(e['idHistory'])
+
+        cantSuc = len(succesors)
 		
         for h in succesors:
             result  = oUserHistory.transformUserHistory(h)
@@ -351,42 +385,42 @@ def generateDocument(idProduct,idHistory,path):
             #Construimos el enunciado.
             statement = "En tanto" + result['actors'] + result['actions'] + "para" + result['objectives']
 
-            n = len(statement) // 68
+            n = len(statement) // 65
                        
             #Establecemos saltos de linea para que el contenido no se salga de la tabla.
             for i in range(n,0,-1):
-                
-                for j in range(i*68,0,-1):
-                    print(i,j)
+                for j in range(i*65,-1,-1):
                     if statement[j] == " ":
-                       
-                    #    print(i*68,statement[:j] + "\n")
-                    #    statement = statement[:j] + "\n" + statement[j:] 
-                        #print(statement + "\n")
-                        break
-            print("\n")
+                       statement = statement[:j] + "\n" + statement[j+1:]
+                       break
 
+            cantSuc -= 1
+ 
             dataTableHist    = [[result['code'], result['priority'],statement]]
-            t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable3,hAlign='CENTER')
+
+            if cantSuc != 1:
+                t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable4,hAlign='CENTER')
+            else:
+                t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable5,hAlign='CENTER')
             story.append(t_user_histories)
             userHistories.remove(result)
   
+    #Mostramos las historias de usuario que no son parte de una epica.
     for hist in userHistories:
         #Construimos el enunciado.
         statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
 
-        n = len(statement) // 78
+        n = len(statement) // 75
                
         #Establecemos saltos de linea para que el contenido no se laga de la tabla.
         for i in range(n,0,-1):
-            for j in range(n*78,0,-1):
+            for j in range(i*75,-1,-1):
                 if statement[j] == " ":
-                    statement = statement[:j] + "\n" + statement[j:] 
+                    statement = statement[:j] + "\n" + statement[j+1:] 
                     break
-                if j == (n-1)*78: statement = statement[:n*78] + "\n" + statement[n*78:] 
 
         dataTableHist    = [[hist['code'], hist['priority'],statement]]
-        t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable3,hAlign='CENTER')
+        t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable6,hAlign='CENTER')
         story.append(t_user_histories)
 
 
