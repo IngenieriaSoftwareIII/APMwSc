@@ -1,4 +1,6 @@
 from flask import request, session, Blueprint, json
+from generateVisionDocument import *
+
 
 documento = Blueprint('documento', __name__)
 
@@ -11,17 +13,23 @@ def ACrearDocumento():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     if request.method == 'POST':
-        introduccion  = params['introduccion']
-        justificacion = params['justificacion']
-        print(introduccion)
-        print(justificacion)
+        introduccion   = params['introduccion']
+        proposito      = params['proposito']
+        motivacion     = params['motivacion']
+        estado         = params['estado']
+        alcance        = params['alcance']
+        fundamentacion = params['fundamentacion']
+        valores        = params['valores']
+
+        pathDocument = "./static/temp/"
+        result = generateDocument(1,1,pathDocument)
 
     # Cambiar result dependiendo del resultado
     res = results[0]
-    result = True
+
     if result:
         res = results[1]
-    # Paja para q funcione
+
     idPila  = int(session['idPila'])
     res['label'] = res['label'] + '/' + str(idPila)
     if "actor" in res:
