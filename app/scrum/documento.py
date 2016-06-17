@@ -1,6 +1,6 @@
 from flask import request, session, Blueprint, json
 from generateVisionDocument import *
-
+from visionDocument import *
 
 documento = Blueprint('documento', __name__)
 
@@ -25,12 +25,18 @@ def ACrearDocumento():
         fundamentacion = params['fundamentacion']
         valores        = params['valores']
 
+        # Guardamos los datos en la base de datos
+        oVisionDoc = visionDocument()
+        if oVisionDoc.searchVisionDocument(idPila):
+            oVisionDoc.updateVisionDocument(idPila,introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores)
+        else:
+            oVisionDoc.insertVisionDocument(idPila,introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores)
+
+        # Generamos el PDF
         pathDocument = "./static/temp/"
         result = generateDocument(idPila,pathDocument)
 
     # Cambiar result dependiendo del resultado
-    res = results[0]
-
     if result:
         res = results[1]
 
@@ -65,8 +71,22 @@ def VCrearDocumento():
       return json.dumps(res)
     res['usuario'] = session['usuario']
     res['fDocumento'] = {'idPila':idPila}
-
     res['idPila'] = idPila
+
+    # Obtenemos la informacion almacenada en la base de datos
+    oVisionDoc = visionDocument()
+    visionDoc = oVisionDoc.searchVisionDocument(idPila)
+
+    if visionDoc:
+        res['fDocumento'] = {
+            'introduccion': visionDoc.VD_introduccion,
+            'proposito': visionDoc.VD_proposito,
+            'motivacion': visionDoc.VD_motivacion,
+            'estado': visionDoc.VD_estado,
+            'alcance': visionDoc.VD_alcance,
+            'fundamentacion': visionDoc.VD_fundamentacion,
+            'valores': visionDoc.VD_valores
+        }
 
     #Action code ends here
     return json.dumps(res)

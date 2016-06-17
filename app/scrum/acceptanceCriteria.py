@@ -20,7 +20,7 @@ class acceptanceCriteria(object):
                 found = clsAcceptanceCriteria.query.filter_by(HAC_idAcceptanceCriteria=idHAC).first()
             return found
 
-    def insertAcceptanceCriteria(self,idUserHistory,description):
+    def insertAcceptanceCriteria(self,idUserHistory,description, enunciado):
         '''Permite insertar un nuevo criterio de aceptacion'''
 
         checkTypeidUserHistory  = type(idUserHistory)   == int
@@ -40,7 +40,7 @@ class acceptanceCriteria(object):
                     if elem.HAC_description == description:
                         return False
 
-                newHAC = clsAcceptanceCriteria(idUserHistory,description)
+                newHAC = clsAcceptanceCriteria(idUserHistory,description, enunciado)
                 db.session.add(newHAC)
                 db.session.commit()
                 return True
@@ -62,7 +62,7 @@ class acceptanceCriteria(object):
 
         return False
 
-    def modifyAcceptanceCriteria(self,idHAC,description):
+    def modifyAcceptanceCriteria(self,idHAC,description, enunciado):
         '''Permite modificar un nuevo criterio de aceptacion'''
         checkTypeidHAC = type(idHAC) == int
 
@@ -77,6 +77,7 @@ class acceptanceCriteria(object):
                     return False
                 if found != [] and hasattr(found, 'HAC_description'):
                     found.HAC_description = description
+                    found.HAC_enunciado   = enunciado
                     db.session.commit()
                     return True
         return False

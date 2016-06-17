@@ -89,14 +89,14 @@ class role(object):
     def updateActor(self, nameActor, newNameActor, newDescription,idBacklog):
         '''Permite modificar un nombre de la clase actor'''
     
-        checkTypeName        = type(nameActor) == str
-        checkTypeNewActor    = type(newNameActor) == str
+        checkTypeName        = type(nameActor)      == str
+        checkTypeNewActor    = type(newNameActor)   == str
         checkTypeDescription = type(newDescription) == str
-        checkTypeIdBacklog   = type(idBacklog) == int
+        checkTypeIdBacklog   = type(idBacklog)      == int
     
         if checkTypeName and checkTypeNewActor and checkTypeDescription and checkTypeIdBacklog:
-            checkLongnameActor      = CONST_MIN_NAME_ACTOR <= len(nameActor) <= CONST_MAX_NAME_ACTOR
-            checkLongNewnameActor   = CONST_MIN_NAME_ACTOR <= len(newNameActor) <= CONST_MAX_NAME_ACTOR
+            checkLongnameActor      = CONST_MIN_NAME_ACTOR        <= len(nameActor)      <= CONST_MAX_NAME_ACTOR
+            checkLongNewnameActor   = CONST_MIN_NAME_ACTOR        <= len(newNameActor)   <= CONST_MAX_NAME_ACTOR
             checkLongNewDescription = CONST_MIN_ACTOR_DESCRIPTION <= len(newDescription) <= CONST_MAX_ACTOR_DESCRIPTION
             checkLongIdBacklog      = CONST_MIN_ID <= idBacklog 
             
