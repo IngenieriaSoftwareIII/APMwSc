@@ -35,6 +35,7 @@
             
             <input id="fTarea_idHistoria" type="hidden" name="idHistoria" ng-model="fTarea.idHistoria" />
             <input id="fTarea_idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" />
+<<<<<<< HEAD
             <tr>
                 <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.miembro.$invalid && fTareaForm.miembro.$pristine && fTareaSubmitted}">
                     <td width="40%">
@@ -124,6 +125,30 @@
                 </div>
             </tr>
             <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.Horas_Trabajadas.$invalid && fTareaForm.Horas_Trabajadas.$pristine && fTareaSubmitted}">
+                    <td width="40%">
+                        <label for="fTarea_Horas_Trabajadas">
+                            Tiempo Empleadoo (horas)
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fTarea_Horas_Trabajadas" 
+	                        name="Horas_Trabajadas" 
+	                        type="number" 
+	                        class="form-control" 
+	                        ng-model="fTarea.Horas_Trabajadas" 
+	                        ng-disabled = "actor!='desarrollador'"
+	                        placeholder="Horas Trabajas Reales"  
+	                        style       = 'width:80%;'
+	                        ng-minlength="1"/>
+                        <p ng-show="fTareaSubmitted && fTareaForm.tiempo.$invalid" class="help-block">
+                            Error en campo Tiempo Empleado.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
                 <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.iniciada.$invalid && fTareaForm.iniciada.$pristine && fTareaSubmitted}">
                     <td width="40%">
                         <label for="fTarea_iniciada">
@@ -176,7 +201,7 @@
                 </div>
             </tr>
         </table>
-        
+       
 
 
         <button type="submit" class="btn btn-perso btn-lg btn-block">

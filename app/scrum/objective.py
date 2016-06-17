@@ -165,7 +165,8 @@ class objective(object):
                 found = clsObjective.query.filter_by(O_descObjective = descObjective,O_idBacklog = idBacklog).all()
 
                 if found != []:  
-                    tupla = clsObjective.query.filter_by(O_descObjective = descObjective).first()   
+                    tupla = clsObjective.query.filter_by(O_descObjective = descObjective).first()  
+                    #idHistories = clsObjectivesUserHistory.query.filter_by(OUH_idObjective = idBacklog).all() 
                     db.session.delete(tupla)     
                     db.session.commit()
                     return True
