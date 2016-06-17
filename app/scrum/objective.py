@@ -19,7 +19,12 @@ arrayType = [True,False]
 class objective(object):
     '''Clase que permite manejar los objetivos de manera persistente'''
 
-    def insertObjective(self,descObjective, idBacklog,objFunc,objType):
+    def getAllObjectives(self,idBacklog):
+        '''Permite obtener todos los objetivos asociados a un producto.'''
+        return (clsObjective.query.filter_by(O_idBacklog = idBacklog).all())
+
+
+    def insertObjective(self,descObjective,idBacklog,objFunc,objType):
         '''Permite insertar un Objetivo'''
         
         checkObjType = objType in arrayType

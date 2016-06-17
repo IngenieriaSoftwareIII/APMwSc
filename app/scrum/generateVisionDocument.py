@@ -406,7 +406,6 @@ def generateDocument(idProduct,path):
         #Establecemos saltos de linea para que el contenido no se laga de la tabla.
         for i in range(n,0,-1):
             for j in range(i*75,-1,-1):
-                print(j)
                 if statement[j] == " ":
                     statement = statement[:j] + "\n" + statement[j+1:] 
                     break
@@ -485,7 +484,7 @@ def generateDocument(idProduct,path):
     t2 = Paragraph("Objetivo", styles['header'])
     t3 = Paragraph("ID Historia", styles['header'])
 
-    tam_colums   = [2*cm,12*cm,2*cm]
+    tam_colums   = [2*cm,11.5*cm,2.5*cm]
     dataTableObj = [[t1,t2,t3]]
     t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable0,hAlign='CENTER')
     story.append(t_user_obj)
@@ -505,11 +504,11 @@ def generateDocument(idProduct,path):
             idObj += 1
             objectivesListId.append(o)
 
-            n = len(desc) // 75
+            n = len(desc) // 70
                        
             #Establecemos saltos de linea para que el contenido no se salga de la tabla.
             for i in range(n,0,-1):
-                for j in range(i*75,-1,-1):
+                for j in range(i*70,-1,-1):
                     if desc[j] == " ":
                        desc = desc[:j] + "\n" + desc[j+1:]
                        break
@@ -519,30 +518,35 @@ def generateDocument(idProduct,path):
             story.append(t_user_obj)
 
     #Mostramos los objetivos transversales.
-    #objsList = oObjective.getAllObjectives(idProduct)
+    objsList = oObjective.getAllObjectives(idProduct)
 
-    #conj1 = set(objsList)
-    #conj2 = set(objectivesListId)
-    #conj  = conj1 - conj2
-    #remainObjects = list(conj)
+    #Obtenemos solo los ids
+    objsIdList = []
+    for o in objsList:
+        objsIdList.append(o.O_idObjective)
 
-    #for o in remainObjects:
-    #    obj  = oObjective.searchIdObjective(i)
-    #    desc = obj[0].O_descObjective + "."
-    #    idObj += 1
+    conj1 = set(objsIdList)
+    conj2 = set(objectivesListId)
+    conj  = conj1 - conj2
+    remainObjects = list(conj)
 
-    #    n = len(desc) // 75
+    for o in remainObjects:
+        obj  = oObjective.searchIdObjective(o)
+        desc = obj[0].O_descObjective + "."
+        idObj += 1
+
+        n = len(desc) // 70
                       
         #Establecemos saltos de linea para que el contenido no se salga de la tabla.
-    #    for i in range(n,0,-1):
-    #        for j in range(i*75,-1,-1):
-    #            if desc[j] == " ":
-    #                desc = desc[:j] + "\n" + desc[j+1:]
-    #                break
+        for i in range(n,0,-1):
+            for j in range(i*70,-1,-1):
+                if desc[j] == " ":
+                    desc = desc[:j] + "\n" + desc[j+1:]
+                    break
 
-    #        dataTableObj = [[idObj,desc,"Transversal"]]
-    #        t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
-    #        story.append(t_user_obj)
+        dataTableObj = [[idObj,desc,"Transversal"]]
+        t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
+        story.append(t_user_obj)
 
     story.append(PageBreak())
 
