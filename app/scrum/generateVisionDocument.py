@@ -10,6 +10,7 @@ import ast
 from uuid   import uuid4
 
 #Importaciones necesarias para extraer los datos de la base de datos.
+from user                  import *
 from backLog               import *
 from userHistory           import *
 from role                  import *
@@ -19,6 +20,8 @@ from objectivesUserHistory import *
 from actorsUserHistory     import *
 from task                  import *
 from precedence            import *
+from sprintClass           import * 
+from Team                  import *
 
 #Importaciones necesarias para dar formato al documento.
 from reportlab.pdfbase            import pdfmetrics
@@ -103,6 +106,12 @@ styles['subtittle'] = ParagraphStyle('subtittle',
     alignment = TA_LEFT,
     )
 
+styles['header'] = ParagraphStyle('subtittle',
+    parent=styles['default'],
+    fontName  = 'Arial Bold',
+    alignment = TA_CENTER,
+    )
+
 styles['tittlePage'] = ParagraphStyle('tittle',
     parent=styles['default'],
     fontName  = 'Arial Bold',
@@ -130,19 +139,25 @@ styles['lista'] = ParagraphStyle('lista',
 #----------------------------- Estilos Tabla ----------------------------------
 #==============================================================================
 
-#Definimos el estilo de la tabla
-stylesTable1 = [('ALIGN',(0,0),(-1,-1),'RIGHT'),
+#Para el encabezado de las tablas.
+stylesTable0 = [('ALIGN',(0,0),(-1,-1),'RIGHT'),
                 ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
                 ('BOX',(0,0),(-1,-1),1,black),
                 ('INNERGRID',(0,0),(-1,-1),1,black),
                 ('BACKGROUND',(0,0),(-1,0),lightgrey)]
 
-#Para los encabezados de las tablas.
+#Para el contenido de las tablas.
+stylesTable1 = [('ALIGN',(0,0),(-1,-1),'CENTER'),
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('BOX',(0,0),(-1,-1),1,black),
+                ('INNERGRID',(0,0),(-1,-1),1,black)]
+
+#Para el encabezado de la tabla de historias de usuario.
 stylesTable2 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('VALIGN', (0,0),(-1,-1),'TOP'),
                 ('BACKGROUND',(0,0),(-1,-1),lightgrey),
                 ('GRID',(0,0),(-1,-1),1.5,black),
-                ('BOX',(0,0),(-1,-1),1.5,black),]
+                ('BOX',(0,0),(-1,-1),1.5,black)]
 
 #Para las epicas.
 stylesTable3 = [('ALIGN',(0,0),(-1,-1),'LEFT'),    
@@ -150,16 +165,14 @@ stylesTable3 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('LINEABOVE',(0,0),(-1,0),1.5,black),
                 ('LINEBEFORE',(0,0),(0,0),1.5,black),
                 ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
-                ('GRID',(0,0),(-1,-1),0.8,black)
-                ]
+                ('GRID',(0,0),(-1,-1),0.8,black)]
 
 #Para las historias que son parte de una epica.
 stylesTable4 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
                 ('LINEBEFORE',(0,0),(0,0),1.5,black),
                 ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
-                ('GRID',(0,0),(-1,-1),0.8,black)
-                ]
+                ('GRID',(0,0),(-1,-1),0.8,black)]
 
 #Para la ultima historia que es parte de una epica.
 stylesTable5 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
@@ -167,16 +180,19 @@ stylesTable5 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('LINEBEFORE',(0,0),(0,0),1.5,black),
                 ('LINEAFTER',(-1,-1),(-1,-1),1.5,black),
                 ('LINEBELOW',(0,0),(-1,0),5,black),
-                ('GRID',(0,0),(-1,-1),0.8,black)
-                ]
+                ('GRID',(0,0),(-1,-1),0.8,black)]
 
 #Para las historias de usuario que no son parte de una epica.
 stylesTable6 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
                 ('BOX',(0,0),(-1,-1),1.5,black),
-                ('GRID',(0,0),(-1,-1),0.8,black)
-                ]
+                ('GRID',(0,0),(-1,-1),0.8,black)]
 
+#Para tabla con grid simple.
+stylesTable7 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('BOX',(0,0),(-1,-1),1,black),
+                ('GRID',(0,0),(-1,-1),1,black)]
 
 
 #----------------------- Generar Documento Vision -----------------------------
@@ -221,7 +237,10 @@ def generateDocument(idProduct,path):
         canvas.restoreState()
 
     #------------------ Clases a usar -----------------------------------------
+    oUser        = user() 
+    oTeam        = team()   
     oBacklog     = backlog()
+    oSprint      = sprints()
     oActor       = role()
     oAccion      = accions()
     oObjective   = objective()
@@ -274,6 +293,9 @@ def generateDocument(idProduct,path):
 
 
     #------------------ Personas y roles del proyecto -------------------------
+    usersList = oUser.getAllUsers()
+    teamList  = oTeam.getTeam(idProduct)
+
 
     #------------------ Descripcion de la metodologia -------------------------
     section1      = "Descripción de la metodología"
@@ -288,22 +310,19 @@ def generateDocument(idProduct,path):
     groundwork = ""
     teamworkValues = ""
 
-    #======================================================================
+    #==========================================================================
     
     currentDate  = "03/06/2016"
-    
 
-    steakholders = [["Aldrix Marfil","aldrixmarfil@gmail.com","Scrum Master"], ["Mónica Figuera","11-10328@usb.ve", "Product Owner"], ["Jonnathan Chiu", "ngjonnathan@gmail.com", "Team Member"]]
+    #-------------------- Construccion del Documento --------------------------
+    #==========================================================================
 
-    #-------------------- Construccion del Documento ----------------------
-    #======================================================================
-
-    #Portada
+    #----------------------------- Portada ------------------------------------
     story.append(Spacer(0,20))
     story.append(Paragraph(projectName + ": " + projectDescription, styles['tittlePage']))
     story.append(PageBreak())
 
-    #Introduccion
+    #-------------------------- Introduccion ----------------------------------
     story.append(Spacer(0,5))
     story.append(Paragraph(section1, styles['tittle']))
     story.append(Spacer(0,15))
@@ -311,33 +330,60 @@ def generateDocument(idProduct,path):
     story.append(Spacer(0,10))
     story.append(Paragraph(introduction, styles['content']))    
 
-    #Personas y Roles del proyecto.
+    #------------------- Personas y Roles del proyecto ------------------------
     story.append(PageBreak())
     story.append(Paragraph("2. Personas y roles del proyecto", styles['subtittle']))
     story.append(Spacer(0,10))
     
-    t1 = Paragraph("Persona", styles['subtittle'])
-    t2 = Paragraph("Contacto", styles['subtittle'])
-    t3 = Paragraph("Rol", styles['subtittle'])
+    #Cabecera de la tabla.
+    t1 = Paragraph("Persona", styles['header'])
+    t2 = Paragraph("Contacto", styles['header'])
+    t3 = Paragraph("Rol", styles['header'])
 
-    dataTable = [[t1,t2,t3],
-                 [steakholders[0][0],steakholders[1][1],steakholders[2][2]]]
-
-    tam_colums = [6*cm,6*cm,5*cm]
-    tam_rows   = [0.75*cm,0.75*cm]
-    t_roles_persons = Table(dataTable,tam_colums,tam_rows,style=stylesTable1,hAlign='CENTER')
+    tam_colums      = [6*cm,6*cm,4*cm]
+    dataTable       = [[t1,t2,t3]]
+    t_roles_persons = Table(dataTable,tam_colums,style=stylesTable0,hAlign='CENTER')
     story.append(t_roles_persons)
+
+    #Mostramos los actores
+    for u in usersList:
+        if u.U_idActor == 1:
+            dataTable = [[u.U_fullname,u.U_email,"Dueño del producto"]]
+            t_roles_persons = Table(dataTable,tam_colums,style=stylesTable1,hAlign='CENTER')
+            story.append(t_roles_persons)
+
+    for e in teamList:
+        u = oUser.searchUser(e.EQ_username)
+
+        if e.EQ_rol == "Scrum master":
+            dataTable = [[u[0].U_fullname,u[0].U_email,"Maestro Scrum"]]
+            t_roles_persons = Table(dataTable,tam_colums,style=stylesTable1,hAlign='CENTER')
+            story.append(t_roles_persons)
+
+    story.append(Spacer(0,20))
+    dataTable       = [[t1,t2,t3]]
+    t_roles_persons = Table(dataTable,tam_colums,style=stylesTable0,hAlign='CENTER')
+    story.append(t_roles_persons)
+
+    for e in teamList:
+        u = oUser.searchUser(e.EQ_username)
+
+        if e.EQ_rol == "Desarrollador":
+            dataTable = [[u[0].U_fullname,u[0].U_email,"Miembro del Equipo"]]
+            t_roles_persons = Table(dataTable,tam_colums,style=stylesTable1,hAlign='CENTER')
+            story.append(t_roles_persons)
+
     story.append(PageBreak())
 
-    #Tabla de historias de usuario.
+    #---------------------------- Pila del producto ---------------------------
     story.append(Paragraph("4. Artefactos", styles['subtittle']))
     story.append(Spacer(0,10))
     story.append(Paragraph("Pila del producto", styles['content'])) 
 
     #Cabecera de la tabla.
-    t1 = Paragraph("ID", styles['subtittle'])
-    t2 = Paragraph("Prioridad", styles['subtittle'])
-    t3 = Paragraph("Épicas e Historias de Usuario", styles['subtittle'])
+    t1 = Paragraph("ID", styles['header'])
+    t2 = Paragraph("Prioridad", styles['header'])
+    t3 = Paragraph("Épicas e Historias de Usuario", styles['header'])
 
     tam_colums       = [2*cm,2*cm,12*cm]
     dataTableHist    = [[t1,t2,t3]]
@@ -346,10 +392,14 @@ def generateDocument(idProduct,path):
 
     tam_colums1 = [2*cm,14*cm]
 
+    #Lista donde se almacenara el orden en que fueron mostradas las historias y epicas.
+    historiesListId = []
+
     #Mostramos las epicas.
     for e in epics:
         #Construimos el enunciado.
         statement = "En tanto" + e['actors'] + e['actions'] + "para" + e['objectives']
+        historiesListId.append(e['idHistory'])
 
         n = len(statement) // 75
 
@@ -384,6 +434,7 @@ def generateDocument(idProduct,path):
 
             #Construimos el enunciado.
             statement = "En tanto" + result['actors'] + result['actions'] + "para" + result['objectives']
+            historiesListId.append(result['idHistory'])
 
             n = len(statement) // 65
                        
@@ -409,6 +460,7 @@ def generateDocument(idProduct,path):
     for hist in userHistories:
         #Construimos el enunciado.
         statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
+        historiesListId.append(hist['idHistory'])
 
         n = len(statement) // 75
                
@@ -423,9 +475,115 @@ def generateDocument(idProduct,path):
         t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable6,hAlign='CENTER')
         story.append(t_user_histories)
 
+    story.append(PageBreak())
 
-	#--------------------------- Estructura Documento -----------------------------
-	#==============================================================================
+    #-------------------------------- Objetivos -------------------------------
+    story.append(Paragraph("4.2 Objetivos", styles['content'])) 
+
+    #Cabecera de la tabla.
+    t1 = Paragraph("ID", styles['header'])
+    t2 = Paragraph("Objetivo", styles['header'])
+    t3 = Paragraph("ID Historia", styles['header'])
+
+    tam_colums   = [2*cm,12*cm,2*cm]
+    dataTableObj = [[t1,t2,t3]]
+    t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable0,hAlign='CENTER')
+    story.append(t_user_obj)
+
+    #Mostramos los objetivos asociados a las historias de usuario.
+    idObj = 0
+    objectivesListId = []
+    for h in historiesListId:
+        hist = oUserHistory.searchIdUserHistory(h)
+        code = hist[0].UH_codeUserHistory
+
+        objs = oObjUserHist.idObjectivesAsociatedToUserHistory(h)
+
+        for o in objs:
+            obj  = oObjective.searchIdObjective(o)
+            desc = obj[0].O_descObjective + "."
+            idObj += 1
+            objectivesListId.append(o)
+
+            n = len(desc) // 75
+                       
+            #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+            for i in range(n,0,-1):
+                for j in range(i*75,-1,-1):
+                    if desc[j] == " ":
+                       desc = desc[:j] + "\n" + desc[j+1:]
+                       break
+
+            dataTableObj = [[idObj,desc,code]]
+            t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
+            story.append(t_user_obj)
+
+    #Mostramos los objetivos transversales.
+    #objsList = oObjective.getAllObjectives(idProduct)
+
+    #conj1 = set(objsList)
+    #conj2 = set(objectivesListId)
+    #conj  = conj1 - conj2
+    #remainObjects = list(conj)
+
+    #for o in remainObjects:
+    #    obj  = oObjective.searchIdObjective(i)
+    #    desc = obj[0].O_descObjective + "."
+    #    idObj += 1
+
+    #    n = len(desc) // 75
+                      
+        #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+    #    for i in range(n,0,-1):
+    #        for j in range(i*75,-1,-1):
+    #            if desc[j] == " ":
+    #                desc = desc[:j] + "\n" + desc[j+1:]
+    #                break
+
+    #        dataTableObj = [[idObj,desc,"Transversal"]]
+    #        t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
+    #        story.append(t_user_obj)
+
+    story.append(PageBreak())
+
+    #------------------------------ Pila del sprint ---------------------------
+    story.append(Paragraph("4.3 Pila del sprint", styles['content'])) 
+
+    #Cabecera de la tabla.
+    t1 = Paragraph("ID", styles['header'])
+    t2 = Paragraph("Historia de Usuario", styles['header'])
+    t3 = Paragraph("T/E", styles['header'])
+    t4 = Paragraph("Responsable", styles['header'])
+
+    sprintsList = oSprint.getAllSprintsAsociatedToProduct(idProduct)
+    for s in sprintsList:
+
+        tam_colums       = [2*cm,7.5*cm,1*cm,5.5*cm]
+        dataTableSprint  = [[t1,t2,t3,t4]]
+        t_user_sprints   = Table(dataTableSprint,tam_colums,style=stylesTable0,hAlign='CENTER')
+        story.append(t_user_sprints)
+        
+        tam_colums1       = [16*cm]
+        dataTableSprint  = [["Sprint " + s.S_numero]] 
+        t_user_sprints   = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
+        story.append(t_user_sprints)
+
+        userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
+
+        for uH in userHistoryList:
+            result    = oUserHistory.transformUserHistory(uH.UH_idUserHistory)
+            code      = uH.UH_codeUserHistory 
+            statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
+         
+            dataTableSprint = [[code,statement,"",""]]
+            t_user_sprints  = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
+            story.append(t_user_sprints)
+
+    story.append(PageBreak())
+
+
+	#--------------------------- Estructura Documento -------------------------
+	#==========================================================================
 
     #Frame que contendrá el contenido de una hoja.
     frame_page    = Frame(78, 50, width - 166, 697, id="page")

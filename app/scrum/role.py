@@ -21,6 +21,11 @@ class role(object):
         '''Permite saber si la tabla actor esta vacia'''
         aActor = clsActor.query.all()
         return (aActor == [])
+
+
+    def getAllRoles(self):
+        '''Permite obtener todos los roles'''
+        return (clsActor.query.all())
     
 
     def insertActor(self,nameActor,actordescription,idBacklog):

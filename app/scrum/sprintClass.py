@@ -21,6 +21,11 @@ MAX_SPRINT_NUMBER = 1000
 class sprints(object):
 	'''Clase que permite manejar los sprints de manera persistente'''
 
+	def getAllSprintsAsociatedToProduct(self,idBacklog):
+		'''Permite obtener todos los sprints asociados a un producto'''
+		checkTypeId          = type(idBacklog) == int
+		return (clsSprint.query.filter_by(S_idBacklog = idBacklog).all())
+
 	def insertSprint(self, sprintNumber, sprintDescription, idBacklog, fechini, fechfin, state): 
 		'''Permite insertar una Sprint asociado a un producto'''   
 		checkTypeDescription = type(sprintDescription) == str
