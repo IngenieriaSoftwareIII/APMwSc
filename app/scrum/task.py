@@ -128,7 +128,20 @@ class task(object):
         return oTask
 
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_estimatedTime, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin):
+    def updateTask  ( self
+                    , HW_description
+                    , newDescription
+                    , C_idCategory
+                    , HW_weight
+                    , HW_estimatedTime
+                    , HW_interaccion
+                    , HW_reglasNegocio  
+                    , HW_usoEntidades
+                    , HW_operacionesDB
+                    , HW_iniciado
+                    , HW_fechaInicio
+                    , HW_completed
+                    , HW_fechaFin):
         '''Permite actualizar la descripcion de una tarea'''
 
         typedescription    = (type(HW_description)  == str)
@@ -165,6 +178,11 @@ class task(object):
                         oTask.HW_fechaInicio    = HW_fechaInicio
                         oTask.HW_completed      = HW_completed
                         oTask.HW_fechaFin       = HW_fechaFin
+                        oTask.HW_interaccion    = HW_interaccion
+                        oTask.HW_reglasNegocio  = HW_reglasNegocio  
+                        oTask.HW_usoEntidades   = HW_usoEntidades
+                        oTask.HW_operacionesDB  = HW_operacionesDB
+
                         db.session.commit()
                         return True
         return False

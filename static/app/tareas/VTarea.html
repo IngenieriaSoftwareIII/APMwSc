@@ -82,7 +82,13 @@
                         </label>
                     </td>
                     <td>
-                        <select id="fTarea_categoria" style='width:80%;' ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Categoría.</p>
+                        <select id="fTarea_categoria" style='width:80%;' ng-model="fTarea.categoria"  
+                                ng-options="item.key as item.value for item in fTarea_opcionesCategoria">
+                            
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">
+                            Error en campo Categoría.
+                        </p>
                     </td>
                 </div>
             </tr>
@@ -94,7 +100,18 @@
                         </label>
                     </td>
                     <td>
-                        <input id="fTarea_peso" style='width:80%;' type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p>
+                        <input id          = "fTarea_peso" 
+                               style       = 'width:80%;' 
+                               type        = "number" 
+                               name        = "peso" 
+                               class       = "form-control" 
+                               ng-model    = "fTarea.peso" 
+                               placeholder = "Peso"  
+                               min         = ""/>
+
+                        <p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">
+                            Error en campo Peso.
+                        </p>
                     </td>
                 </div>
             </tr>
@@ -103,7 +120,7 @@
                      ng-class="{ 'has-error' :  fTareaForm.tiempo.$invalid  && fTareaSubmitted &&
                                                 fTareaForm.tiempo.$pristine }" >
                     <td width="40%">
-                        <label for="fTarea_peso">
+                        <label for="fTarea_tiempo">
                             Tiempo Estimado (horas)
                         </label>
                     </td>
@@ -119,6 +136,94 @@
                                min         = "1"/>
                         <p ng-show="fTareaSubmitted && fTareaForm.tiempo.$invalid" class="help-block">
                             Error en campo Tiempo Estimado.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaForm.interaccion.$invalid  && fTareaSubmitted &&
+                                                fTareaForm.interaccion.$pristine }" >
+                    <td width="40%">
+                        <label for="fTarea_interaccion">
+                            Interaccion:
+                        </label>
+                    </td>
+                    <td>
+                        <select id          = "fTarea_interaccion" 
+                                style       = 'width:80%;' 
+                                ng-model    = "fTarea.interaccion"  
+                                ng-options  = "item.key as item.value for item in fTarea_opcionesComplejidad"
+                                ng-disabled = "actor!='desarrollador'">
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.interaccion.$invalid" class="help-block">
+                            Error en campo Interaccion.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaForm.reglasNegocio.$invalid  && fTareaSubmitted &&
+                                                fTareaForm.reglasNegocio.$pristine }" >
+                    <td width="40%">
+                        <label for="fTarea_reglasNegocio">
+                            Reglas de Negocio:
+                        </label>
+                    </td>
+                    <td>
+                        <select id          = "fTarea_reglasNegocio" 
+                                style       = 'width:80%;'
+                                ng-model    = "fTarea.reglasNegocio"  
+                                ng-options  = "item.key as item.value for item in fTarea_opcionesComplejidad"
+                                ng-disabled = "actor!='desarrollador'">
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.reglasNegocio.$invalid" class="help-block">
+                            Error en campo Reglas de Negocio.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaForm.usoEntidades.$invalid  && fTareaSubmitted &&
+                                                fTareaForm.usoEntidades.$pristine }" >
+                    <td width="40%">
+                        <label for="fTarea_usoEntidades">
+                            Uso de Entidades:
+                        </label>
+                    </td>
+                    <td>
+                        <select id          = "fTarea_usoEntidades" 
+                                style       = 'width:80%;' 
+                                ng-model    = "fTarea.usoEntidades"  
+                                ng-options  = "item.key as item.value for item in fTarea_opcionesComplejidad"
+                                ng-disabled = "actor!='desarrollador'">
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.usoEntidades.$invalid" class="help-block">
+                            Error en campo usoEntidades.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaForm.operacionesDB.$invalid  && fTareaSubmitted &&
+                                                fTareaForm.operacionesDB.$pristine }" >
+                    <td width="40%">
+                        <label for="fTarea_operacionesDB">
+                            Operaciones en la Base de Datos:
+                        </label>
+                    </td>
+                    <td>
+                        <select id          = "fTarea_operacionesDB" 
+                                style       = 'width:80%;' 
+                                ng-model    = "fTarea.operacionesDB"  
+                                ng-options  = "item.key as item.value for item in fTarea_opcionesComplejidad"
+                                ng-disabled = "actor!='desarrollador'">>
+                        </select>
+                        <p ng-show="fTareaSubmitted && fTareaForm.operacionesDB.$invalid" class="help-block">
+                            Error en campo Interacion.
                         </p>
                     </td>
                 </div>

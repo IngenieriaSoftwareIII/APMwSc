@@ -179,6 +179,10 @@ def AModifTarea():
     new_idCategoria     = params['categoria'  ]
     new_taskPeso        = params['peso'       ]
     new_estimatedTime   = params['tiempo'     ]
+    interaccion         = params['interaccion']
+    reglasNegocio       = params['reglasNegocio']
+    usoEntidades        = params['usoEntidades']
+    operacionesDB       = params['operacionesDB']
     new_miembro         = params['miembro'    ]
     started             = params['iniciado'   ]
     startingDate        = params['fechaInicio']
@@ -203,6 +207,10 @@ def AModifTarea():
                                   , new_idCategoria
                                   , new_taskPeso
                                   , new_estimatedTime
+                                  , interaccion  
+                                  , reglasNegocio
+                                  , usoEntidades 
+                                  , operacionesDB
                                   , started
                                   , startingDate_object
                                   , completed
@@ -385,20 +393,37 @@ def VTarea():
                                       } for miembro in miembroList
                                     ]
 
+    res['fTarea_opcionesComplejidad'] = [ { 'key'   : 1
+                                          , 'value' : "Sencillo"
+                                          }
+                                        ] + [ 
+                                          { 'key'   : 2
+                                          , 'value' : "Promedio"
+                                          }
+                                        ] + [ 
+                                          { 'key'   : 3
+                                          , 'value' : "Complejo"
+                                          } 
+                                        ]
+
     startingDate_object_new  = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
     finishingDate_object_new = datetime.strftime(result.HW_fechaFin,    '%d/%m/%Y')
 
-    res['fTarea'] = { 'idHistoria'  : idHistoria
-                    , 'idTarea'     : idTarea
-                    , 'descripcion' : result.HW_description
-                    , 'categoria'   : result.HW_idCategory
-                    , 'peso'        : result.HW_weight
-                    , 'miembro'     : result.HW_idEquipo
-                    , 'tiempo'      : result.HW_estimatedTime
-                    , 'iniciado'    : result.HW_iniciado
-                    , 'fechaInicio' : startingDate_object_new
-                    , 'completed'   : result.HW_completed
-                    , 'fechaFin'    : finishingDate_object_new 
+    res['fTarea'] = { 'idHistoria'   : idHistoria
+                    , 'idTarea'      : idTarea
+                    , 'descripcion'  : result.HW_description
+                    , 'categoria'    : result.HW_idCategory
+                    , 'peso'         : result.HW_weight
+                    , 'miembro'      : result.HW_idEquipo
+                    , 'tiempo'       : result.HW_estimatedTime
+                    , 'iniciado'     : result.HW_iniciado
+                    , 'fechaInicio'  : startingDate_object_new
+                    , 'completed'    : result.HW_completed
+                    , 'fechaFin'     : finishingDate_object_new
+                    , 'interaccion'  : result.HW_interaccion
+                    , 'reglasNegocio' : result.HW_reglasNegocio
+                    , 'usoEntidades' : result.HW_usoEntidades
+                    , 'operacionesDB': result.HW_operacionesDB
                     }
 
     session['idTarea']    = idTarea
