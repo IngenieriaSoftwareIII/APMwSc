@@ -46,23 +46,142 @@
 </nav>
 
     <form name="fHistoriaForm" ng-submit="AModifHistoria0(fHistoriaForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.codigo.$invalid && fHistoriaForm.codigo.$pristine && fHistoriaSubmitted}"><label for="fHistoria_codigo">Código de la historia</label><input id="fHistoria_codigo" type="text" name="codigo" class="form-control" ng-model="fHistoria.codigo" placeholder="Código de la historia" required/><p ng-show="fHistoriaSubmitted && fHistoriaForm.codigo.$invalid" class="help-block">Error en campo Código de la historia.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.super.$invalid && fHistoriaForm.super.$pristine && fHistoriaSubmitted}"><label for="fHistoria_super">Historia más general</label>:&nbsp;<select id="fHistoria_super" ng-model="fHistoria.super"  ng-options="item.key as item.value for item in fHistoria_opcionesHistorias"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.super.$invalid" class="help-block">Error en campo Historia más general.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.actores.$invalid && fHistoriaForm.actores.$pristine && fHistoriaSubmitted}"><label for="fHistoria_actores">Actores</label>:&nbsp;<select id="fHistoria_actores" ng-model="fHistoria.actores"  multiple ng-options="item.key as item.value for item in fHistoria_opcionesActores"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.actores.$invalid" class="help-block">Error en campo Actores.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.tipo.$invalid && fHistoriaForm.tipo.$pristine && fHistoriaSubmitted}"><label for="fHistoria_tipo">Tipo</label>:&nbsp;<select id="fHistoria_tipo" ng-model="fHistoria.tipo"  ng-options="item.key as item.value for item in fHistoria_opcionesTiposHistoria"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.tipo.$invalid" class="help-block">Error en campo Tipo.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.accion.$invalid && fHistoriaForm.accion.$pristine && fHistoriaSubmitted}"><label for="fHistoria_accion">Acción</label>:&nbsp;<select id="fHistoria_accion" ng-model="fHistoria.accion"  ng-options="item.key as item.value for item in fHistoria_opcionesAcciones"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.accion.$invalid" class="help-block">Error en campo Acción.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid && fHistoriaForm.objetivos.$pristine && fHistoriaSubmitted}"><label for="fHistoria_objetivos">Objetivos no transversales</label>:&nbsp;<select id="fHistoria_objetivos" ng-model="fHistoria.objetivos"  multiple ng-options="item.key as item.value for item in fHistoria_opcionesObjetivos"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid" class="help-block">Error en campo Objetivos no transversales.</p></div>
-            <input id="fHistoria_idPila" type="hidden" name="idPila" ng-model="fHistoria.idPila" />
-            <input id="fHistoria_idHistoria" type="hidden" name="idHistoria" ng-model="fHistoria.idHistoria" />
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid && fHistoriaForm.prioridad.$pristine && fHistoriaSubmitted}"><label for="fHistoria_prioridad">Prioridad</label>:&nbsp;<select id="fHistoria_prioridad" ng-model="fHistoria.prioridad" required ng-options="item.key as item.value for item in fHistoria_opcionesPrioridad"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid" class="help-block">Error en campo Prioridad.</p></div>
-            <!--b>Estado de la historia:<span class="estado-{{fHistoria.estado}}">{{fHistoria.estado}}</span></b-->
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.iniciada.$invalid && fHistoriaForm.iniciada.$pristine && fHistoriaSubmitted}"><label for="fHistoria_iniciada">Iniciada:&nbsp;</label><input id="fHistoria_iniciado" type="checkbox" name="iniciado" ng-model="fHistoria.iniciado" placeholder="Iniciada"/><p ng-show="fHistoriaSubmitted && fHistoriaForm.iniciado.$invalid" class="help-block">Error en campo Iniciada.</p></div>
-           <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.fechini.$invalid && fHistoriaForm.fechini.$pristine && fHistoriaSubmitted}" ng-show="fHistoria.iniciado"><label for="fHistoria_fechini">Fecha de Inicio</label><input id="fHistoria_fechini" type="text" name="fechini" class="form-control" ng-model="fHistoria.fechaInicio" placeholder="dd/mm/aaaa" /><p ng-show="fHistoriaSubmitted && fHistoriaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p></div>
+        <table class="table" >
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' : fHistoriaSubmitted && fHistoriaForm.codigo.$invalid && 
+                                        fHistoriaForm.codigo.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_codigo">
+                            Código de la historia:
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fHistoria_codigo" type="text" name="codigo" style='width:80%;'  
+                               class="form-control" ng-model="fHistoria.codigo" 
+                               placeholder="Código de la historia" required/>
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.codigo.$invalid" class="help-block">
+                            Error en campo Código de la historia.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' : fHistoriaSubmitted && fHistoriaForm.super.$invalid && 
+                                               fHistoriaForm.super.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_super">
+                            Historia más general:
+                        </label>
+                    </td>
+                    <td>
+                        <select id="fHistoria_super" style='width:80%;'  ng-model="fHistoria.super"  
+                                ng-options="item.key as item.value for item in fHistoria_opcionesHistorias">
+                        </select>
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.super.$invalid" class="help-block">
+                            Error en campo Historia más general.
+                        </p>  
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  
+                                  fHistoriaSubmitted && fHistoriaForm.actores.$invalid && 
+                                  HistoriaForm.actores.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_actores">
+                            Actores:
+                        </label>
+                    </td>
+                    <td>
+                        <select id="fHistoria_actores" style='width:80%;'  ng-model="fHistoria.actores"  
+                                multiple ng-options="item.key as item.value for item in fHistoria_opcionesActores">   
+                        </select>
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.actores.$invalid" class="help-block">
+                            Error en campo Actores.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  
+                                 fHistoriaSubmitted && fHistoriaForm.tipo.$invalid && 
+                                 fHistoriaForm.tipo.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_tipo">
+                            Tipo:
+                        </label>
+                    </td>
+                    <td>
+                        <select id="fHistoria_tipo" style='width:80%;'  ng-model="fHistoria.tipo"  
+                                ng-options="item.key as item.value for item in fHistoria_opcionesTiposHistoria">
+                        </select>
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.tipo.$invalid" class="help-block">
+                            Error en campo Tipo.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
+                     ng-class="{ 'has-error' :  
+                                fHistoriaSubmitted && fHistoriaForm.accion.$invalid && 
+                                fHistoriaForm.accion.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_accion">
+                            Acción:
+                        </label>
+                    </td>
+                    <td>
+                        <select id="fHistoria_accion" style='width:80%;'  ng-model="fHistoria.accion"  
+                                ng-options="item.key as item.value for item in fHistoria_opcionesAcciones">      
+                        </select>
 
-            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.iniciada.$invalid && fHistoriaForm.iniciada.$pristine && fHistoriaSubmitted}" ng-show="fHistoria.iniciado"><label for="fHistoria_iniciada">Completada:&nbsp;</label><input id="fHistoria_completed" type="checkbox" name="completed" ng-model="fHistoria.completed" placeholder="Culminada"/><p ng-show="fHistoriaSubmitted && fHistoriaForm.completed.$invalid" class="help-block">Error en campo culminada.</p></div>
-           
-           <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.fechafin$invalid && fHistoriaForm.fechafin.$pristine && fHistoriaSubmitted}" ng-show="fHistoria.completed && fHistoria.iniciado"><label for="fHistoria_fechafin">Fecha de Culminación</label><input id="fHistoria_fechafin" type="text" name="fechafin" class="form-control" ng-model="fHistoria.fechaFin" placeholder="dd/mm/aaaa" /><p ng-show="fHistoriaSubmitted && fHistoriaForm.fechafin.$invalid" class="help-block">Error en campo Fecha de culminación.</p></div>
-
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.accion.$invalid" class="help-block">
+                            Error en campo Acción.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid && fHistoriaForm.objetivos.$pristine && fHistoriaSubmitted}">
+                    <td width="30%">
+                        <label for="fHistoria_objetivos">
+                            Objetivos no transversales:
+                        </label>
+                    </td>
+                    <td>
+                        <select id="fHistoria_objetivos" style='width:80%;'  ng-model="fHistoria.objetivos"  
+                                multiple ng-options="item.key as item.value for item in fHistoria_opcionesObjetivos">
+                        </select>   
+                        <p ng-show="fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid" class="help-block">
+                            Error en campo Objetivos no  transversales.
+                        </p>
+                    </td>
+                </div>
+                <input id="fHistoria_idPila" type="hidden" name="idPila" ng-model="fHistoria.idPila" />
+                <input id="fHistoria_idHistoria" type="hidden" name="idHistoria" ng-model="fHistoria.idHistoria" />
+            </tr>
+            <tr>
+                <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid && fHistoriaForm.prioridad.$pristine && fHistoriaSubmitted}">
+                <td>
+                    <label for="fHistoria_prioridad">
+                        Prioridad:
+                    </label>
+                </td>
+                <td>
+                    <select id="fHistoria_prioridad" style='width:80%;'  ng-model="fHistoria.prioridad" required ng-options="item.key as item.value for item in fHistoria_opcionesPrioridad">
+                    </select>
+                    <p ng-show="fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid" class="help-block">
+                        Error en campo Prioridad.
+                    </p>
+                </td>
+                </div>
+            </tr>
+        </table>                        
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
@@ -70,8 +189,13 @@
     <hr /><h3>Tareas <span class="badge" ng-bind="numTareas"></span></h3>
         <table ng-table="tableParams2" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
-                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
+                <td align="center" data-title="'Descripción'">
+                    {{row['descripcion']}}
+                </td>
+                <td align="center" data-title="'Horas Estimadas'">
+                    {{row['estimatedTime']}} h
+                </td>
+                <td align="center" ><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'], idHistoria)">Detalles</a></td>
             </tr>
         </table>
         <!--button name="complete" class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
@@ -83,9 +207,9 @@
     <hr /><h3>Pruebas de aceptación <span class="badge" ng-bind="numPruebas"></span></h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
-                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="downloadAcceptanceTest(row['url'])">Descargar script</a></td>
-                <td ><a ng-click="AElimPrueba2(row['idTarea'])">-prueba</a></td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td align="center" ><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="downloadAcceptanceTest(row['url'])">Descargar script</a></td>
+                <td align="center" ><a ng-click="AElimPrueba2(row['idTarea'])">-prueba</a></td>
             </tr>
         </table>
 <hr />

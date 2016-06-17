@@ -23,9 +23,10 @@ def ACrearObjetivo():
         # Extraemos los parámetros
         newDescription      = params['descripcion']
         transverseObjective = params['transversal']
+        funcionalObjective  = params['funcional']
         
         oObjective = objective()
-        result     = oObjective.insertObjective(newDescription,idPila,transverseObjective)
+        result     = oObjective.insertObjective(newDescription,idPila,funcionalObjective,transverseObjective)
 
         if result:
             res = results[0]
@@ -90,14 +91,16 @@ def AModifObjetivo():
     # Extraemos los parámetros
     idObjetivo     = params['idObjetivo']  
     newDescription = params['descripcion'] 
-    newType        = params['transversal'] 
+    newType        = params['transversal']
+    newFunc        = params['funcional'] 
+    print(newFunc)
         
     # Conseguimos el objetivo a modificar
     oObjetivo    = objective()
     objetivoDesc = oObjetivo.searchIdObjective(idObjetivo) 
 
     # Modificamos la descripción del objetivo    
-    result       = oObjetivo.updateObjective(objetivoDesc[0].O_descObjective , newDescription,newType,idPila) 
+    result       = oObjetivo.updateObjective(objetivoDesc[0].O_descObjective , newDescription,newType,newFunc,idPila) 
 
     if result:
         res = results[0]
@@ -136,12 +139,24 @@ def VObjetivo():
     # Determinamos el tipo de objetivo a través de su id
     oObjective = objective()
     result     = oObjective.searchIdObjective(idObjective)
-    number     = int(result[0].O_objType)
-    istransver = boolean[number]
+    try:
+        number     = int(result[0].O_objType)
+    except TypeError:
+        number = 0
+    if result[0].O_objFunc is None:
+        funcional  = 0
+    else:
+        funcional = result[0].O_objFunc
+    print(funcional)
+    istransver = boolean.get(number,-1)
+    
 
     # Mostramos los objetivos en la vista
+    res['fObjetivo_opcionesFuncional'] = [{'key':True, 'value':'Si'},{'key':False, 'value':'No'}]
     res['fObjetivo_opcionesTransversalidad'] = [{'key':True, 'value':'Si'},{'key':False, 'value':'No'}]
-    res['fObjetivo'] = {'idObjetivo':idObjective, 'descripcion':result[0].O_descObjective , 'transversal':istransver}    
+    res['fObjetivo'] = {'idObjetivo':idObjective, 'descripcion':result[0].O_descObjective , 'transversal':istransver,
+                        'funcional':funcional
+    }    
     res['idPila']    = idPila
     session['idObjective'] = idObjective
 
@@ -166,9 +181,10 @@ def VCrearObjetivo():
     res['usuario'] = session['usuario']
    
     res['fObjetivo_opcionesTransversalidad'] = [{'key':True, 'value':'Si'},
-                                                {'key':False, 'value':'No'},
-                                                {'key':0,'value':'Seleccione una opción'}]
-    res['fObjetivo'] = {'transversal':0} 
+                                                {'key':False, 'value':'No'},]
+    res['fObjetivo_opcionesFuncional'] = [{'key':True, 'value':'Si'},
+                                                {'key':False, 'value':'No'}]
+    res['fObjetivo'] = {'transversal':False, 'funcional':False} 
     res['idPila']    = idPila   
 
     return json.dumps(res)

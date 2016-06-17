@@ -77,7 +77,17 @@ def ACrearHistoria():
         finishingDate = None
 
         # Insertamos los datos de la historia
-        inserted     = oUserHistory.insertUserHistory(codeHistory,idSuperHist,idType,idAccion,idPila,priority,started,startingDate,completed,finishingDate)
+        inserted     = oUserHistory.insertUserHistory( codeHistory
+                                                     , idSuperHist
+                                                     , idType
+                                                     , idAccion
+                                                     , idPila
+                                                     , priority
+                                                     , started
+                                                     , startingDate
+                                                     , completed
+                                                     , finishingDate
+                                                     )
 
         # Asociamos los actores y objetivos a la historia.
         if inserted:
@@ -119,7 +129,7 @@ def ACrearHistoria():
 @historias.route('/historias/AElimHistoria')
 def AElimHistoria():
     #GET parameter
-    results = [{'label':'/VHistorias', 'msg':['Historia eliminada']}, {'label':'/VHistorias', 'msg':['No se pudo eliminar esta historia']}, ]
+    results = [{'label':'/VHistorias', 'msg':['Historia eliminada']}, {'label':'/VHistorias', 'msg':['No se pudo eliminar esta historia']} ]
     res = results[1]
 
     # Obtenemos el id del producto y de la historia.
@@ -449,24 +459,56 @@ def VHistoria():
         elif typeScale == 2:
             resultScale = [(i,i) for i in range(1,20+1)]
 
-    res['fHistoria_opcionesHistorias']     = [{'key':hist.UH_idUserHistory,'value':hist.UH_codeUserHistory}for hist in historias]
-    res['fHistoria_opcionesHistorias'].append({'key':0,'value':'Ninguno'})
-    res['fHistoria_opcionesTiposHistoria'] = [{'key':1,'value':'Opcional'},{'key':2,'value':'Obligatoria'}]
-    res['fHistoria_opcionesActores']       = [{'key':act.A_idActor,'value':act.A_nameActor}for act in actorList]
-    res['fHistoria_opcionesAcciones']      = [{'key':acc.AC_idAccion,'value':acc.AC_accionDescription}for acc in accionList]
-    res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
-    res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
+    res['fHistoria_opcionesHistorias']     = [ { 'key'   : hist.UH_idUserHistory
+                                               , 'value' : hist.UH_codeUserHistory
+                                               } for hist in historias]
+    res['fHistoria_opcionesHistorias'].append({ 'key':0 , 'value':'Ninguno' })
+
+    res['fHistoria_opcionesTiposHistoria'] = [ { 'key' : 1
+                                               ,'value':'Opcional'
+                                               }
+                                             , {'key':2
+                                               ,'value':'Obligatoria'
+                                               }]
+
+    res['fHistoria_opcionesActores']       = [ { 'key' : act.A_idActor
+                                               , 'value':act.A_nameActor
+                                               } for act in actorList]
+
+    res['fHistoria_opcionesAcciones']      = [ { 'key'   : acc.AC_idAccion
+                                               , 'value' : acc.AC_accionDescription
+                                               } for acc in accionList]
+
+    res['fHistoria_opcionesObjetivos']     = [ { 'key' : obj.O_idObjective
+                                               , 'value':obj.O_descObjective
+                                               } for obj in objectiveList]
+
+    res['fHistoria_opcionesPrioridad']     = [ { 'key' : scale[0]
+                                               , 'value':scale[1]
+                                               } for scale in resultScale]
 
     startingDate_object_new = datetime.strftime(history.UH_fechaInicio, '%d/%m/%Y')
     finishingDate_object_new = datetime.strftime(history.UH_fechaFin, '%d/%m/%Y')
 
-    res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog,
-                        'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion,
-                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale,
-                        'iniciado': history.UH_iniciado, 'fechaInicio': startingDate_object_new,
-                        'completed': history.UH_completed, 'fechaFin': finishingDate_object_new}
+    res['fHistoria'] = { 'super'       : history.UH_idSuperHistory 
+                       , 'idHistoria'  : idHistory
+                       , 'idPila'      : history.UH_idBacklog
+                       , 'codigo'      : history.UH_codeUserHistory
+                       , 'actores'     : actors
+                       , 'accion'      : history.UH_idAccion
+                       , 'objetivos'   : objectives
+                       , 'tipo'        : history.UH_accionType
+                       , 'prioridad'   : history.UH_scale
+                       , 'iniciado'    : history.UH_iniciado
+                       , 'fechaInicio' : startingDate_object_new
+                       , 'completed'   : history.UH_completed
+                       , 'fechaFin'    : finishingDate_object_new
+                       }
 
-    res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
+    res['data2'] = [ { 'idTarea'       : tarea.HW_idTask
+                     , 'descripcion'   : tarea.HW_description
+                     , 'estimatedTime' : tarea.HW_estimatedTime
+                     } for tarea in taskList]
 
     res['pruebas'] = [{'idTarea':test.AT_idAT,
                         'descripcion':test.AT_description,
@@ -551,10 +593,13 @@ def VHistorias():
                     break
 
 
-    res['data0']      = [{'idHistoria':hist['idHistory'],
-                          'prioridad' :hist['priority'],
-                          'peso'      :oTask.lookup(pesos,hist['idHistory']),
-                          'enunciado' :'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']}for hist in historiesSortedByPriority]
+    res['data0']      = [ { 'idHistoria' : hist['idHistory']
+                          , 'prioridad'  : hist['priority']
+                          , 'peso'       : oTask.lookup(pesos,hist['idHistory'])
+                          , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + 
+                                           ' para ' + hist['objectives']
+                          } for hist in historiesSortedByPriority
+                        ]
     session['idPila'] = idPila
     res['idPila']     = idPila
 
@@ -597,7 +642,7 @@ def VPrioridades():
     typeScale = oBacklog.scaleType(idPila)
 
     # Obtenemos el tipo de escala asociado al producto (id,valor) y elvalor maximo de la escala
-    if typeScale == 1:
+    if   typeScale == 1:
         iterations  = 3
         resultScale = [(i,scale[i]) for i in range(1,3+1)]
     elif typeScale == 2:

@@ -43,17 +43,17 @@ class user(object):
         checkName     = type(fullname) == str
         checkUserName = type(username) == str
         checkPassword = type(password) == str
-        checkEmail    = type(email) == str
-        checkActor    = type(idActor) == int
+        checkEmail    = type(email)    == str
+        checkActor    = type(idActor)  == int
         
         if checkName and checkUserName and checkPassword and checkEmail and checkActor:
-            checkLongUser     = CONST_MIN_LONG <= len(username) <= CONST_MAX_USER
-            checkLongFullname = CONST_MIN_LONG <= len(fullname) <= CONST_MAX_FULLNAME
-            checkLongPassword = CONST_MIN_PASSWORD <= len(password) <=  CONST_MAX_PASSWORD
-            checkLongEmail    = CONST_MIN_LONG <= len(email) <= CONST_MAX_EMAIL
+            checkLongUser     = CONST_MIN_LONG     <= len(username) <= CONST_MAX_USER
+            checkLongFullname = CONST_MIN_LONG     <= len(fullname) <= CONST_MAX_FULLNAME
+            checkLongPassword = CONST_MIN_PASSWORD <= len(password) <= CONST_MAX_PASSWORD
+            checkLongEmail    = CONST_MIN_LONG     <= len(email)    <= CONST_MAX_EMAIL
 
             if checkLongUser and checkLongFullname and checkLongPassword and checkLongEmail:
-                auser = clsUser.query.filter_by(U_username = username).all()
+                auser        = clsUser.query.filter_by(U_username = username).all()
                 checkIdActor = clsActor.query.filter_by(A_idActor = idActor).all()
 
                 if auser == [] and checkIdActor != []:
@@ -67,19 +67,19 @@ class user(object):
     def updateUser(self, username, new_fullname, new_password, new_email, new_idActor):   
         '''Permite actualizar los datos de un usuario'''  
         
-        checkUsername    = type(username) == str  
+        checkUsername    = type(username)     == str  
         checkNewFullname = type(new_fullname) == str
         checkNewPassword = type(new_password) == str
-        checkNewEmail    = type(new_email) == str
-        checkNewActor    = type(new_idActor) == int
+        checkNewEmail    = type(new_email)    == str
+        checkNewActor    = type(new_idActor)  == int
 
         if checkUsername and checkNewFullname and checkNewPassword and checkNewEmail and checkNewActor:
             checkLongNewFullname = CONST_MIN_LONG <= len(new_fullname) <= CONST_MAX_FULLNAME
             checkLongNewPassword = CONST_MIN_LONG <= len(new_password) <=  CONST_MAX_PASSWORD
-            checkLongNewEmail    = CONST_MIN_LONG <= len(new_email) <= CONST_MAX_EMAIL
+            checkLongNewEmail    = CONST_MIN_LONG <= len(new_email)    <= CONST_MAX_EMAIL
  
             if checkLongNewFullname and checkLongNewPassword and  checkLongNewEmail:
-                auser    = clsUser.query.filter_by(U_username = username).all()        
+                auser        = clsUser.query.filter_by(U_username = username).all()        
                 checkIdActor = clsActor.query.filter_by(A_idActor = new_idActor).all()        
 
                 if auser != []  and checkIdActor != []:
