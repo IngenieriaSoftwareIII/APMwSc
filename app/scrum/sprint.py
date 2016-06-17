@@ -1057,7 +1057,7 @@ def VDesempeno():
     
     #Sprint
     sprint_tasks = oSprint.getAssignedSprintTask(int(idSprint),idPila)
-    bdchart = bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date)
+    bdchart = bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date)
     res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
     res['bdchart']  = bdchart

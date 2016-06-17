@@ -18,7 +18,68 @@ MIN_SPRINT_NUMBER = 1
 MAX_SPRINT_NUMBER = 1000
 
 
-
+def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
+	sprint_time=(sprint_end_date-sprint_start_date).days
+	fun_time = lambda x: x.HW_estimatedTime
+	sprint_time_total = sum(map(fun_time,sprint_tasks))
+	sprint_time_total_real= sprint_time_total
+	ideal_delta = sprint_time_total/sprint_time
+	fun_time = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_estimatedTime,x.HW_horasEmpleadas)
+	sprint_index=map(fun_time,filter(lambda x: x.HW_fechaFin is not None,sprint_tasks))
+	rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_time_total,},{"v": sprint_time_total,}]}]
+	i =1
+	
+	for x in sorted(sprint_index):
+		excess = x[1]-x[2]< 0
+		if excess:
+			sprint_time_total_real-=excess
+		else:
+			sprint_time_total_real-=x[2]
+		if i == x[0]:
+			rows[-1]['c'][1]['v']=sprint_time_total_real
+			excess=False
+		else:
+			i+=1
+			sprint_time_total-=ideal_delta
+			excess=True
+			rows.append({"c":[{ "v": "Dia %s"%i},{"v":sprint_time_total_real, },{"v": sprint_time_total,}]})
+	if i < sprint_time:
+		rows+=[{"c":[{ "v": "Dia %s"%x},{"v":sprint_time_total_real, },{"v": sprint_time_total-ideal_delta*x,}]} for x in range(i+bool(excess),sprint_time)]
+	
+	data={"cols":   [ { "id"    : "days"
+	                  , "label" : "Dias del sprint"
+	                  , "type"  : "string"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "actual_hours"
+	                  , "label" : "Horas por cumplir"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "ideal_hours"
+	                  , "label" : "Horas estimadas"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                ]
+	     }
+	data['rows']=rows
+	
+	bdchart =   { "type"    : "ComboChart"
+	            , "options" : 
+	                { "title"      : "Burn down chart del Sprint"
+	                , "vAxis"      : { "title": "Horas por cumplir" }
+	                , "hAxis"      : { "title": "Dias" }
+	                , "seriesType" : "bars"
+	                , "series"     : { 1 : {'type'  : 'line' }
+	                                 , 0 : {'color' : '#000000' }
+	                                 }
+	                }   
+	            , "formatters" : {}
+	            }
+	bdchart["data"] = data
+	return bdchart
+		
 def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	
 	sprint_time=(sprint_end_date-sprint_start_date).days
