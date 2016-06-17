@@ -71,8 +71,22 @@ def VCrearDocumento():
       return json.dumps(res)
     res['usuario'] = session['usuario']
     res['fDocumento'] = {'idPila':idPila}
-
     res['idPila'] = idPila
+
+    # Obtenemos la informacion almacenada en la base de datos
+    oVisionDoc = visionDocument()
+    visionDoc = oVisionDoc.searchVisionDocument(idPila)
+
+    if visionDoc:
+        res['fDocumento'] = {
+            'introduccion': visionDoc.VD_introduccion,
+            'proposito': visionDoc.VD_proposito,
+            'motivacion': visionDoc.VD_motivacion,
+            'estado': visionDoc.VD_estado,
+            'alcance': visionDoc.VD_alcance,
+            'fundamentacion': visionDoc.VD_fundamentacion,
+            'valores': visionDoc.VD_valores
+        }
 
     #Action code ends here
     return json.dumps(res)
