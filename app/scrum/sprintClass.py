@@ -18,6 +18,65 @@ MIN_SPRINT_NUMBER = 1
 MAX_SPRINT_NUMBER = 1000
 
 
+
+def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
+	
+	sprint_time=(sprint_end_date-sprint_start_date).days
+	fun_weight = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight)
+	sprint_index = filter(lambda x: x.HW_fechaFin is not None, sprint_tasks)
+	sprint_index = map(fun_weight,sprint_index) 
+	sprint_index = dict(sprint_index)
+	sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
+	ideal_delta= sprint_tasks_total/sprint_time
+	sprint_tasks_total_real=sprint_tasks_total
+	#Building the bdchart
+	rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
+	for x in range(2,sprint_time):
+	    sprint_tasks_total-=ideal_delta
+	    sprint_tasks_total_real-=sprint_index.get(x,0)
+	    rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})
+	try:
+		sprint_tasks_total_real-=sprint_index.get(x+1,0)
+	except UnboundLocalError:
+		x = sprint_time
+		sprint_tasks_total_real-=sprint_index.get(x+1,0)
+	rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
+	#Building the JSON to be sent
+	data={"cols":   [ { "id"    : "days"
+	                  , "label" : "Dias del sprint"
+	                  , "type"  : "string"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "actual_hours"
+	                  , "label" : "Peso de las tareas"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "ideal_hours"
+	                  , "label" : "Pesos estimados"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                ]
+	     }
+	data['rows']=rows
+	
+	bdchart =   { "type"    : "ComboChart"
+	            , "options" : 
+	                { "title"      : "Burn down chart del Sprint"
+	                , "vAxis"      : { "title": "Peso acumulado de las tareas" }
+	                , "hAxis"      : { "title": "Dias" }
+	                , "seriesType" : "bars"
+	                , "series"     : { 1 : {'type'  : 'line' }
+	                                 , 0 : {'color' : '#000000' }
+	                                 }
+	                }   
+	            , "formatters" : {}
+	            }
+	bdchart["data"] = data
+	return bdchart
+
+
 class sprints(object):
 	'''Clase que permite manejar los sprints de manera persistente'''
 
