@@ -30,12 +30,13 @@
 
         <table ng-table="tableParams1" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Número'" ng-bind="row['numero']"></td>
-                <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
-                <td data-title="'Fecha de inicio'" ng-bind="row['fechini']"></td>
-                <td data-title="'Fecha de culminación'" ng-bind="row['fechfin']"></td>
-                <td data-title="'Estado'" ng-bind="row['state']"></td>
-                <td ng-show="row['numero']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VSprint1(row['numero'])">Ver</a></td>
+                <td align="center" data-title="'Número'" ng-bind="row['numero']"></td>
+                <td align="center" data-title="'Descripción'" ng-bind="row['descripcion']"></td>
+                <td align="center" data-title="'Fecha de inicio'" ng-bind="row['fechini']"></td>
+                <td align="center" data-title="'Fecha de culminación'" ng-bind="row['fechfin']"></td>
+                <td align="center" data-title="'Horas Estimadas'" ng-bind="row['estimatedTime']"></td>
+                <td align="center" data-title="'Estado'" ng-bind="row['state']"></td>
+                <td align="center" ng-show="row['numero']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VSprint1(row['numero'])">Ver</a></td>
             </tr>
         </table>
 

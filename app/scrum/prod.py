@@ -85,9 +85,16 @@ def VCrearProducto():
       return json.dumps(res)
     res['usuario'] = session['usuario']
     
-    res['fPila_opcionesEscala'] = [{'key':1,'value':'Alta/Media/Baja'},
-                                   {'key':2,'value':'Entre 1 y 20'},
-                                   {'key':0,'value':'Seleccione un tipo de escala'}]
+    res['fPila_opcionesEscala'] = [ { 'key'   : 1
+                                    , 'value' : 'Alta/Media/Baja'
+                                    }
+                                  , { 'key'   : 2
+                                    , 'value' : 'Entre 1 y 20'
+                                    }
+                                  , { 'key'   : 0
+                                    , 'value' : 'Seleccione un tipo de escala'
+                                    }
+                                  ]
     res['fPila'] = {'escala':0}
 
     return json.dumps(res)
