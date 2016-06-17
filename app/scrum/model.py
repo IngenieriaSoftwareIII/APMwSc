@@ -51,6 +51,7 @@ class clsBacklog(db.Model):
     BL_refSprint    = db.relationship('clsSprint',backref = 'backlog',lazy = 'dynamic',cascade = "all, delete, delete-orphan")
     BL_refUserHist  = db.relationship('clsUserHistory', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refArchivos  = db.relationship('clsArchivos', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
+    BL_refVisionDoc = db.relationship('clsVisionDocument', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __init__(self, name, description, scaleType):
         '''Constructor del modelo Backlog'''
@@ -541,6 +542,33 @@ class clsTaskDoc(db.Model):
 def taskDocs_by_taskId(taskID):
     return clsTaskDoc.query.filter(clsTaskDoc.HWD_idTask == taskID).all()
 
+class clsVisionDocument(db.Model):
+    ''' Clase que define el modelo de tabla de documento Vision '''
+
+    __tablename__ = 'visionDocument'
+    VD_idVisionDocument = db.Column(db.Integer, primary_key=True, index=True)
+    VD_idBacklog        = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    VD_introduccion     = db.Column(db.Text)
+    VD_proposito        = db.Column(db.Text)
+    VD_motivacion       = db.Column(db.Text)
+    VD_estado           = db.Column(db.Text)
+    VD_alcance          = db.Column(db.Text)
+    VD_fundamentacion   = db.Column(db.Text)
+    VD_valores          = db.Column(db.Text)
+
+    def __init__(self, idBacklog, introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores):
+        self.VD_idBacklog = idBacklog
+        self.VD_introduccion = introduccion
+        self.VD_proposito = proposito
+        self.VD_motivacion = motivacion
+        self.VD_estado = estado
+        self.VD_alcance = alcance
+        self.VD_fundamentacion = fundamentacion
+        self.VD_valores = valores
+
+    def __repr__(self):
+        '''Representacion en string del documento vision'''
+        return '<idVisionDocument %r, idBacklog %r, introduccion %r>' % (self.VD_idVisionDocument, self.VD_idBacklog, self.VD_introduccion)
 
 migrate = Migrate(app, db)
 manager = Manager(app)
