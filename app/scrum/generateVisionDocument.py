@@ -5,6 +5,7 @@
 #from datetime                        import datetime
 
 import time
+import datetime
 import os
 import ast
 from uuid   import uuid4
@@ -42,10 +43,10 @@ from reportlab.lib.styles         import getSampleStyleSheet
 from reportlab.lib.styles         import ParagraphStyle
 from reportlab.lib.units          import cm
 
-
 styles = {}         #Estilos usados en el documento.
 story  = []         #Lista de elementos agregados al documento.
 table_styles = []   #Estilos usados para las tablas.
+respond = ''
 
 
 #-------------------- Fuentes usadas en el documento --------------------------
@@ -209,22 +210,36 @@ def generateDocument(idProduct,path):
     def header(canvas,document):
         '''Permite definir el encabezado del documento vision'''
         canvas.saveState()
-        canvas.setFont('Arial',10)
         canvas.setLineWidth(width=1)
         canvas.setStrokeColor(black)
 
         #Dibujamos la tabla. rect(x, y, ancho, alto)
-        canvas.rect(3.1*cm, height   , width - 320, 22, fill=False, stroke=True) 
-        canvas.rect(3.1*cm, height   , width - 184, 22, fill=False, stroke=True) 
-     
-        canvas.rect(3.1*cm, height-13, width - 320, 13, fill=False, stroke=True)  
-        canvas.rect(13.4*cm, height-13, 136, 13, fill=False, stroke=True)  
+        canvas.rect(2*cm   , height - 13, width - 130, 22, fill=False, stroke=True) 
+        #canvas.rect(12.3*cm, height - 13, 190        , 22, fill=False, stroke=True)      
+        canvas.rect(2*cm   , height - 26, width - 130, 13, fill=False, stroke=True)  
+        canvas.rect(12.3*cm, height - 26, 190        , 13, fill=False, stroke=True)  
+        canvas.rect(2*cm   , height - 39, width - 130, 13, fill=False, stroke=True) 
 
-        canvas.rect(3.1*cm, height-26, width - 184, 13, fill=False, stroke=True) 
-        canvas.drawString(3.2*cm, height + 13, "Título del proyecto: " + projectName) 
-        canvas.drawString(3.2*cm, height - 10, "Artefacto: Documento de Visión")
-        canvas.drawString(13.5*cm, height - 10, "Fecha: " + currentDate)
-        canvas.drawString(3.2*cm, height - 24, "Método de desarrollo de Software: Scrum")
+        canvas.setFont('Arial',10)
+        canvas.drawString(2.1*cm, height - 1, "Título del proyecto: ") 
+
+        canvas.setFont('Arial Bold',10)
+        canvas.drawString(5.2*cm, height - 1, projectName)
+
+        canvas.setFont('Arial',10)
+        canvas.drawString(2.1*cm,  height - 23, "Artefacto: ") 
+
+        canvas.setFont('Arial Bold',10)
+        canvas.drawString(3.7*cm,  height - 23, "Documento de Visión") 
+
+        canvas.setFont('Arial',10)
+        canvas.drawString(12.4*cm, height - 23, "Fecha: ")      
+
+        canvas.setFont('Arial Bold',10)
+        canvas.drawString(13.6*cm, height - 23, currentDate)  
+
+        canvas.setFont('Arial',10)
+        canvas.drawString(2.1*cm,  height - 36, "Método de desarrollo de Software: Scrum")
         canvas.restoreState()
 
 
@@ -232,11 +247,12 @@ def generateDocument(idProduct,path):
         '''Permite definir el pie de pagina del documento vision'''
         canvas.saveState()
         canvas.setFont('Arial',10)
+
         if (document.page != 1):
             canvas.drawString(width - 180, 1 * cm, "Página %d" %document.page)
         canvas.restoreState()
 
-    #------------------ Clases a usar -----------------------------------------
+    #----------------------------- Clases a usar ------------------------------
     oUser        = user() 
     oTeam        = team()   
     oBacklog     = backlog()
@@ -250,14 +266,23 @@ def generateDocument(idProduct,path):
     oObjUserHist = objectivesUserHistory()
 
 
-    #------------------ Datos del proyecto ------------------------------------
+    #------------------------------ Fecha actual ------------------------------
+    i = datetime.datetime.now()
+    day   = i.day
+    month = i.month
+    year  = i.year
+
+    currentDate  = str(day) + "/" + str(month) + "/" + str(year) 
+
+
+    #---------------------------- Datos del proyecto --------------------------
     result = oBacklog.findIdProduct(idProduct)
     projectName        = result.BL_name
     projectDescription = result.BL_description
     projectScaleType   = result.BL_scaleType
 
 
-    #-------------- Datos de las historias de usuario -------------------------
+    #------------------ Datos de las historias de usuario ---------------------
 
     #Obtenemos las historias asociadas al producto.
     userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idProduct)
@@ -310,9 +335,6 @@ def generateDocument(idProduct,path):
     groundwork = ""
     teamworkValues = ""
 
-    #==========================================================================
-    
-    currentDate  = "03/06/2016"
 
     #-------------------- Construccion del Documento --------------------------
     #==========================================================================
@@ -376,179 +398,184 @@ def generateDocument(idProduct,path):
     story.append(PageBreak())
 
     #---------------------------- Pila del producto ---------------------------
-    story.append(Paragraph("4. Artefactos", styles['subtittle']))
-    story.append(Spacer(0,10))
-    story.append(Paragraph("Pila del producto", styles['content'])) 
-
-    #Cabecera de la tabla.
-    t1 = Paragraph("ID", styles['header'])
-    t2 = Paragraph("Prioridad", styles['header'])
-    t3 = Paragraph("Épicas e Historias de Usuario", styles['header'])
-
-    tam_colums       = [2*cm,2*cm,12*cm]
-    dataTableHist    = [[t1,t2,t3]]
-    t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable2,hAlign='CENTER')
-    story.append(t_user_histories)
-
-    tam_colums1 = [2*cm,14*cm]
 
     #Lista donde se almacenara el orden en que fueron mostradas las historias y epicas.
     historiesListId = []
+    
+    if userHistories != [] or epics != []:
+        story.append(Paragraph("4. Artefactos", styles['subtittle']))
+        story.append(Spacer(0,10))
+        story.append(Paragraph("Pila del producto", styles['content'])) 
 
-    #Mostramos las epicas.
-    for e in epics:
-        #Construimos el enunciado.
-        statement = "En tanto" + e['actors'] + e['actions'] + "para" + e['objectives']
-        historiesListId.append(e['idHistory'])
+        #Cabecera de la tabla.
+        t1 = Paragraph("ID", styles['header'])
+        t2 = Paragraph("Prioridad", styles['header'])
+        t3 = Paragraph("Épicas e Historias de Usuario", styles['header'])
 
-        n = len(statement) // 75
-
-        #Establecemos saltos de linea para que el contenido no se laga de la tabla.
-        for i in range(n,0,-1):
-            for j in range(i*75,-1,-1):
-                if statement[j] == " ":
-                    statement = statement[:j] + "\n" + statement[j+1:] 
-                    break
-
-        dataTableHist    = [[e['code'],statement]]
-        t_user_histories = Table(dataTableHist,tam_colums1,style=stylesTable3,hAlign='CENTER')
+        tam_colums       = [2*cm,2*cm,12*cm]
+        dataTableHist    = [[t1,t2,t3]]
+        t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable2,hAlign='CENTER')
         story.append(t_user_histories)
 
-        #Eliminamos la epica que ya mostramos.
-        epics.remove(e)
+        tam_colums1 = [2*cm,14*cm]
 
-
-	    #Obtenemos los hijos de la epica y los mostramos asociados a la epica.
-        succesors = oUserHistory.succesors(e['idHistory'])
-
-        cantSuc = len(succesors)
-		
-        for h in succesors:
-            result  = oUserHistory.transformUserHistory(h)
-            result1 = oUserHistory.searchIdUserHistory(h)
-            result['code'] = result1[0].UH_codeUserHistory
-		    
-            if projectScaleType == 1:
-                result['priority'] = priorities[result['priority']]
-
+        #Mostramos las epicas.
+        for e in epics:
             #Construimos el enunciado.
-            statement = "En tanto" + result['actors'] + result['actions'] + "para" + result['objectives']
-            historiesListId.append(result['idHistory'])
+            statement = "En tanto" + e['actors'] + e['actions'] + "para" + e['objectives']
+            historiesListId.append(e['idHistory'])
 
-            n = len(statement) // 65
-                       
-            #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+            n = len(statement) // 75
+
+            #Establecemos saltos de linea para que el contenido no se laga de la tabla.
             for i in range(n,0,-1):
-                for j in range(i*65,-1,-1):
+                for j in range(i*75,-1,-1):
                     if statement[j] == " ":
-                       statement = statement[:j] + "\n" + statement[j+1:]
-                       break
+                        statement = statement[:j] + "\n" + statement[j+1:] 
+                        break
 
-            cantSuc -= 1
- 
-            dataTableHist    = [[result['code'], result['priority'],statement]]
-
-            if cantSuc != 1:
-                t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable4,hAlign='CENTER')
-            else:
-                t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable5,hAlign='CENTER')
+            dataTableHist    = [[e['code'],statement]]
+            t_user_histories = Table(dataTableHist,tam_colums1,style=stylesTable3,hAlign='CENTER')
             story.append(t_user_histories)
-            userHistories.remove(result)
-  
-    #Mostramos las historias de usuario que no son parte de una epica.
-    for hist in userHistories:
-        #Construimos el enunciado.
-        statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
-        historiesListId.append(hist['idHistory'])
 
-        n = len(statement) // 75
-               
-        #Establecemos saltos de linea para que el contenido no se laga de la tabla.
-        for i in range(n,0,-1):
-            for j in range(i*75,-1,-1):
-                if statement[j] == " ":
-                    statement = statement[:j] + "\n" + statement[j+1:] 
-                    break
+            #Eliminamos la epica que ya mostramos.
+            epics.remove(e)
 
-        dataTableHist    = [[hist['code'], hist['priority'],statement]]
-        t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable6,hAlign='CENTER')
-        story.append(t_user_histories)
 
-    story.append(PageBreak())
+    	    #Obtenemos los hijos de la epica y los mostramos asociados a la epica.
+            succesors = oUserHistory.succesors(e['idHistory'])
+
+            cantSuc = len(succesors)
+    		
+            for h in succesors:
+                result  = oUserHistory.transformUserHistory(h)
+                result1 = oUserHistory.searchIdUserHistory(h)
+                result['code'] = result1[0].UH_codeUserHistory
+    		    
+                if projectScaleType == 1:
+                    result['priority'] = priorities[result['priority']]
+
+                #Construimos el enunciado.
+                statement = "En tanto" + result['actors'] + result['actions'] + "para" + result['objectives']
+                historiesListId.append(result['idHistory'])
+
+                n = len(statement) // 65
+                           
+                #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+                for i in range(n,0,-1):
+                    for j in range(i*65,-1,-1):
+                        if statement[j] == " ":
+                           statement = statement[:j] + "\n" + statement[j+1:]
+                           break
+
+                cantSuc -= 1
+     
+                dataTableHist    = [[result['code'], result['priority'],statement]]
+
+                if cantSuc != 1:
+                    t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable4,hAlign='CENTER')
+                else:
+                    t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable5,hAlign='CENTER')
+                story.append(t_user_histories)
+                userHistories.remove(result)
+      
+        #Mostramos las historias de usuario que no son parte de una epica.
+        for hist in userHistories:
+            #Construimos el enunciado.
+            statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
+            historiesListId.append(hist['idHistory'])
+
+            n = len(statement) // 75
+                   
+            #Establecemos saltos de linea para que el contenido no se laga de la tabla.
+            for i in range(n,0,-1):
+                for j in range(i*75,-1,-1):
+                    if statement[j] == " ":
+                        statement = statement[:j] + "\n" + statement[j+1:] 
+                        break
+
+            dataTableHist    = [[hist['code'], hist['priority'],statement]]
+            t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable6,hAlign='CENTER')
+            story.append(t_user_histories)
+
+        story.append(PageBreak())
 
     #-------------------------------- Objetivos -------------------------------
-    story.append(Paragraph("4.2 Objetivos", styles['content'])) 
+    #Obtenemos todos los objetivos asociados al producto.
+    objsList = oObjective.getAllObjectives(idProduct)
 
-    #Cabecera de la tabla.
-    t1 = Paragraph("ID", styles['header'])
-    t2 = Paragraph("Objetivo", styles['header'])
-    t3 = Paragraph("ID Historia", styles['header'])
+    if objsList != []:
+        story.append(Paragraph("4.2 Objetivos", styles['content'])) 
 
-    tam_colums   = [2*cm,11.5*cm,2.5*cm]
-    dataTableObj = [[t1,t2,t3]]
-    t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable0,hAlign='CENTER')
-    story.append(t_user_obj)
+        #Cabecera de la tabla.
+        t1 = Paragraph("ID", styles['header'])
+        t2 = Paragraph("Objetivo", styles['header'])
+        t3 = Paragraph("ID Historia", styles['header'])
 
-    #Mostramos los objetivos asociados a las historias de usuario.
-    idObj = 0
-    objectivesListId = []
-    for h in historiesListId:
-        hist = oUserHistory.searchIdUserHistory(h)
-        code = hist[0].UH_codeUserHistory
+        tam_colums   = [2*cm,11.5*cm,2.5*cm]
+        dataTableObj = [[t1,t2,t3]]
+        t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable0,hAlign='CENTER')
+        story.append(t_user_obj)
 
-        objs = oObjUserHist.idObjectivesAsociatedToUserHistory(h)
+        #Mostramos los objetivos asociados a las historias de usuario.
+        idObj = 0
+        objectivesListId = []
+        for h in historiesListId:
+            hist = oUserHistory.searchIdUserHistory(h)
+            code = hist[0].UH_codeUserHistory
 
-        for o in objs:
+            objs = oObjUserHist.idObjectivesAsociatedToUserHistory(h)
+
+            for o in objs:
+                obj  = oObjective.searchIdObjective(o)
+                desc = obj[0].O_descObjective + "."
+                idObj += 1
+                objectivesListId.append(o)
+
+                n = len(desc) // 70
+                           
+                #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+                for i in range(n,0,-1):
+                    for j in range(i*70,-1,-1):
+                        if desc[j] == " ":
+                           desc = desc[:j] + "\n" + desc[j+1:]
+                           break
+
+                dataTableObj = [[idObj,desc,code]]
+                t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
+                story.append(t_user_obj)
+
+        #Mostramos los objetivos transversales y los que no estan asociados a una historia.
+
+        #Obtenemos solo los ids
+        objsIdList = []
+        for o in objsList:
+            objsIdList.append(o.O_idObjective)
+
+        conj1 = set(objsIdList)
+        conj2 = set(objectivesListId)
+        conj  = conj1 - conj2
+        remainObjects = list(conj)
+
+        for o in remainObjects:
             obj  = oObjective.searchIdObjective(o)
             desc = obj[0].O_descObjective + "."
             idObj += 1
-            objectivesListId.append(o)
 
             n = len(desc) // 70
-                       
+                          
             #Establecemos saltos de linea para que el contenido no se salga de la tabla.
             for i in range(n,0,-1):
                 for j in range(i*70,-1,-1):
                     if desc[j] == " ":
-                       desc = desc[:j] + "\n" + desc[j+1:]
-                       break
+                        desc = desc[:j] + "\n" + desc[j+1:]
+                        break
 
-            dataTableObj = [[idObj,desc,code]]
+            dataTableObj = [[idObj,desc,"Transversal"]]
             t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
             story.append(t_user_obj)
 
-    #Mostramos los objetivos transversales.
-    objsList = oObjective.getAllObjectives(idProduct)
-
-    #Obtenemos solo los ids
-    objsIdList = []
-    for o in objsList:
-        objsIdList.append(o.O_idObjective)
-
-    conj1 = set(objsIdList)
-    conj2 = set(objectivesListId)
-    conj  = conj1 - conj2
-    remainObjects = list(conj)
-
-    for o in remainObjects:
-        obj  = oObjective.searchIdObjective(o)
-        desc = obj[0].O_descObjective + "."
-        idObj += 1
-
-        n = len(desc) // 70
-                      
-        #Establecemos saltos de linea para que el contenido no se salga de la tabla.
-        for i in range(n,0,-1):
-            for j in range(i*70,-1,-1):
-                if desc[j] == " ":
-                    desc = desc[:j] + "\n" + desc[j+1:]
-                    break
-
-        dataTableObj = [[idObj,desc,"Transversal"]]
-        t_user_obj   = Table(dataTableObj,tam_colums,style=stylesTable7,hAlign='CENTER')
-        story.append(t_user_obj)
-
-    story.append(PageBreak())
+        story.append(PageBreak())
 
     #------------------------------ Pila del sprint ---------------------------
     story.append(Paragraph("4.3 Pila del sprint", styles['content'])) 
@@ -560,30 +587,33 @@ def generateDocument(idProduct,path):
     t4 = Paragraph("Responsable", styles['header'])
 
     sprintsList = oSprint.getAllSprintsAsociatedToProduct(idProduct)
-    for s in sprintsList:
 
-        tam_colums       = [2*cm,7.5*cm,1*cm,5.5*cm]
-        dataTableSprint  = [[t1,t2,t3,t4]]
-        t_user_sprints   = Table(dataTableSprint,tam_colums,style=stylesTable0,hAlign='CENTER')
-        story.append(t_user_sprints)
+    print(sprintsList)
+
+    #for s in sprintsList:
+
+    #    tam_colums       = [2*cm,7.5*cm,1*cm,5.5*cm]
+    #    dataTableSprint  = [[t1,t2,t3,t4]]
+    #    t_user_sprints   = Table(dataTableSprint,tam_colums,style=stylesTable0,hAlign='CENTER')
+    #    story.append(t_user_sprints)
         
-        tam_colums1       = [16*cm]
-        dataTableSprint  = [["Sprint " + s.S_numero]] 
-        t_user_sprints   = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
-        story.append(t_user_sprints)
+    #    tam_colums1       = [16*cm]
+    #    dataTableSprint  = [["Sprint " + s.S_numero]] 
+    #    t_user_sprints   = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
+    #    story.append(t_user_sprints)
 
-        userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
+    #    userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
 
-        for uH in userHistoryList:
-            result    = oUserHistory.transformUserHistory(uH.UH_idUserHistory)
-            code      = uH.UH_codeUserHistory 
-            statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
+    #    for uH in userHistoryList:
+    #        result    = oUserHistory.transformUserHistory(uH.UH_idUserHistory)
+    #        code      = uH.UH_codeUserHistory 
+    #        statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
          
-            dataTableSprint = [[code,statement,"",""]]
-            t_user_sprints  = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
-            story.append(t_user_sprints)
+    #        dataTableSprint = [[code,statement,"",""]]
+    #        t_user_sprints  = Table(dataTableSprint,tam_colums1,style=stylesTable1,hAlign='CENTER')
+    #        story.append(t_user_sprints)
 
-    story.append(PageBreak())
+    #story.append(PageBreak())
 
 
 	#--------------------------- Estructura Documento -------------------------
@@ -603,4 +633,4 @@ def generateDocument(idProduct,path):
 		                   tittle="Documento-Vision", author="APMwSc")
 	#Construimos el PDF
     document.build(story)
-    return True
+    return respond

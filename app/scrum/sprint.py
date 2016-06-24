@@ -47,24 +47,24 @@ def AActualizarEquipoSprint():
 def VEquipoSprint():
     #GET parameter
     idSprint = int(session['idSprint'])
-    idPila  = int(session['idPila'])
+    idPila   = int(session['idPila'])
     res = {}
-    #Action code goes here, res should be a JSON structure
-    if "actor" in session:
-        res['actor'] = session['actor']
-   # #Action code goes here, res should be a JSON structure
-    if 'usuario' not in session:
-        res['logout'] = '/'
-        return json.dumps(res)
    
     obTeam      = team()
-    teamList    = obTeam.getTeamDevs(idPila)
     oTeam       = subEquipoClass()
-    SubteamList = oTeam.getSubEquipo(idSprint)
+
+    teamList    = obTeam.getTeamDevs(idPila)
+
+    print("\nLista de desarrolladores ",teamList,"\n")
+
+    
+    subteamList = oTeam.getSubEquipo(idSprint)
+
+    print("\nLista de subEquipo ",subteamList,"\n")
 
     res['fEquipo']  =   { 'lista' : [ { 'miembro' : team.SEQ_username
                                       , 'rol'     : team.SEQ_rol
-                                      } for team in SubteamList
+                                      } for team in subteamList
                                     ]
                         }
     res['usuario']  = session['usuario']
@@ -79,7 +79,13 @@ def VEquipoSprint():
                                         } for user in teamList
                                       ]
 
-    #Action code ends here
+    
+    if "actor" in session:
+        res['actor'] = session['actor']
+
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        
     return json.dumps(res)
 
 
