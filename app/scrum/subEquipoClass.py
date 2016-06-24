@@ -10,8 +10,6 @@ from equipo import *
 # Declaracion de constantes.
 CONST_MAX_NAME_USERNAME = 17
 CONST_MIN_NAME_USERNAME = 1
-CONST_MIN_ROL = 11
-CONST_MAX_ROL = 14
 
 
 class subEquipoClass(object):
@@ -27,36 +25,22 @@ class subEquipoClass(object):
 
         aSubEquipo = clsSubEquipo.query.filter_by(SEQ_idSprint = idSprint).all()
 
-        return (aSubEquipo)
+        return aSubEquipo
 
-    def verifyScrumMaster(self,lista):
-        cant = 0
-        for miembro in lista:
-            if miembro['rol'] == "Scrum master":
-                cant += 1
-        if cant > 1:
-                return False
-        return True
-
-    def deleteMiembroSubEquipo(self, username, rol,idSprint):
+    def deleteMiembroSubEquipo(self, username,idSprint):
         '''Permite eliminar un miembro de un sub equipo'''
         checkTypeUsername = type(username) == str
-        checkTypeRol = type(rol) == str
         checkTypeIdSprint = type(idSprint) == int
         
-        if checkTypeUsername and checkTypeRol and checkTypeIdSprint:
+        if checkTypeUsername and checkTypeIdSprint:
             checkLongName = CONST_MIN_NAME_USERNAME <= len(username) <= CONST_MAX_NAME_USERNAME
-            checkLongRol = CONST_MIN_ROL <= len(rol) <= CONST_MAX_ROL
             checkLongIdSprint = CONST_MIN_ID <= idSprint               
              
-            
-            if checkLongName and checkLongRol:
+            if checkLongName:
                 foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint).all()
                
-                
                 if foundSprint != [] or idSprint == 0:
                     foundUser = clsUser.query.filter_by(U_username = username).all()
-                   
 
                     if foundUser != []:
                         foundMiembro = clsSubEquipo.query.filter_by(SEQ_username = username,SEQ_idSprint = idSprint).all()
@@ -65,86 +49,58 @@ class subEquipoClass(object):
                             for i in foundMiembro:
                                 db.session.delete(i)
                             db.session.commit()
-                            #print(self.getSubEquipo(idSprint) == [])
                             return True
 
 
         return False 
 
-    def insertMiembroSubEquipo(self,username,rol,idSprint):
+    def insertMiembroSubEquipo(self,username,idSprint):
         '''Permite insertar un miembro a un sub equipo'''
         
         checkTypeUsername = type(username) == str
-        checkTypeRol = type(rol) == str
         checkTypeIdSprint = type(idSprint) == int
         
-        if checkTypeUsername and checkTypeRol and checkTypeIdSprint:
-            checkLongName = CONST_MIN_NAME_USERNAME <= len(username) <= CONST_MAX_NAME_USERNAME
-            checkLongRol = CONST_MIN_ROL <= len(rol) <= CONST_MAX_ROL
+        if checkTypeUsername and checkTypeIdSprint:
+            checkLongName     = CONST_MIN_NAME_USERNAME <= len(username) <= CONST_MAX_NAME_USERNAME
             checkLongIdSprint = CONST_MIN_ID <= idSprint           
              
-            
-            if checkLongName and checkLongRol:
+            if checkLongName:
                 foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint).all()
                
-                
                 if foundSprint != [] or idSprint == 0:
                     foundUser = clsUser.query.filter_by(U_username = username).all()
                    
-
                     if foundUser != []:
                         foundMiembro = clsSubEquipo.query.filter_by(SEQ_username = username,SEQ_idSprint = idSprint).all()                    
                         
                         if foundMiembro == []:
-                            newMiembro = clsSubEquipo(username, rol, idSprint)
-                            db.session.add(newMiembro)
-                            db.session.commit()
-                            return True
-
-                        if foundMiembro[0].SEQ_rol != rol:
-                            self.deleteMiembroSubEquipo(username,foundMiembro[0].SEQ_rol,idSprint)
-                            newMiembro = clsEquipo(username, rol,idSprint)
+                            newMiembro = clsSubEquipo(username,idSprint)
                             db.session.add(newMiembro)
                             db.session.commit()
                             return True
 
         return False
 
+
     def actualizar(self,lista,idSprint):
         '''Permite actualizar la tabla sub equipo'''
-        idPila  = int(session['idPila'])
-
-        users = []
-        for elem in lista:
-            users += elem['miembro']
-
-        checkTypeId = type(idSprint) == int
         
-        if checkTypeId:
-            checkLongId = CONST_MIN_ID <= idSprint            
-             
-            if checkLongId:
-                foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint).all()
+        checkTypeId = type(idSprint) == int
+        checkLongId = CONST_MIN_ID <= idSprint 
+        
+        if checkTypeId and checkLongId:
+            
+            oldMmebers = clsSubEquipo.query.filter_by(SEQ_idSprint = idSprint).all()
                
-                
-                if foundSprint != [] or idSprint == 0:
-                    miembros = clsSubEquipo.query.filter_by(SEQ_idSprint = idSprint).all()
+            for o in oldMmebers:
+                if o.SEQ_username not in lista:
+                    self.deleteMiembroSubEquipo(o.SEQ_username,idSprint)
 
-                    if self.verifyScrumMaster(lista):
-                        for m in miembros:
-                            if m.SEQ_username not in users:
-                                self.deleteMiembroSubEquipo(m.SEQ_username, m.SEQ_rol,idSprint)
+            for new in lista:
+                self.insertMiembroSubEquipo(new,idSprint)
 
-                        for user in lista:
-                            username = user['miembro']
-                            self.insertMiembroSubEquipo(username,user['rol'],idSprint)
+            return True
 
-                        if self.getSubEquipo(idSprint) == []:
-                            oTeam      = team()
-                            teamList = oTeam.getTeamDevs(idPila)
-                            for member in teamList:
-                                self.insertMiembroSubEquipo(member.EQ_username,member.EQ_rol,idSprint)
-                        return True
         return False
 
 # Fin Clase Team

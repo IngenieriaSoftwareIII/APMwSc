@@ -24,18 +24,67 @@
     </div>
 </nav>
 
-    <form name="fEquipoForm" ng-submit="AActualizarEquipo0(fEquipoForm.$valid)" novalidate>
-            <input id="fEquipo_idProyecto" type="hidden" name="idProyecto" ng-model="fEquipo.idProyecto" />
-            <div ng-repeat="item_fEquipo in fEquipo.lista"><ng-form name="fEquipo_lista_form">
-            <div class="form-group" ng-class="{ 'has-error' :  fEquipoSubmitted && fEquipoForm.miembro.$invalid && fEquipoForm.miembro.$pristine && fEquipoSubmitted}"><label for="fEquipo_miembro">Miembro</label>:&nbsp;<select id="fEquipo_miembro" ng-model="item_fEquipo.miembro" required ng-options="item.key as item.value for item in fEquipo_opcionesMiembros"></select><p ng-show="fEquipoSubmitted && fEquipoForm.miembro.$invalid" class="help-block">Error en campo Miembro.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fEquipoSubmitted && fEquipoForm.rol.$invalid && fEquipoForm.rol.$pristine && fEquipoSubmitted}"><label for="fEquipo_rol">Rol</label>:&nbsp;<select id="fEquipo_rol" ng-model="item_fEquipo.rol" required ng-options="item.key as item.value for item in fEquipo_opcionesRol"></select><p ng-show="fEquipoSubmitted && fEquipoForm.rol.$invalid" class="help-block">Error en campo Rol.</p></div>
-            <a ng-click="elimMiembro($index)" class="btn btn-primary">-Miembro</a></ng-form></div>
-            <a ng-click="agrMiembro()" class="btn btn-primary">+Miembro</a>
+        <form name="fEquipoForm" ng-submit="AActualizarEquipo0(fEquipoForm.$valid)" novalidate>
+        <input id="fEquipo_idProyecto" type="hidden" name="idProyecto" ng-model="fEquipo.id" />
+        
+        <table class="table">
+            <tr>
+                <div class="form-group"
+                     ng-class="{'has-error' : fEquipoSumitted && fEquipoForm.productOwner.$invalid &&
+                                              fEquipoForm.productOwner.$pristine && fEquipoSumitted}">
+                <td width="30%">
+                    <label for="fEquipo_productOwner">Dueño del Producto:</label>
+                </td>
+                <td>
+                    <select id="fEquipo_productOwner" style='width:80%;' ng-model="fEquipo.productOwner"
+                            ng-options="item.key as item.value for item in 
+                            fEquipo_opcionesProductOwner">
+                    </select>
+                    <p ng-show="fEquipoSubmitted && fEquipoForm.productOwner.$invalid" class="help-block">
+                        Error en campo de Maestro Scrum.
+                    </p>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group"
+                    ng-class="{'has-error' : fEquipoSumitted && fEquipoForm.scrum.$invalid &&
+                                             fEquipoForm.scrum.$pristine && fEquipoSumitted}">
+                <td width="30%">
+                    <label for="fEquipo_scrum">Maestro Scrum:</label>
+                </td>
+                <td>
+                    <select id="fEquipo_scrum" style='width:80%;' ng-model="fEquipo.scrum"
+                            ng-options="item.key as item.value for item in 
+                            fEquipo_opcionesScrum">
+                    </select>
+                    <p ng-show="fEquipoSubmitted && fEquipoForm.scrum.$invalid" class="help-block">
+                        Error en campo de Maestro Scrum.
+                    </p>
+                </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group"
+                     ng-class="{ 'has-error' :  fEquipoSubmitted && fEquipoForm.miembro.$invalid &&             fEquipoForm.miembro.$pristine && fEquipoSubmitted}">
+                     <td width="30%">
+                        <label for="fEquipo_miembro">Miembros del Equipo:</label>&nbsp;
+                     </td>
+                     <td>
+                        <select id="fEquipo_miembro" style='width:80%;' ng-model="fEquipo.miembros" 
+                                required multiple ng-options="item.key as item.value for item in fEquipo_opcionesMiembros">
+                        </select>
+                        <p ng-show="fEquipoSubmitted && fEquipoForm.miembro.$invalid" class="help-block">Error en campo de los Miembros del Equipo.
+                        </p>
+                     </td>
+                </div>
+            </tr>
+        </table>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Actualizar
         </button>
     </form>
-    <hr />
-
+    <hr/>
 
 <div id="right"></div>
+
+

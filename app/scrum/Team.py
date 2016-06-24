@@ -38,9 +38,10 @@ class team(object):
     def getTeamDevs(self,idBacklog):
         '''Entrega la lista de desarrolladores de un equipo'''
 
-        aTeam = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog,EQ_rol = 'Desarrollador').all()
-
+        aTeam = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog,EQ_rol = 'Team member').all()
+        
         return (aTeam)
+
 
     def verifyScrumMaster(self,lista):
         cant = 0
@@ -101,12 +102,11 @@ class team(object):
                 foundBacklog = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()
                
                 
-                if foundBacklog != [] or idBacklog == 0:
+                if foundBacklog != []:
                     foundUser = clsUser.query.filter_by(U_username = username).all()
                    
-
                     if foundUser != []:
-                        foundMiembro = clsEquipo.query.filter_by(EQ_username = username, EQ_idBacklog = idBacklog).all()                       
+                        foundMiembro = clsEquipo.query.filter_by(EQ_username = username, EQ_idBacklog = idBacklog).all()                      
                         
                         if foundMiembro == []:
                             newMiembro = clsEquipo(username, rol, idBacklog)
@@ -125,31 +125,29 @@ class team(object):
 
     def actualizar(self,lista,idBacklog):
         '''Permite actualizar la tabla equipo'''
-        users = []
-        for elem in lista:
-            users += elem['miembro']
 
         checkTypeId = type(idBacklog) == int
-        
-        if checkTypeId:
-            checkLongId = CONST_MIN_ID <= idBacklog            
-             
-            if checkLongId:
-                foundBacklog = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()
-               
-                
-                if foundBacklog != [] or idBacklog == 0:
-                    miembros = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog).all()
+        checkLongId = CONST_MIN_ID <= idBacklog
 
-                    if self.verifyScrumMaster(lista):
-                        for miembro in miembros:
-                            if miembro.EQ_username not in users:
-                                self.deleteMiembro(miembro.EQ_username, miembro.EQ_rol, idBacklog)
+        if checkTypeId and checkLongId:
 
-                        for user in lista:
-                            username = user['miembro']
-                            self.insertMiembro(username,user['rol'],idBacklog)
-                        return True
+            #Obtenemos los miembros del equipo del producto.
+            oldMembers = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog).all()
+
+            newMembers = []
+            for m in lista:
+                newMembers.append(m['miembro'])
+
+            for old in oldMembers:
+
+                if old.EQ_username not in newMembers:
+                    self.deleteMiembro(old.EQ_username,old.EQ_rol,idBacklog)
+
+            for new in lista:
+                self.insertMiembro(new['miembro'],new['rol'],idBacklog)
+
+            return True
+
         return False
 
 # Fin Clase Team

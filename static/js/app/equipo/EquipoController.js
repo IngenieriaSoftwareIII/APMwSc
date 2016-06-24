@@ -13,21 +13,13 @@ scrumModule.controller('VEquipoController',
 
       equipoService.VEquipo({"idPila":$routeParams.idPila}).then(function (object) {
         $scope.res = object.data;
+        $scope.fEquipo = $routeParams.fEquipo;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
         if ($scope.logout) {
             $location.path('/');
         }
-
-
-$scope.agrMiembro = function () {
-  $scope.fEquipo.lista.push({miembro:null, rol:null})
-}
-$scope.elimMiembro = function (index) {
-  $scope.fEquipo.lista.splice(index, 1);
-}
-
 
       });
       $scope.VProducto1 = function(idPila) {
