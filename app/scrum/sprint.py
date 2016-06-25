@@ -54,6 +54,7 @@ def VEquipoSprint():
     idPila   = int(session['idPila'])
     
     oTeam    = team()
+    oUser    = user()
     oSubTeam = subEquipoClass()
 
     #Obtenemos los desarrolladores asociados al producto.
@@ -62,13 +63,18 @@ def VEquipoSprint():
     #Obtenemos los desarrolladores asociados al sprint.
     subteamList = oSubTeam.getSubEquipo(idSprint)
 
+    miembros = []
+    for s in subteamList:
+        miembros.append(s.SEQ_username)
+
     members = []
     for s in subteamList:
-        members.append(s.SEQ_username)
+        u = oUser.searchUser(s.SEQ_username)
+        members.append({'miembro':u[0].U_fullname + " (" + s.SEQ_username + ")",'usuario':s.SEQ_username})
 
-    res['fEquipo'] = {'miembros': members, 'id':idSprint}
+    res['fEquipo'] = {'miembros': miembros, 'id':idSprint}
 
-    res['fEquipo_opcionesMiembros'] = [{'key': user.EQ_username,'value': user.EQ_username} for user in teamList]
+    res['fEquipo_opcionesMiembros'] = [{'key': user['usuario'],'value': user['miembro']} for user in members]
 
     res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
@@ -775,7 +781,7 @@ def VSprint():
     #Lista de Historias
     res['data6'] =  [ { 'idHistoria' : hist['idHistory']
                       , 'prioridad'  : hist['priority']
-                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']
+                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']
                       , 'resumen'    : hist['resume']
                       } for hist in userHistories
                     ]

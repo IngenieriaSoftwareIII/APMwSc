@@ -6,6 +6,7 @@ from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.model       import *
 from app.scrum.Team        import *
+from app.scrum.user        import *
 from datetime              import datetime
 
 from werkzeug import secure_filename
@@ -298,6 +299,7 @@ def VCrearTarea():
       return json.dumps(res)
 
     # Buscamos la historia actual
+    oUser        = user()
     oUserHistory = userHistory()
     hist         = oUserHistory.searchIdUserHistory(idHistory)
 
@@ -312,7 +314,19 @@ def VCrearTarea():
     cateList    = clsCategory.query.all()
     oTeam       = team()
     found       = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
-    miembroList = oTeam.getTeam(found.UH_idBacklog)
+
+    #Obtenemos los miembros del equipo
+    members     = oTeam.getTeam(found.UH_idBacklog)
+    miembroList = []
+
+    #Quitamos al scrum master y al product owner
+    for m in members:
+
+        if m.EQ_rol == "Team member":
+            u = oUser.searchUser(m.EQ_username)
+
+            miembroList.append({'miembro':u[0].U_fullname + " (" + m.EQ_username + ")",'idEquipo':m.EQ_idEquipo})
+
 
     # Mostramos los datos en la vista
     ListaCompleta = []
@@ -332,8 +346,8 @@ def VCrearTarea():
                                       , 'value' : 'Sin asignacion'
                                       }
                                     ] + [ 
-                                      { 'key'   : miembro.EQ_idEquipo 
-                                      , 'value' : miembro.EQ_username
+                                      { 'key'   : miembro['idEquipo']
+                                      , 'value' : miembro['miembro']
                                       } for miembro in miembroList
                                     ]
 

@@ -83,9 +83,9 @@ def VEquipo():
     res['usuario'] = session['usuario']
     res['idPila']  = idPila
 
-    res['fEquipo_opcionesProductOwner'] = [{'key': user.U_username,'value': user.U_fullname} for user in productOwnerList]
-    res['fEquipo_opcionesScrum']        = [{'key': user.U_username,'value': user.U_fullname} for user in scrumMastersList]
-    res['fEquipo_opcionesMiembros']     = [{'key': user.U_username,'value': user.U_fullname} for user in teamMembersList]
+    res['fEquipo_opcionesProductOwner'] = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in productOwnerList]
+    res['fEquipo_opcionesScrum']        = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in scrumMastersList]
+    res['fEquipo_opcionesMiembros']     = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in teamMembersList]
 
     if "actor" in session:
         res['actor']=session['actor']
