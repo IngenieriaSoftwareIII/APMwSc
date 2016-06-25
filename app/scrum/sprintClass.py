@@ -9,6 +9,7 @@ from backLog import *
 from userHistory import *
 from task        import *
 from acceptanceCriteria import *
+from random import randint
 
 # Declaracion de constantes.
 MIN_ID                 = 1
@@ -25,27 +26,23 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	sprint_time_total_real= sprint_time_total
 	ideal_delta = sprint_time_total/sprint_time
 	fun_time = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_estimatedTime,x.HW_horasEmpleadas)
-	sprint_index=map(fun_time,filter(lambda x: x.HW_fechaFin is not None,sprint_tasks))
-	rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_time_total,},{"v": sprint_time_total,}]}]
-	i =1
+	sprint_index=list(map(fun_time,filter(lambda x: x.HW_fechaFin is not None,sprint_tasks)))
+	rows = [{"c":[{ "v": "Dia "+str(i)},{"v": sprint_time_total_real,},{"v": sprint_time_total-ideal_delta*i,}]} for i in range(0,sprint_time+1)]
 	
-	for x in sorted(sprint_index):
-		excess = x[1]-x[2]< 0
-		if excess:
-			sprint_time_total_real-=excess
+	for x in range(1,sprint_time+1):
+		tasks = list(filter(lambda y: y[0]==x,sprint_index))
+		print(tasks)
+		estimated_of_day = sum(map(lambda z: z[1],tasks))
+		real_of_day = sum(map(lambda z: z[2],tasks))
+		dif = estimated_of_day-real_of_day
+		if dif<0 :
+			sprint_time_total_real-=real_of_day
+			rows[x-1]['c'][1]['v'] -=dif 
+			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v'] - real_of_day
 		else:
-			sprint_time_total_real-=x[2]
-		if i == x[0]:
-			rows[-1]['c'][1]['v']=sprint_time_total_real
-			excess=False
-		else:
-			i+=1
-			sprint_time_total-=ideal_delta
-			excess=True
-			rows.append({"c":[{ "v": "Dia %s"%i},{"v":sprint_time_total_real, },{"v": sprint_time_total,}]})
-	if i < sprint_time:
-		rows+=[{"c":[{ "v": "Dia %s"%x},{"v":sprint_time_total_real, },{"v": sprint_time_total-ideal_delta*x,}]} for x in range(i+bool(excess),sprint_time)]
-	
+			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v']-estimated_of_day
+			
+		
 	data={"cols":   [ { "id"    : "days"
 	                  , "label" : "Dias del sprint"
 	                  , "type"  : "string"
