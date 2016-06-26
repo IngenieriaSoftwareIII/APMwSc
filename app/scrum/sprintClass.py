@@ -89,7 +89,7 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	sprint_tasks_total_real=sprint_tasks_total
 	#Building the bdchart
 	rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
-	for x in range(2,sprint_time):
+	for x in range(1,sprint_time):
 	    sprint_tasks_total-=ideal_delta
 	    sprint_tasks_total_real-=sprint_index.get(x,0)
 	    rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})

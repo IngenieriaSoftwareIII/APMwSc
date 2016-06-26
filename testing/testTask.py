@@ -1772,7 +1772,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY,False,None,1)
+         aTarea.updateTask('dwidjw','diifneo',1,1,1,True,TODAY,False,None,1)
 
          # Eliminamos historia, accion y producto
          aTarea.deleteTask('diifneo')
@@ -1807,7 +1807,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1846,7 +1846,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','diifneo',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','diifneo',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -1888,7 +1888,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','T',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1925,7 +1925,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw',140*'T',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1961,7 +1961,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(141*'T',idFound1,1,1,True,TODAY,False,None)
-         result  = aTarea.updateTask(141*'T',140*'T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(141*'T',140*'T',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -1996,7 +1996,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2033,7 +2033,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('OEdfeenfr','diifneo',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('OEdfeenfr','diifneo',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2069,7 +2069,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw',140*'T',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2105,7 +2105,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',0,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',0,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2141,7 +2141,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1000,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1000,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2177,7 +2177,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',None,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',None,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2213,7 +2213,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo','',1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo','',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2249,7 +2249,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,0,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,0,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2285,7 +2285,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,2**32,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,2**32,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2321,7 +2321,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,None,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2357,7 +2357,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,'',True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,'',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2395,7 +2395,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T','A',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T','A',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2431,7 +2431,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'A','',0,0,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'A','',0,0,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2467,7 +2467,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'A',141*'T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'A',141*'T',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2503,7 +2503,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'H',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'H',None,1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'H',None,1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2539,7 +2539,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','T',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2574,7 +2574,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T','',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T','',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2609,7 +2609,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         result  = aTarea.updateTask(141*'T','',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(141*'T','',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2644,7 +2644,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T','T',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T','T',1,1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2682,7 +2682,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('OEdfeenfr',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2718,7 +2718,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(None,None,1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(None,None,1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2754,7 +2754,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(None,'diifneo',1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(None,'diifneo',1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2790,7 +2790,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('dwidjw',1234,1,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('dwidjw',1234,1,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2826,7 +2826,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T',140*'A',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T',140*'A',1,2**31,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2862,7 +2862,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,2**31,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2898,7 +2898,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(141*'T','A',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(141*'T','A',1,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2933,7 +2933,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T',141*'A',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T',141*'A',1,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2969,7 +2969,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',2**31,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',2**31,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3005,7 +3005,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(141*'T',141*'A',2**31,1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(141*'T',141*'A',2**31,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3040,7 +3040,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T',141*'A',2**31,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T',141*'A',2**31,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3076,7 +3076,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('T','',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('T','',1,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3112,7 +3112,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','',1,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','',1,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3147,7 +3147,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',0,2**31,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',0,2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3183,7 +3183,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',0,0,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',0,0,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3219,7 +3219,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',1,None,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3255,7 +3255,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',None,None,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',None,None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3291,7 +3291,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',None,None,None,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',None,None,None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3327,7 +3327,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','',0,0,True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','',0,0,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3362,7 +3362,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'a',140*'a',True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'a',140*'a',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3398,7 +3398,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',1,140*'A',True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,140*'A',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3434,7 +3434,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'A',1,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'A',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3472,7 +3472,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask('','','','',True,TODAY,False,None,None)
+         result  = aTarea.updateTask('','','','',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3508,7 +3508,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(None,None,None,None,True,TODAY,False,None,None)
+         result  = aTarea.updateTask(None,None,None,None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3544,7 +3544,7 @@ class TestTask(unittest.TestCase):
 
          aTarea = task()
          aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'S',140*'R',True,TODAY,False,None,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'S',140*'R',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -5659,7 +5659,7 @@ class TestTask(unittest.TestCase):
         searchTask1 = searchTask1[0]
 
         # Completamos tarea
-        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
+        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight,searchTask1.HW_estimatedTime,searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5695,7 +5695,7 @@ class TestTask(unittest.TestCase):
 
         # Completamos historia
         badId = idprimera + 1
-        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
+        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight,searchTask1.HW_estimatedTime, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5735,7 +5735,7 @@ class TestTask(unittest.TestCase):
         
 
         # Completamos historia
-        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,False,None,5))
+        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight,searchTask1.HW_estimatedTime, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,False,None,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5771,7 +5771,7 @@ class TestTask(unittest.TestCase):
 
         # Completamos historia
         badId = idprimera + 1
-        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, False, TODAY,False,None,5))
+        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight,searchTask1.HW_estimatedTime,False, TODAY,False,None,5))
 
 
         # Eliminamos todo de la BD
