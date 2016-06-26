@@ -164,7 +164,7 @@ class task(object):
 
             
 
-            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive ):
+            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight):
                 foundTask = self.searchTask(HW_description)
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()

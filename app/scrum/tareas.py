@@ -188,7 +188,6 @@ def AModifTarea():
     startingDate        = params['fechaInicio']
     completed           = params['completed'  ]
     finishingDate       = params['fechaFin'   ]
-    hours_spent = params['Horas_Trabajadas']
 
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
@@ -217,7 +216,6 @@ def AModifTarea():
                                   , startingDate_object
                                   , completed
                                   , finishingDate_object
-                                  ,hours_spent
                                   )
 
     else:
