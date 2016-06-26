@@ -63,6 +63,8 @@ def VEquipo():
         {'key':'Scrum master', 'value':'Scrum master'},
       ]
 
+    print("Aquii",userList)
+
     res['fEquipo_opcionesMiembros'] =[{'key':user.U_username,'value': user.U_username} for user in userList]
 
     #Action code ends here

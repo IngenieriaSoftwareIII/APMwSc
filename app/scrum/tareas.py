@@ -188,6 +188,7 @@ def AModifTarea():
     startingDate        = params['fechaInicio']
     completed           = params['completed'  ]
     finishingDate       = params['fechaFin'   ]
+    hours_spent = params['Horas_Trabajadas']
 
     try:
         startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
@@ -202,6 +203,7 @@ def AModifTarea():
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     # Modificamos la tarea
     if startingDate_object.date() <= finishingDate_object.date():
+
         modify = oTarea.updateTask( result.HW_description
                                   , new_description
                                   , new_idCategoria
@@ -215,7 +217,9 @@ def AModifTarea():
                                   , startingDate_object
                                   , completed
                                   , finishingDate_object
+                                  ,hours_spent
                                   )
+
     else:
         modify = None
         res = results[1]

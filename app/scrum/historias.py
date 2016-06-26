@@ -596,7 +596,7 @@ def VHistorias():
     res['data0']      = [ { 'idHistoria' : hist['idHistory']
                           , 'prioridad'  : hist['priority']
                           , 'peso'       : oTask.lookup(pesos,hist['idHistory'])
-                          , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + 
+                          , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] + 
                                            ' para ' + hist['objectives']
                           } for hist in historiesSortedByPriority
                         ]

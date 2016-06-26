@@ -145,8 +145,9 @@ scrumModule.controller('VProductoController',
       $scope.VEquipo15 = function(idPila) {
         $location.path('/VEquipo/'+idPila);
       };
-
-
+      $scope.VCrearDocumento16 = function(idPila) {
+        $location.path('/VCrearDocumento/'+idPila);
+      };
 
       $scope.fPilaSubmitted = false;
       $scope.AModifProducto0 = function(isValid) {

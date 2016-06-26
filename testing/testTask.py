@@ -41,7 +41,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -51,7 +51,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
          aTarea.deleteTask('dwidjw')
@@ -76,7 +76,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -86,7 +86,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -112,7 +112,7 @@ class TestTask(unittest.TestCase):
 
           # Insertamos la historia
           aHist = userHistory()
-          aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+          aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
           searchHist = aHist.searchUserHistory('hIDBW',idFound0)
           idFound1 = searchHist[0].UH_idUserHistory
 
@@ -122,8 +122,8 @@ class TestTask(unittest.TestCase):
 
           # Insertamos la tarea
           aTarea = task()
-          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-          result = aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+          aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+          result = aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
           self.assertFalse(result)
 
           # Eliminamos la tarea, categoria, historia, accion y producto
@@ -152,7 +152,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -162,7 +162,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('', 1, 1,idFound1,True,TODAY)
+         result = aTarea.insertTask('', 1, 1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -190,7 +190,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -200,7 +200,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T', 1, 1, idFound1,True,TODAY)
+         result = aTarea.insertTask('T', 1, 1, idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -227,7 +227,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -237,7 +237,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -263,7 +263,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -273,7 +273,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -298,7 +298,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -308,7 +308,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,1,0,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,1,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -333,7 +333,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -343,7 +343,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,1,100,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,1,100,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -368,7 +368,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -378,7 +378,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,1,2**31,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,1,2**31,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -403,7 +403,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -413,7 +413,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',0,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',0,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -438,7 +438,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -448,7 +448,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',100,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',100,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -473,7 +473,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -483,7 +483,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',2**31,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',2**31,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -508,7 +508,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -518,7 +518,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,0,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,0,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -543,7 +543,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -553,7 +553,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,-1,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,-1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -578,7 +578,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -588,7 +588,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,2**31,idFound1,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,2**31,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -616,7 +616,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -626,7 +626,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -652,7 +652,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -662,7 +662,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -688,7 +688,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -698,7 +698,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result  = aTarea.insertTask(141*'A',1,1,100,True,TODAY)
+         result  = aTarea.insertTask(141*'A',1,1,100,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -723,7 +723,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -733,7 +733,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'H',1,1,100,True,TODAY)
+         result = aTarea.insertTask(140*'H',1,1,100,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -758,7 +758,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -768,7 +768,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('',1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -793,7 +793,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -803,7 +803,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T',1,1,0,True,TODAY)
+         result = aTarea.insertTask('T',1,1,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -828,7 +828,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -838,7 +838,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(141*'H',1,1,0,True,TODAY)
+         result = aTarea.insertTask(141*'H',1,1,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -863,7 +863,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -873,7 +873,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result  = aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
+         result  = aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
          self.assertTrue(result)
 
          # Eliminamos la tarea, categoria, historia, accion y producto
@@ -900,7 +900,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -910,7 +910,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T',2**31,2**31,2**31,True,TODAY)
+         result = aTarea.insertTask('T',2**31,2**31,2**31,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -935,7 +935,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -945,7 +945,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'T',2**31,2**31,2**31,True,TODAY)
+         result = aTarea.insertTask(140*'T',2**31,2**31,2**31,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -970,7 +970,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -980,7 +980,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T',0,0,idFound1,True,TODAY)
+         result = aTarea.insertTask('T',0,0,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1005,7 +1005,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1015,7 +1015,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('',2**31,2**31,0,True,TODAY)
+         result = aTarea.insertTask('',2**31,2**31,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1040,7 +1040,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1050,7 +1050,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('T',2**31,-1,idFound1,True,TODAY)
+         result = aTarea.insertTask('T',2**31,-1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1075,7 +1075,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1085,7 +1085,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'T',1,0,0,True,TODAY)
+         result = aTarea.insertTask(140*'T',1,0,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1110,7 +1110,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1120,7 +1120,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('',1,2**31,idFound1,True,TODAY)
+         result = aTarea.insertTask('',1,2**31,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1146,7 +1146,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1156,7 +1156,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(140*'T',2**31,1,0,True,TODAY)
+         result = aTarea.insertTask(140*'T',2**31,1,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1183,7 +1183,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1193,7 +1193,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('',0,0,0,True,TODAY)
+         result = aTarea.insertTask('',0,0,0,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1218,7 +1218,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1228,7 +1228,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result  = aTarea.insertTask(None,None,None,None,True,TODAY)
+         result  = aTarea.insertTask(None,None,None,None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1253,7 +1253,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1263,7 +1263,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask(None,1,1,idFound1,True,TODAY)
+         result = aTarea.insertTask(None,1,1,idFound1,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1288,7 +1288,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1298,7 +1298,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,1,None,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,1,None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1323,7 +1323,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1333,7 +1333,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw','gjasdfio',1,None,True,TODAY)
+         result = aTarea.insertTask('dwidjw','gjasdfio',1,None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1358,7 +1358,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1368,7 +1368,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',-98989562321,1,None,True,TODAY)
+         result = aTarea.insertTask('dwidjw',-98989562321,1,None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1393,7 +1393,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1403,7 +1403,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,'gjasdfio',None,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,'gjasdfio',None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1428,7 +1428,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1438,7 +1438,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la tarea
          aTarea = task()
-         result = aTarea.insertTask('dwidjw',1,-99559523232,None,True,TODAY)
+         result = aTarea.insertTask('dwidjw',1,-99559523232,None,True,TODAY,False,None)
          self.assertFalse(result)
 
          # Eliminamos la categoria, historia, accion y producto
@@ -1469,7 +1469,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1478,7 +1478,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          aTarea.getAllTask(idFound1)
 
          # Eliminamos historia, accion y producto
@@ -1504,7 +1504,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1513,7 +1513,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask(idFound1)
          self.assertNotEqual(result,[])
 
@@ -1540,7 +1540,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1549,7 +1549,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask(100)
          self.assertEqual(result,[])
 
@@ -1576,7 +1576,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1610,7 +1610,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1619,7 +1619,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask(2**31)
          self.assertEqual(result,[])
 
@@ -1648,7 +1648,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1657,7 +1657,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask(None)
          self.assertEqual(result,[])
 
@@ -1684,7 +1684,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1693,7 +1693,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask(0)
          self.assertEqual(result,[])
 
@@ -1720,7 +1720,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1729,7 +1729,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.getAllTask("uno")
          self.assertEqual(result,[])
 
@@ -1762,7 +1762,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1771,8 +1771,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY,False,None,1)
 
          # Eliminamos historia, accion y producto
          aTarea.deleteTask('diifneo')
@@ -1797,7 +1797,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1806,8 +1806,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1836,7 +1836,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1845,8 +1845,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','diifneo',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','diifneo',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -1878,7 +1878,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1887,8 +1887,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','T',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','T',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1915,7 +1915,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1924,8 +1924,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -1951,7 +1951,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1960,8 +1960,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(141*'T',idFound1,1,1,True,TODAY)
-         result  = aTarea.updateTask(141*'T',140*'T',1,1,True,TODAY)
+         aTarea.insertTask(141*'T',idFound1,1,1,True,TODAY,False,None)
+         result  = aTarea.updateTask(141*'T',140*'T',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -1986,7 +1986,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -1995,8 +1995,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2023,7 +2023,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2032,8 +2032,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('OEdfeenfr','diifneo',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('OEdfeenfr','diifneo',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2059,7 +2059,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2068,8 +2068,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw',140*'T',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2095,7 +2095,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2104,8 +2104,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',0,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',0,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2131,7 +2131,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2140,8 +2140,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1000,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1000,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2167,7 +2167,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2176,8 +2176,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',None,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',None,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2203,7 +2203,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2212,8 +2212,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo','',1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo','',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2239,7 +2239,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2248,8 +2248,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,0,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,0,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2275,7 +2275,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2284,8 +2284,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,2**32,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,2**32,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2311,7 +2311,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2320,8 +2320,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,None,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,None,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2347,7 +2347,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2356,8 +2356,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw','diifneo',1,'',True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw','diifneo',1,'',True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2385,7 +2385,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2394,8 +2394,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T','A',1,1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T','A',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2421,7 +2421,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2430,8 +2430,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'A','',0,0,True,TODAY)
+         aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'A','',0,0,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2457,7 +2457,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2466,8 +2466,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'A',141*'T',1,1,True,TODAY)
+         aTarea.insertTask(140*'A',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'A',141*'T',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2493,7 +2493,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2502,8 +2502,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'H',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'H',None,1,1,True,TODAY)
+         aTarea.insertTask(140*'H',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'H',None,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2529,7 +2529,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2538,8 +2538,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','T',1,1,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','T',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2564,7 +2564,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2573,8 +2573,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T','',1,1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T','',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2600,7 +2600,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2609,7 +2609,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         result  = aTarea.updateTask(141*'T','',1,1,True,TODAY)
+         result  = aTarea.updateTask(141*'T','',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2634,7 +2634,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2643,8 +2643,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T','T',1,1,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T','T',1,1,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2672,7 +2672,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2681,8 +2681,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('OEdfeenfr',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','',1,1,True,TODAY)
+         aTarea.insertTask('OEdfeenfr',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2708,7 +2708,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2717,8 +2717,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(None,None,1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(None,None,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2744,7 +2744,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2753,8 +2753,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(None,'diifneo',1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(None,'diifneo',1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2780,7 +2780,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2789,8 +2789,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('dwidjw',1234,1,1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('dwidjw',1234,1,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2816,7 +2816,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2825,8 +2825,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T',140*'A',1,2**31,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T',140*'A',1,2**31,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2852,7 +2852,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2861,8 +2861,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',1,2**31,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,2**31,True,TODAY,False,None,None)
          self.assertTrue(result)
 
          # Eliminamos historia, accion y producto
@@ -2888,7 +2888,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2897,8 +2897,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(141*'T','A',1,2**31,True,TODAY)
+         aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(141*'T','A',1,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2923,7 +2923,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2932,8 +2932,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T',141*'A',1,2**31,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T',141*'A',1,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2959,7 +2959,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -2968,8 +2968,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',2**31,2**31,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',2**31,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -2995,7 +2995,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3004,8 +3004,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(141*'T',141*'A',2**31,1,True,TODAY)
+         aTarea.insertTask(141*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(141*'T',141*'A',2**31,1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3030,7 +3030,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3039,8 +3039,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T',141*'A',2**31,2**31,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T',141*'A',2**31,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3066,7 +3066,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3075,8 +3075,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('T','',1,2**31,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('T','',1,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3102,7 +3102,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3111,8 +3111,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','',1,2**31,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','',1,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3137,7 +3137,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3146,8 +3146,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',0,2**31,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',0,2**31,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3173,7 +3173,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3182,8 +3182,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',0,0,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',0,0,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3209,7 +3209,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3218,8 +3218,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',1,None,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,None,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3245,7 +3245,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3254,8 +3254,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',None,None,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',None,None,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3281,7 +3281,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3290,8 +3290,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',None,None,None,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',None,None,None,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3317,7 +3317,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3326,8 +3326,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','',0,0,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','',0,0,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3352,7 +3352,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3361,8 +3361,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'a',140*'a',True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'a',140*'a',True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3388,7 +3388,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3397,8 +3397,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',1,140*'A',True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',1,140*'A',True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3424,7 +3424,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3433,8 +3433,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'A',1,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'A',1,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3462,7 +3462,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3471,8 +3471,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask('','','','',True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask('','','','',True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3498,7 +3498,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3507,8 +3507,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(None,None,None,None,True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(None,None,None,None,True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3534,7 +3534,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('hIDBW',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('hIDBW',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3543,8 +3543,8 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY)
-         result  = aTarea.updateTask(140*'T',140*'A',140*'S',140*'R',True,TODAY)
+         aTarea.insertTask(140*'T',1,1,idFound1,True,TODAY,False,None)
+         result  = aTarea.updateTask(140*'T',140*'A',140*'S',140*'R',True,TODAY,False,None,None)
          self.assertFalse(result)
 
          # Eliminamos historia, accion y producto
@@ -3576,7 +3576,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3585,7 +3585,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          aTarea.searchTask('dwidjw')
 
          # Eliminamos historia, accion y producto
@@ -3611,7 +3611,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3620,7 +3620,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('dwidjw')
          self.assertTrue(result)
 
@@ -3647,7 +3647,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3656,7 +3656,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('diifneo')
          self.assertFalse(result)
 
@@ -3685,7 +3685,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3694,7 +3694,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('T')
          self.assertTrue(result)
 
@@ -3722,7 +3722,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3731,7 +3731,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('T'*140)
          self.assertTrue(result)
 
@@ -3759,7 +3759,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3768,7 +3768,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('')
          self.assertFalse(result)
 
@@ -3795,7 +3795,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3804,7 +3804,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('A')
          self.assertFalse(result)
 
@@ -3831,7 +3831,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3840,7 +3840,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('A'*140)
          self.assertFalse(result)
 
@@ -3869,7 +3869,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3878,7 +3878,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask(None)
          self.assertFalse(result)
 
@@ -3905,7 +3905,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3914,7 +3914,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask(' ')
          self.assertFalse(result)
 
@@ -3941,7 +3941,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3950,7 +3950,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask(88)
          self.assertFalse(result)
 
@@ -3977,7 +3977,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -3986,7 +3986,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask([])
          self.assertFalse(result)
 
@@ -4013,7 +4013,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4022,7 +4022,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask({})
          self.assertFalse(result)
 
@@ -4049,7 +4049,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4058,7 +4058,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
          result = aTarea.searchTask('a'*((2^31)-1))
          self.assertFalse(result)
 
@@ -4092,7 +4092,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4101,7 +4101,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('dwidjw')
@@ -4127,7 +4127,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4136,7 +4136,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('diifneo')
@@ -4164,7 +4164,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4173,7 +4173,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('T')
@@ -4199,7 +4199,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4208,7 +4208,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('T'*140)
@@ -4233,7 +4233,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4242,7 +4242,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('A')
@@ -4268,7 +4268,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4277,7 +4277,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T'*140,1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('A'*140)
@@ -4303,7 +4303,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4312,7 +4312,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('')
@@ -4338,7 +4338,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4347,7 +4347,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('')
@@ -4375,7 +4375,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4384,7 +4384,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask(' ',1,1,idFound1,True,TODAY)
+         aTarea.insertTask(' ',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask(' ')
@@ -4409,7 +4409,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4418,7 +4418,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask(88)
@@ -4444,7 +4444,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4453,7 +4453,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask(None)
@@ -4479,7 +4479,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist      = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4488,7 +4488,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask([])
@@ -4514,7 +4514,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist      = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4523,7 +4523,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask({})
@@ -4549,7 +4549,7 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist      = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4558,7 +4558,7 @@ class TestTask(unittest.TestCase):
          aCategory.insertCategory('wofhweoifh',1)
 
          aTarea    = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
 
          # Eliminamos historia, accion y producto
          result = aTarea.deleteTask('T'*((2^31)-1))
@@ -4592,7 +4592,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist      = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4602,7 +4602,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(idFound1)
@@ -4635,7 +4635,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist      = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4645,7 +4645,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(0)
@@ -4674,10 +4674,10 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist      = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1   = searchHist[0].UH_idUserHistory
-        aHist.insertUserHistory('BIEEIEB12',idFound1, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB12',idFound1, 1,idFound, idFound0,1,True,TODAY,False,None)
 
         searchHist2 = aHist.searchUserHistory('BIEEIEB12',idFound0)
         idFound2    = searchHist2[0].UH_idUserHistory
@@ -4688,8 +4688,8 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound2,True,TODAY)
-        aTarea.insertTask('dwasidjw',1,5,idFound2,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound2,True,TODAY,False,None)
+        aTarea.insertTask('dwasidjw',1,5,idFound2,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(idFound1)
@@ -4720,7 +4720,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist      = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1   = searchHist[0].UH_idUserHistory
 
@@ -4731,11 +4731,11 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        aTarea.insertTask('dwasidjw',1,5,idFound1,True,TODAY)
-        aTarea.insertTask('uyrwuwry',2,9,idFound1,True,TODAY)
-        aTarea.insertTask('iophkjmbnb',2,6,idFound1,True,TODAY)
-        aTarea.insertTask('qazxc',1,8,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
+        aTarea.insertTask('dwasidjw',1,5,idFound1,True,TODAY,False,None)
+        aTarea.insertTask('uyrwuwry',2,9,idFound1,True,TODAY,False,None)
+        aTarea.insertTask('iophkjmbnb',2,6,idFound1,True,TODAY,False,None)
+        aTarea.insertTask('qazxc',1,8,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(idFound1)
@@ -4769,10 +4769,10 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist       = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist  = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1    = searchHist[0].UH_idUserHistory
-        aHist.insertUserHistory('BIEEIEB12',idFound1, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB12',idFound1, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist2 = aHist.searchUserHistory('BIEEIEB12',idFound0)
         idFound2    = searchHist2[0].UH_idUserHistory
 
@@ -4783,8 +4783,8 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound2,True,TODAY)
-        aTarea.insertTask('dwasidjw',2,6,idFound2,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound2,True,TODAY,False,None)
+        aTarea.insertTask('dwasidjw',2,6,idFound2,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(idFound2)
@@ -4816,7 +4816,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4826,7 +4826,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(2**31)
@@ -4857,7 +4857,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4867,7 +4867,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight('uasshj')
@@ -4896,7 +4896,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4906,7 +4906,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(-215848774)
@@ -4935,7 +4935,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
@@ -4945,7 +4945,7 @@ class TestTask(unittest.TestCase):
 
         # Insertamos las tareas
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
 
         # Obtenemos el peso de la historia
         result = aTarea.historyWeight(None)
@@ -4981,12 +4981,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2)]
          r = aTarea.lookup(l,idFound1)
 
@@ -5012,12 +5012,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2),(idFound1,20)]
          result  = aTarea.lookup(l,idFound1)
          self.assertNotEqual('',result)
@@ -5047,12 +5047,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2)]
          result  = aTarea.lookup(l,0)
          self.assertEqual('',result)
@@ -5080,12 +5080,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2)]
          result  = aTarea.lookup(l,100)
          self.assertEqual('',result)
@@ -5113,12 +5113,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2)]
          result  = aTarea.lookup(l,2**31)
          self.assertEqual('',result)
@@ -5146,12 +5146,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1),(2,2)]
          result  = aTarea.lookup(l,None)
          self.assertEqual('',result)
@@ -5179,12 +5179,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = []
          result  = aTarea.lookup(l,1)
          self.assertEqual('',result)
@@ -5212,12 +5212,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,1)]
          result  = aTarea.lookup(l,1)
          self.assertNotEqual('',result)
@@ -5245,12 +5245,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(2,1)]
          result  = aTarea.lookup(l,1)
          self.assertEqual('',result)
@@ -5278,12 +5278,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [None]
          result  = aTarea.lookup(l,1)
          self.assertEqual('',result)
@@ -5311,12 +5311,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = None
          result  = aTarea.lookup(l,1)
          self.assertEqual('',result)
@@ -5346,12 +5346,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,2),2]
          result  = aTarea.lookup(l,1)
          self.assertNotEqual('',result)
@@ -5379,12 +5379,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = ['a',(2,1)]
          result  = aTarea.lookup(l,2)
          self.assertEqual('',result)
@@ -5412,12 +5412,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [(1,2),None,(2,1)]
          result  = aTarea.lookup(l,2)
          self.assertEqual('',result)
@@ -5445,12 +5445,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = []
          result  = aTarea.lookup(l,None)
          self.assertEqual('',result)
@@ -5478,12 +5478,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = []
          result  = aTarea.lookup(l,0)
          self.assertEqual('',result)
@@ -5513,12 +5513,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = None
          result  = aTarea.lookup(l,None)
          self.assertEqual('',result)
@@ -5546,12 +5546,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [None]
          result  = aTarea.lookup(l,None)
          self.assertEqual('',result)
@@ -5579,12 +5579,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = [None]
          result  = aTarea.lookup(l,"abc")
          self.assertEqual('',result)
@@ -5612,12 +5612,12 @@ class TestTask(unittest.TestCase):
 
          # Insertamos la historia
          aHist = userHistory()
-         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+         aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
          searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
          idFound1 = searchHist[0].UH_idUserHistory
 
          aTarea = task()
-         aTarea.insertTask('T',1,1,idFound1,True,TODAY)
+         aTarea.insertTask('T',1,1,idFound1,True,TODAY,False,None)
          l = []
          result  = aTarea.lookup(l,2**1)
          self.assertEqual('',result)
@@ -5647,18 +5647,19 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
         # Insertamos Tarea
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
         searchTask1 = aTarea.searchTask('dwidjw')
         idprimera = searchTask1[0].HW_idTask
+        searchTask1 = searchTask1[0]
 
         # Completamos tarea
-        self.assertEqual ((aTarea.completeTask(idFound1)),True)
+        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5681,19 +5682,20 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
         # Insertamos tarea
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
         searchTask1 = aTarea.searchTask('dwidjw')
         idprimera = searchTask1[0].HW_idTask
+        searchTask1=searchTask1[0]
 
         # Completamos historia
         badId = idprimera + 1
-        self.assertEqual ((aTarea.completeTask(badId)),False)
+        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,True,TODAY,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5701,146 +5703,7 @@ class TestTask(unittest.TestCase):
         aAcc.deleteAccion('cinrohbwidia', idFound0)
         aBacklog.deleteProduct('Podn fjdd.')
 
-     def testCompletarTareaIdNeg(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = -1
-        self.assertEqual ((aTarea.completeTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testCompletarTareaIdFloat(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = 1.2
-        self.assertEqual ((aTarea.completeTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testCompletarTareaIdString(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = "mala idea"
-        self.assertEqual ((aTarea.completeTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testCompletarTareaIdBool(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = False
-        self.assertEqual ((aTarea.completeTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
+    
     #########################
     #  INCOMPLETE HISTORY   #
     #########################
@@ -5860,18 +5723,19 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
         # Insertamos Tarea
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
         searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
+        searchTask1=searchTask1[0]
+        
 
         # Completamos historia
-        self.assertEqual ((aTarea.incompleteTask(idFound1)),True)
+        self.assertTrue(aTarea.updateTask(searchTask1.HW_description,searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, searchTask1.HW_iniciado, searchTask1.HW_fechaInicio,False,None,5))
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
@@ -5894,171 +5758,24 @@ class TestTask(unittest.TestCase):
 
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY,False,None)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory
 
         # Insertamos Tarea
         aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
+        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY,False,None)
         searchTask1 = aTarea.searchTask('dwidjw')
         idprimera = searchTask1[0].HW_idTask
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
+        searchTask1 = searchTask1[0]
 
         # Completamos historia
         badId = idprimera + 1
-        self.assertEqual ((aTarea.incompleteTask(badId)),False)
+        self.assertFalse(aTarea.updateTask("lol",searchTask1.HW_description,searchTask1.HW_idCategory,searchTask1.HW_weight, False, TODAY,False,None,5))
+
 
         # Eliminamos todo de la BD
         aTarea.deleteTask('dwidjw')
         aHist.deleteUserHistory(idFound1)
         aAcc.deleteAccion('cinrohbwidia', idFound0)
         aBacklog.deleteProduct('Podn fjdd.')
-
-
-     def testIncompleteTareaIdNeg(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = -1
-        self.assertEqual ((aTarea.incompleteTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testIncompleteTareaIdFloat(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = 1.2
-        self.assertEqual ((aTarea.incompleteTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testIncompleteTareaIdString(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = "mala idea"
-        self.assertEqual ((aTarea.incompleteTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-     def testIncompleteTareaIdBool(self):
-        # Insertamos Producto
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
-        searchBacklog = aBacklog.findName('Podn fjdd.')
-        idFound0 = searchBacklog[0].BL_idBacklog
-
-        # Insertamos la accion
-        aAcc = accions()
-        aAcc.insertAccion('cinrohbwidia',idFound0)
-        search = aAcc.searchAccion('cinrohbwidia',idFound0)
-        idFound = search[0].AC_idAccion
-
-        # Insertamos la historia
-        aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1,True,TODAY)
-        searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
-        idFound1 = searchHist[0].UH_idUserHistory
-
-        # Insertamos Tarea
-        aTarea = task()
-        aTarea.insertTask('dwidjw',1,1,idFound1,True,TODAY)
-        searchTask1 = aTarea.searchTask('dwidjw')
-        idprimera = searchTask1[0].HW_idTask
-
-        # Completamos historia
-        badId = False
-        self.assertEqual ((aTarea.incompleteTask(badId)),False)
-
-        # Eliminamos todo de la BD
-        aTarea.deleteTask('dwidjw')
-        aHist.deleteUserHistory(idFound1)
-        aAcc.deleteAccion('cinrohbwidia', idFound0)
-        aBacklog.deleteProduct('Podn fjdd.')
-
-#Fin de los casos de prueba

@@ -19,7 +19,12 @@ arrayType = [True,False]
 class objective(object):
     '''Clase que permite manejar los objetivos de manera persistente'''
 
-    def insertObjective(self,descObjective, idBacklog,objFunc,objType):
+    def getAllObjectives(self,idBacklog):
+        '''Permite obtener todos los objetivos asociados a un producto.'''
+        return (clsObjective.query.filter_by(O_idBacklog = idBacklog).all())
+
+
+    def insertObjective(self,descObjective,idBacklog,objFunc,objType):
         '''Permite insertar un Objetivo'''
         
         checkObjType = objType in arrayType
@@ -165,7 +170,8 @@ class objective(object):
                 found = clsObjective.query.filter_by(O_descObjective = descObjective,O_idBacklog = idBacklog).all()
 
                 if found != []:  
-                    tupla = clsObjective.query.filter_by(O_descObjective = descObjective).first()   
+                    tupla = clsObjective.query.filter_by(O_descObjective = descObjective).first()  
+                    #idHistories = clsObjectivesUserHistory.query.filter_by(OUH_idObjective = idBacklog).all() 
                     db.session.delete(tupla)     
                     db.session.commit()
                     return True

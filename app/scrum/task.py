@@ -128,6 +128,7 @@ class task(object):
         return oTask
 
 
+
     def updateTask  ( self
                     , HW_description
                     , newDescription
@@ -142,6 +143,7 @@ class task(object):
                     , HW_fechaInicio
                     , HW_completed
                     , HW_fechaFin):
+
         '''Permite actualizar la descripcion de una tarea'''
 
         typedescription    = (type(HW_description)  == str)
@@ -158,22 +160,23 @@ class task(object):
             long_HW_description = MIN_TASK_DESCRIPTION <= len(HW_description) <= MAX_TASK_DESCRIPTION
             long_newDescription = MIN_TASK_DESCRIPTION <= len(newDescription) <= MAX_TASK_DESCRIPTION
             min_C_idCategory    = C_idCategory >= MIN_ID
-            min_HW_weight       = HW_weight    >= MIN_WEIGHT
+            min_HW_weight       = HW_weight >= MIN_WEIGHT
 
-            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight):
+            
+
+            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive ):
                 foundTask = self.searchTask(HW_description)
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
 
-                if HW_fechaInicio <= HW_fechaFin:
-                    if ((foundTask != []) and 
-                        (foundCat  != []) and 
-                        ((foundNew == []) or (HW_description == newDescription))):
-                        oTask                   = clsTask.query.filter_by(HW_description = HW_description).first()
-                        oTask.HW_description    = newDescription
-                        oTask.HW_idCategory     = C_idCategory
-                        oTask.HW_weight         = HW_weight
+                if HW_fechaFin is None or  HW_fechaInicio <= HW_fechaFin:
+                    if ((foundTask != []) and (foundCat != []) and ((foundNew == []) or (HW_description == newDescription))):
+                        oTask                = clsTask.query.filter_by(HW_description = HW_description).first()
+                        oTask.HW_description = newDescription
+                        oTask.HW_idCategory  = C_idCategory
+                        oTask.HW_weight      = HW_weight
                         oTask.HW_estimatedTime  = HW_estimatedTime
+
                         oTask.HW_iniciado       = HW_iniciado
                         oTask.HW_fechaInicio    = HW_fechaInicio
                         oTask.HW_completed      = HW_completed

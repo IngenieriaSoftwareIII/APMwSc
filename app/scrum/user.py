@@ -19,7 +19,7 @@ class user(object):
     '''Clase que permite manejar usuarios de manera persistente'''
     
     def getAllUsers(self):
-        '''Permite obtener todos los productos de la tabla'''
+        '''Permite obtener todos los usuarios de la tabla'''
         
         result = clsUser.query.all()
         return result
