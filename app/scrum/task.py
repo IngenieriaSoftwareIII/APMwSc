@@ -149,9 +149,9 @@ class task(object):
             min_C_idCategory    = C_idCategory >= MIN_ID
             min_HW_weight       = HW_weight >= MIN_WEIGHT
             hours_spent_positive =HW_horasEmpleadas is None  or  HW_horasEmpleadas>0
-            
+            hours_estimaed_positive = HW_estimatedTime>0
 
-            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive ):
+            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive and hours_estimaed_positive):
                 foundTask = self.searchTask(HW_description)
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()

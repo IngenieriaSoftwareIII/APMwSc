@@ -31,7 +31,6 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	
 	for x in range(1,sprint_time+1):
 		tasks = list(filter(lambda y: y[0]==x,sprint_index))
-		print(tasks)
 		estimated_of_day = sum(map(lambda z: z[1],tasks))
 		real_of_day = sum(map(lambda z: z[2],tasks))
 		dif = estimated_of_day-real_of_day
