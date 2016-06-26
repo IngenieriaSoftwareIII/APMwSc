@@ -77,7 +77,7 @@ def ARegistrar():
         newEmail    = params['correo']
         newActor    = params['actorScrum']
 
-        oLogin = login()
+        oLogin = login() 
         oUser  = user()
 
         checkNewUser     = oUser.isFound(newUser)

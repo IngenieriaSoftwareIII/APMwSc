@@ -201,7 +201,7 @@ scrumModule.controller('VDesempenoController',
       $scope.msg = '';
       sprintService.VDesempeno({"idSprint":$routeParams.idSprint}).then(function (object) {
         $scope.res = object.data;
-	$scope.time_weight = false;
+	$scope.time_weight = true;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
