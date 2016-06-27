@@ -142,6 +142,30 @@
             </tr>
             <tr>
                 <div class="form-group" 
+                     ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.Horas_Trabajadas.$invalid && fTareaForm.Horas_Trabajadas.$pristine && fTareaSubmitted}">
+                    <td width="40%">
+                        <label for="fTarea_Horas_Trabajadas">
+                            Tiempo Empleadoo (horas)
+                        </label>
+                    </td>
+                    <td>
+                        <input id="fTarea_Horas_Trabajadas" 
+	                        name="Horas_Trabajadas" 
+	                        type="number" 
+	                        class="form-control" 
+	                        ng-model="fTarea.Horas_Trabajadas" 
+	                        ng-disabled = "actor!='desarrollador'"
+	                        placeholder="Horas Trabajas Reales"  
+	                        style       = 'width:80%;'
+	                        ng-minlength="1"/>
+                        <p ng-show="fTareaSubmitted && fTareaForm.tiempo.$invalid" class="help-block">
+                            Error en campo Tiempo Empleado.
+                        </p>
+                    </td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group" 
                      ng-class="{ 'has-error' :  fTareaForm.interaccion.$invalid  && fTareaSubmitted &&
                                                 fTareaForm.interaccion.$pristine }" >
                     <td width="40%">
@@ -250,7 +274,7 @@
                         </label>
                     </td>
                     <td>
-                       <input id="fTarea_fechini" style='width:80%;' type="text" name="fechini" class="form-control" ng-model="fTarea.fechaInicio" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p>
+                       <input id="fTarea_fechini" style='width:80%;' type="date" name="fechini" class="form-control" ng-model="fTarea.fechaInicio" placeholder="dd/mm/aaaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechini.$invalid" class="help-block">Error en campo Fecha de inicio.</p>
                     </td>
                 </div>
             </tr>
@@ -276,7 +300,7 @@
                         <label for="fTarea_fechaFin">Fecha de Culminación</label>
                     </td>
                     <td>
-                        <input id="fTarea_fechaFin" style='width:80%;' type="text" name="fechaFin" class="form-control" ng-model="fTarea.fechaFin" placeholder="dd/mm/aaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechaFin.$invalid" class="help-block">Error en campo Fecha de culminación.</p>
+                        <input id="fTarea_fechaFin" style='width:80%;' type="date" name="fechaFin" class="form-control" ng-model="fTarea.fechaFin" placeholder="dd/mm/aaaa" /><p ng-show="fTareaSubmitted && fTareaForm.fechaFin.$invalid" class="help-block">Error en campo Fecha de culminación.</p>
                     </td>
                 </div>
             </tr>

@@ -355,6 +355,7 @@ class clsTask(db.Model):
     HW_idEquipo      = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
     HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     HW_estimatedTime = db.Column(db.Integer)
+    HW_horasEmpleadas= db.Column(db.Integer)
     HW_interaccion   = db.Column(db.Integer)
     HW_reglasNegocio = db.Column(db.Integer)
     HW_usoEntidades  = db.Column(db.Integer)
@@ -388,6 +389,7 @@ class clsTask(db.Model):
         self.HW_completed     = completed
         self.HW_fechaFin      = fechaFin
         self.HW_estimatedTime = 1
+        self.HW_horasEmpleadas= None
         self.HW_interaccion   = 1
         self.HW_reglasNegocio = 1
         self.HW_usoEntidades  = 1

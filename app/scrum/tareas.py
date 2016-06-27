@@ -188,22 +188,31 @@ def AModifTarea():
     startingDate        = params['fechaInicio']
     completed           = params['completed'  ]
     finishingDate       = params['fechaFin'   ]
+    hours_spent         = params['Horas_Trabajadas']
 
     try:
-        startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
-        finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
+        startingDate_object = datetime.strptime(startingDate, '%Y-%m-%d')
+    except TypeError:
+        startingDate_object = None
     except ValueError:
         res     = results[1]
         res['label'] = res['label'] + '/'+str(idHistoria)
         return json.dumps(res)
-
+    
+    try:
+        finishingDate_object = datetime.strptime(finishingDate, '%Y-%m-%d')
+    except TypeError:
+        finishingDate_object = None
+    except ValueError:
+        res     = results[1]
+        res['label'] = res['label'] + '/'+str(idHistoria)
+        return json.dumps(res)
+    
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     # Modificamos la tarea
-    if startingDate_object.date() <= finishingDate_object.date():
-
-        modify = oTarea.updateTask( result.HW_description
+    modify = oTarea.updateTask( result.HW_description
                                   , new_description
                                   , new_idCategoria
                                   , new_taskPeso
@@ -216,12 +225,11 @@ def AModifTarea():
                                   , startingDate_object
                                   , completed
                                   , finishingDate_object
+                                  ,hours_spent
                                   )
-
-    else:
-        modify = None
+    if not modify:
         res = results[1]
-        res['msg'][0] = res['msg'][0] + ": La fecha de culminación debe ser mayor o igual que la de inicio."
+#        res['msg'][0] = res['msg'][0]  + ": La fecha de culminación debe ser mayor o igual que la de inicio."
 
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
@@ -407,9 +415,14 @@ def VTarea():
                                           , 'value' : "Complejo"
                                           } 
                                         ]
-
-    startingDate_object_new  = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
-    finishingDate_object_new = datetime.strftime(result.HW_fechaFin,    '%d/%m/%Y')
+    try:
+        startingDate_object_new  = datetime.strftime(result.HW_fechaInicio, '%Y-%m-%d')
+    except TypeError:
+        startingDate_object_new = result.HW_fechaInicio
+    try:
+        finishingDate_object_new = datetime.strftime(result.HW_fechaFin,    '%Y-%m-%d')
+    except TypeError:
+        finishingDate_object_new = result.HW_fechaFin
 
     res['fTarea'] = { 'idHistoria'   : idHistoria
                     , 'idTarea'      : idTarea
@@ -426,6 +439,7 @@ def VTarea():
                     , 'reglasNegocio' : result.HW_reglasNegocio
                     , 'usoEntidades' : result.HW_usoEntidades
                     , 'operacionesDB': result.HW_operacionesDB
+                    , 'Horas_Trabajadas': result.HW_horasEmpleadas
                     }
 
     session['idTarea']    = idTarea

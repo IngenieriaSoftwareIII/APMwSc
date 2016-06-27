@@ -201,16 +201,27 @@ scrumModule.controller('VDesempenoController',
       $scope.msg = '';
       sprintService.VDesempeno({"idSprint":$routeParams.idSprint}).then(function (object) {
         $scope.res = object.data;
+	$scope.time_weight = true;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
         if ($scope.logout) {
             $location.path('/');
         }
+	$scope.bdchart=$scope.bdchart_points;
       });
       $scope.VSprint0 = function(idSprint) {
         $location.path('/VSprint/'+idSprint);
       };
+	$scope.Vtime_weight = function(){
+		if ($scope.time_weight){
+			$scope.bdchart=$scope.bdchart_time;
+		}else {
+			$scope.bdchart=$scope.bdchart_points;
+		}
+		$scope.time_weight = !$scope.time_weight;
+	};
+
 
     }]);
 
