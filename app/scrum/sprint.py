@@ -785,7 +785,7 @@ def VSprint():
     #Lista de Historias
     res['data6'] =  [ { 'idHistoria' : hist['idHistory']
                       , 'prioridad'  : hist['priority']
-                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']
+                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']
                       , 'resumen'    : hist['resume']
                       } for hist in userHistories
                     ]
@@ -1063,6 +1063,8 @@ def VDesempeno():
     
     #Sprint
     sprint_tasks = oSprint.getAssignedSprintTask(int(idSprint),idPila)
+    for x in sprint_tasks:
+        print(x.HW_fechaInicio,x.HW_fechaFin)
     bdchart = bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date)
     bdchart_points = bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date)
     res['usuario']  = session['usuario']

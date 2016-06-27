@@ -26,9 +26,9 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	sprint_time_total_real= sprint_time_total
 	ideal_delta = sprint_time_total/sprint_time
 	fun_time = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_estimatedTime,x.HW_horasEmpleadas)
-	sprint_index=list(map(fun_time,filter(lambda x: x.HW_fechaFin is not None,sprint_tasks)))
+	sprint_index=list(map(fun_time,filter(lambda x: x.HW_iniciado and x.HW_completed ,sprint_tasks)))
 	rows = [{"c":[{ "v": "Dia "+str(i)},{"v": sprint_time_total_real,},{"v": sprint_time_total-ideal_delta*i,}]} for i in range(0,sprint_time+1)]
-	
+	print(sprint_index)
 	for x in range(1,sprint_time+1):
 		tasks = list(filter(lambda y: y[0]==x,sprint_index))
 		estimated_of_day = sum(map(lambda z: z[1],tasks))
@@ -80,7 +80,7 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	
 	sprint_time=(sprint_end_date-sprint_start_date).days
 	fun_weight = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight)
-	sprint_index = filter(lambda x: x.HW_fechaFin is not None, sprint_tasks)
+	sprint_index = filter(lambda x: x.HW_iniciado and x.HW_completed, sprint_tasks)
 	sprint_index = map(fun_weight,sprint_index) 
 	sprint_index = dict(sprint_index)
 	sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
@@ -132,7 +132,6 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	            }
 	bdchart["data"] = data
 	return bdchart
-
 
 class sprints(object):
     '''Clase que permite manejar los sprints de manera persistente'''
@@ -337,12 +336,12 @@ class sprints(object):
                 return True
         return False
 
+
     def assignSprintAcceptanceCriteria(self, sprintNumber, idBacklog, idAC):
         ''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
         checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
         checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
         checkidAC = type(idAC) == int and MIN_ID <= idAC
-
         if checkSprintNumber and checkidBacklog and checkidAC:
             oAcceptanceCriteria = acceptanceCriteria()
             criterio = oAcceptanceCriteria.getACById(idAC)
