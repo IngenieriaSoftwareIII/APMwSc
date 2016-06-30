@@ -21,6 +21,7 @@ MAX_SPRINT_NUMBER = 1000
 
 def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	sprint_time=(sprint_end_date-sprint_start_date).days
+	assert sprint_time>0
 	fun_time = lambda x: x.HW_estimatedTime
 	sprint_time_total = sum(map(fun_time,sprint_tasks))
 	sprint_time_total_real= sprint_time_total
@@ -76,8 +77,8 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	return bdchart
 		
 def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
-	
 	sprint_time=(sprint_end_date-sprint_start_date).days
+	assert sprint_time >0
 	fun_weight = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight)
 	sprint_index = filter(lambda x: x.HW_iniciado and x.HW_completed, sprint_tasks)
 	sprint_index = map(fun_weight,sprint_index) 
@@ -86,7 +87,7 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	ideal_delta= sprint_tasks_total/sprint_time
 	sprint_tasks_total_real=sprint_tasks_total
 	#Building the bdchart
-	rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
+	rows = [{"c":[{ "v": "Dia 0"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
 	for x in range(1,sprint_time):
 	    sprint_tasks_total-=ideal_delta
 	    sprint_tasks_total_real-=sprint_index.get(x,0)
