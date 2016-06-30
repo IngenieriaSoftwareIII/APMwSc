@@ -22,19 +22,21 @@ def AActualizarEquipoSprint():
     results = [{'label':'/VEquipoSprint', 'msg':['Sub Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar el Sub equipo']}, ]
     res     = results[1]
     
+    members = params['miembros']
+
     #Action code goes here, res should be a list with a label and a message
     idSprint  = int(session['idSprint'])
     idPila    = int(session['idPila'])
-    obTeam    = team()
-    idEquipo  = obTeam.getTeamId(idPila)
-    lista     = params['lista']    
-    oTeam     = subEquipoClass()
-    exito     = oTeam.actualizar(lista,idSprint)
+
+    oSubTeam  = subEquipoClass()  
+    
+    exito     = oSubTeam.actualizar(members,idSprint)
 
     if exito:
         res = results[0]
+        
     res['label'] = res['label'] + '/' + repr(1)
-    #Action code ends here
+    
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -46,39 +48,36 @@ def AActualizarEquipoSprint():
 @sprint.route('/sprint/VEquipoSprint')
 def VEquipoSprint():
     #GET parameter
+    res = {}
+
     idSprint = int(session['idSprint'])
     idPila   = int(session['idPila'])
-    res = {}
-   
-    obTeam      = team()
-    oTeam       = subEquipoClass()
-
-    teamList    = obTeam.getTeamDevs(idPila)
-
-    print("\nLista de desarrolladores ",teamList,"\n")
-
     
-    subteamList = oTeam.getSubEquipo(idSprint)
+    oTeam    = team()
+    oUser    = user()
+    oSubTeam = subEquipoClass()
 
-    print("\nLista de subEquipo ",subteamList,"\n")
+    #Obtenemos los desarrolladores asociados al producto.
+    teamList = oTeam.getTeamDevs(idPila)
 
-    res['fEquipo']  =   { 'lista' : [ { 'miembro' : team.SEQ_username
-                                      , 'rol'     : team.SEQ_rol
-                                      } for team in subteamList
-                                    ]
-                        }
+    #Obtenemos los desarrolladores asociados al sprint.
+    subteamList = oSubTeam.getSubEquipo(idSprint)
+
+    miembros = []
+    for s in subteamList:
+        miembros.append(s.SEQ_username)
+
+    members = []
+    for s in subteamList:
+        u = oUser.searchUser(s.SEQ_username)
+        members.append({'miembro':u[0].U_fullname + " (" + s.SEQ_username + ")",'usuario':s.SEQ_username})
+
+    res['fEquipo'] = {'miembros': miembros, 'id':idSprint}
+
+    res['fEquipo_opcionesMiembros'] = [{'key': user['usuario'],'value': user['miembro']} for user in members]
+
     res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
-
-    res['fEquipo_opcionesRol'] =[
-        {'key':'Desarrollador', 'value':'Desarrollador'}
-      ]
-
-    res['fEquipo_opcionesMiembros'] = [ { 'key'   : user.EQ_username
-                                        , 'value' : user.EQ_username
-                                        } for user in teamList
-                                      ]
-
     
     if "actor" in session:
         res['actor'] = session['actor']
@@ -100,7 +99,6 @@ def ACrearElementoMeeting():
     #Action code goes here, res should be a list with a label and a message
     usuario = session['usuario']['username']
     oUser = user()
-    #print(usuario)
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
@@ -200,7 +198,7 @@ def ACrearSprint():
         idSprint = oSprint.getSprintId(newNumero,idPila)
 
         for member in teamList:
-            oSubTeam.insertMiembroSubEquipo(member.EQ_username,member.EQ_rol,idSprint)
+            oSubTeam.insertMiembroSubEquipo(member.EQ_username,idSprint)
 
     res['label'] = res['label'] + '/' + str(idPila)
 
@@ -734,8 +732,6 @@ def VSprint():
 
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
-    print("Argumentos: ")
-    print(request.args)
     idSprint = int(request.args.get('idSprint',1))
     if "actor" in session:
         res['actor']=session['actor']

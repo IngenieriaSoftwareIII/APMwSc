@@ -9,12 +9,23 @@ equipo = Blueprint('equipo', __name__)
 def AActualizarEquipo():
     #POST/PUT parameters
     params = request.get_json()
+
     results = [{'label':'/VEquipo', 'msg':['Equipo actualizado']}, {'label':'/VEquipo', 'msg':['Error al actualizar el equipo']}, ]
     res = results[1]
-    #Action code goes here, res should be a list with a label and a message
+    
+    idPila = int(session['idPila'])
 
-    idPila  = int(session['idPila'])
-    lista = params['lista']
+    teamMembers  = params['miembros']
+    scrumMaster  = params['scrum']
+    productOwner = params['productOwner']
+
+    lista = []
+
+    lista.append({'miembro':productOwner,'rol':'Product owner'})
+    lista.append({'miembro':scrumMaster,'rol':'Scrum master'})
+
+    for m in teamMembers:
+        lista.append({'miembro':m, 'rol':'Team member'})   
     
     oTeam = team()
     exito = oTeam.actualizar(lista,idPila)
@@ -37,37 +48,51 @@ def AActualizarEquipo():
 @equipo.route('/equipo/VEquipo')
 def VEquipo():
     #GET parameter
-    idPila = request.args['idPila']
     res = {}
+
+    idPila = int(session['idPila'])
+   
+    oTeam = team()
+    oUser = user()
+
+    #Obtenemos la lista de usuarios asignados al equipo.
+    teamList = oTeam.getTeam(idPila)
+    teamMembers  = []
+    productOwner = ''
+    scrumMaster  = ''
+
+    for m in teamList:
+        if m.EQ_rol == "Product owner":
+            productOwner = m.EQ_username
+        if m.EQ_rol == "Scrum master":
+            scrumMaster = m.EQ_username
+        if m.EQ_rol == "Team member":
+            teamMembers.append(m.EQ_username)
+
+    #Obtenemos los usuarios registrados como product owner.
+    productOwnerList = oUser.getUserByIdActor(1)
+
+    #Obtenemos los usuarios registrados como scrum masters.
+    scrumMastersList = oUser.getUserByIdActor(2)
+
+    #Obtenemos los usuarios registrados como desarrolladores.
+    teamMembersList = oUser.getUserByIdActor(3)
+    
+
+    res['fEquipo'] = {'productOwner':productOwner,'scrum':scrumMaster,'miembros':teamMembers,'id':idPila}
+    res['usuario'] = session['usuario']
+    res['idPila']  = idPila
+
+    res['fEquipo_opcionesProductOwner'] = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in productOwnerList]
+    res['fEquipo_opcionesScrum']        = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in scrumMastersList]
+    res['fEquipo_opcionesMiembros']     = [{'key': user.U_username,'value': user.U_fullname + " (" + user.U_username + ")"} for user in teamMembersList]
+
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     if 'usuario' not in session:
       res['logout'] = '/'
-      return json.dumps(res)
 
-    idPila   = int(session['idPila'])
-   
-    oTeam = team()
-    teamList = oTeam.getTeam(idPila)
-    oUser = user()
-    userList = oUser.getAllUsers()
-
-    res['fEquipo'] = {'lista':[{'miembro':team.EQ_username, 'rol': team.EQ_rol, 'id': team.EQ_idEquipo} for team in teamList]}
-    res['usuario'] = session['usuario']
-    res['idPila'] = idPila
-
-    res['fEquipo_opcionesRol'] =[
-        {'key':'Desarrollador', 'value':'Desarrollador'},
-        {'key':'Scrum master', 'value':'Scrum master'},
-      ]
-
-    print("Aquii",userList)
-
-    res['fEquipo_opcionesMiembros'] =[{'key':user.U_username,'value': user.U_username} for user in userList]
-
-    #Action code ends here
     return json.dumps(res)
 
 

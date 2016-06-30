@@ -24,6 +24,7 @@ class user(object):
         result = clsUser.query.all()
         return result
 
+
     def searchUser(self,username):
         '''Permite buscar un usuario por su nombre'''
         
@@ -36,6 +37,7 @@ class user(object):
             else:
                 auser = clsUser.query.filter_by(U_username = username).all()
                 return auser
+
  
     def insertUser(self, fullname, username, password, email, idActor):
         '''Permite insertar un usuario en la tabla'''
@@ -121,5 +123,13 @@ class user(object):
         
         auser = clsUser.query.filter_by(U_username = username).all()
         return auser != []
+
+
+    def getUserByIdActor(self, idActor):
+        '''Permite obtener los usuarios que estan asignados a un rol/actor.
+           Recordar que los roles son 1: Product Owner, 2: Scrum Master, 3: Team Member'''
+
+        auser = clsUser.query.filter_by(U_idActor = idActor).all()
+        return auser
         
 # Fin Clase user
