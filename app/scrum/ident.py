@@ -87,7 +87,7 @@ def ARegistrar():
 
         if (not checkNewPassword):
             res = results[1]
-            res['msg'][0] = res['msg'][0] + ": Formato incorrecto para las contraseñas"
+            res['msg'][0] = res['msg'][0] + ": Formato inválido para la contraseña"
 
         if (not checkNewUser) and checkNewPassword and (not checkNewEmail):
             result = oUser.insertUser(newName,newUser,encriptPassword,newEmail,newActor)

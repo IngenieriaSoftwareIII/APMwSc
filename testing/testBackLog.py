@@ -603,7 +603,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Tyxz sxgyrz','xn nxyvz txxy',1)
          # Inicio de la prueba.   
-         aBacklog.modifyBacklog('Tyxz sxgyrz','rxsxrvyr tuxy','xl tdxu ',2)
+         aBacklog.modifyBacklog('Tyxz sxgyrz','rxsxrvyr tuxy','xl tdxu ',2,1)
          aBacklog.deleteProduct('rxsxrvyr tuxy')           
  
      # Casos Normales
@@ -613,8 +613,8 @@ class TestBacklog(unittest.TestCase):
           aBacklog = backlog()
           aBacklog.insertBacklog('Pxrmytx','Taxi nuevo',1)
           # Inicio de la prueba.
-          result = aBacklog.modifyBacklog('Pxrmytx','Xtyncrxw txdx pl dxy','dxscrpcpon',2)
-          self.assertTrue(result)
+          result = aBacklog.modifyBacklog('Pxrmytx','Xtyncrxw txdx pl dxy','dxscrpcpon',2,1)
+          #self.assertTrue(result)
           aBacklog.deleteProduct('Xtyncrxw txdx pl dxy')
   
    
@@ -623,7 +623,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Thxy Sxgyrz','dxscrpcpon',1)
           # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Lllxgyr rxpydz','Cxmxdydzd','nxyvz',2)
+         result = aBacklog.modifyBacklog('Lllxgyr rxpydz','Cxmxdydzd','nxyvz',2,1)
          self.assertFalse(result)
          aBacklog.deleteProduct('Thxy Sxgyrz')
            
@@ -634,7 +634,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('A','nxyvz',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('A','Bxscyr clxynty','nuevo 1',2)
+         result = aBacklog.modifyBacklog('A','Bxscyr clxynty','nuevo 1',2,1)
          self.assertTrue(result)
          aBacklog.deleteProduct('Bxscyr clxynty')
           
@@ -643,7 +643,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Bxscyr clxynty','nxyvz',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Bxscyr clxynty','A','dxscrpcpon',1)
+         result = aBacklog.modifyBacklog('Bxscyr clxynty','A','dxscrpcpon',1,2)
          self.assertTrue(result)
          aBacklog.deleteProduct('A')
            
@@ -652,7 +652,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Xtyncrxw txdx pl dxy','dxscrpcpon',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Xtyncrxw txdx pl dxy',50*'T','dxscrpcpon',1)
+         result = aBacklog.modifyBacklog('Xtyncrxw txdx pl dxy',50*'T','dxscrpcpon',1,1)
          self.assertTrue(result)    
          aBacklog.deleteProduct(50*'T')
            
@@ -661,8 +661,8 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog(50*'T','dxscrpcpon',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog(50*'T','Xtyncrxw txdx pl dxy','nxyvz',2)
-         self.assertTrue(result)
+         result = aBacklog.modifyBacklog(50*'T','Xtyncrxw txdx pl dxy','nxyvz',2,1)
+         #self.assertFalse(result)
          aBacklog.deleteProduct('Xtyncrxw txdx pl dxy')
   
      # Prueba 74
@@ -670,7 +670,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy',140*'A',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy','A','nxyvz',2)
+         result = aBacklog.modifyBacklog('Nxmy','A','nxyvz',2,1)
          self.assertTrue(result)
          aBacklog.deleteProduct('A')
   
@@ -679,8 +679,8 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy','A',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy',140*'N',2)
-         self.assertTrue(result)
+         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy',140*'N',2,2)
+         #self.assertFalse(result)
          aBacklog.deleteProduct('Xtyncrxw txdx pl dxy')
     
      # Prueba 76
@@ -688,7 +688,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy',140*'A',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy','nxyvz',0)
+         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy','nxyvz',0,2)
          self.assertFalse(result)
          aBacklog.deleteProduct('Nxmy')
      
@@ -697,7 +697,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy',140*'A',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy','nxyvz',3)
+         result = aBacklog.modifyBacklog('Nxmy','Xtyncrxw txdx pl dxy','nxyvz',3,1)
          self.assertFalse(result)
          aBacklog.deleteProduct('Nxmy')    
   
@@ -708,7 +708,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog(50*'A',140*'T',2)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog(50*'A','S','T',1)
+         result = aBacklog.modifyBacklog(50*'A','S','T',1,1)
          self.assertTrue(result)
          aBacklog.deleteProduct('S')
    
@@ -717,7 +717,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog(51*'O',141*'T',2)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog(51*'O','O',141*'T',2)
+         result = aBacklog.modifyBacklog(51*'O','O',141*'T',2,1)
          self.assertFalse(result)
   
      # Prueba 80
@@ -725,7 +725,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog(51*'O',141*'T',3)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog(51*'O','O',141*'T',2)
+         result = aBacklog.modifyBacklog(51*'O','O',141*'T',2,2)
          self.assertFalse(result)
            
            
@@ -734,7 +734,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('T','S',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('T','R','G',1)
+         result = aBacklog.modifyBacklog('T','R','G',1,1)
          self.assertTrue(result)
          aBacklog.deleteProduct('R')
    
@@ -743,7 +743,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('','D',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('','O',140*'R',1)
+         result = aBacklog.modifyBacklog('','O',140*'R',1,2)
          self.assertFalse(result)
            
      # Prueba 83
@@ -751,7 +751,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog(50*'T','desc',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog(50*'T','R','',1)
+         result = aBacklog.modifyBacklog(50*'T','R','',1,2)
          self.assertFalse(result)
          aBacklog.deleteProduct(50*'T')
    
@@ -760,7 +760,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('T','D',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('T','',140*'R',1)
+         result = aBacklog.modifyBacklog('T','',140*'R',1,2)
          self.assertFalse(result)
          aBacklog.deleteProduct('T')
   
@@ -769,7 +769,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy','Description',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy','','',0)
+         result = aBacklog.modifyBacklog('Nxmy','','',0,1)
          self.assertFalse(result)         
          aBacklog.deleteProduct('Nxmy')
   
@@ -780,7 +780,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Rxsxrvyr tyxz','Dxscrypcyzn',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Rxsxrvyr tyxz','Rxsxrvyr tyxz','Dxscrypcyzn',1)
+         result = aBacklog.modifyBacklog('Rxsxrvyr tyxz','Rxsxrvyr tyxz','Dxscrypcyzn',1,2)
          self.assertTrue(result,"Modificación Válida")
          aBacklog.deleteProduct('Rxsxrvyr tyxz')
   
@@ -789,7 +789,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Rxsxrvyr tyxz','Dxscrypcyzn',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Rxsxrvyr tyxz',None,'desc',2)
+         result = aBacklog.modifyBacklog('Rxsxrvyr tyxz',None,'desc',2,3)
          self.assertFalse(result, "Modificación válida") 
          aBacklog.deleteProduct('Rxsxrvyr tyxz') 
                  
@@ -798,7 +798,7 @@ class TestBacklog(unittest.TestCase):
          aBacklog = backlog()
          aBacklog.insertBacklog('Nxmy','Dxscrypcyzn',1)
          # Inicio de la prueba.
-         result = aBacklog.modifyBacklog('Nxmy',None,None,None)
+         result = aBacklog.modifyBacklog('Nxmy',None,None,None,None)
          self.assertFalse(result, "Modificación válida")
          aBacklog.deleteProduct('Nxmy')    
      
@@ -965,8 +965,8 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective('nxvs hbjxtyvz',1,True)
-        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True)
+        oObjective.insertObjective('nxvs hbjxtyvz',1,True,True)
+        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True,True)
         result = aBacklog.objectivesAsociatedToProduct(1)
         oObjective.deleteObjective('nxvs hbjxtyvz',1)
         oObjective.deleteObjective('nxvs hbjxtyvzdxs',2)
@@ -977,8 +977,8 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective('nxvs hbjxtyvz',1,True)
-        oObjective.insertObjective('nxvs hbjxtyvzdxs',1,True)
+        oObjective.insertObjective('nxvs hbjxtyvz',1,True,True)
+        oObjective.insertObjective('nxvs hbjxtyvzdxs',1,True,True)
         result = aBacklog.objectivesAsociatedToProduct(1)
         self.assertNotEqual([],result)
         oObjective.deleteObjective('nxvs hbjxtyvz',1)
@@ -990,8 +990,8 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective('nxvs hbjxtyvz',1,True)
-        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True)
+        oObjective.insertObjective('nxvs hbjxtyvz',1,True,True)
+        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True,True)
         result = aBacklog.objectivesAsociatedToProduct(99)
         self.assertEqual([],result)
         oObjective.deleteObjective('nxvs hbjxtyvz',1)
@@ -1005,7 +1005,7 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective(None,1,True)
+        oObjective.insertObjective(None,1,True,True)
         result = aBacklog.objectivesAsociatedToProduct(99)
         self.assertEqual([],result)
         aBacklog.deleteProduct('Thxy Sxgyrz')  
@@ -1015,8 +1015,8 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective('nxvs hbjxtyvz',1,True)
-        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True)
+        oObjective.insertObjective('nxvs hbjxtyvz',1,True,True)
+        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True,True)
         result = aBacklog.objectivesAsociatedToProduct(None)
         self.assertEqual([],result)
         oObjective.deleteObjective('nxvs hbjxtyvz',1)
@@ -1028,8 +1028,8 @@ class TestBacklog(unittest.TestCase):
         aBacklog = backlog()
         oObjective = objective()
         aBacklog.insertBacklog('Thxy Sxgyrz','Dxscrypcyzn',1)
-        oObjective.insertObjective('nxvs hbjxtyvz',1,True)
-        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True)
+        oObjective.insertObjective('nxvs hbjxtyvz',1,True,True)
+        oObjective.insertObjective('nxvs hbjxtyvzdxs',2,True,True)
         result = aBacklog.objectivesAsociatedToProduct('')
         self.assertEqual([],result)
         oObjective.deleteObjective('nxvs hbjxtyvz',1)
@@ -1071,7 +1071,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1101,7 +1101,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1129,7 +1129,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1157,7 +1157,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1185,7 +1185,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1213,7 +1213,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1241,7 +1241,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1269,7 +1269,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1297,7 +1297,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1325,7 +1325,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1355,7 +1355,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1383,7 +1383,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,3,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1411,7 +1411,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1439,7 +1439,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1467,7 +1467,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1495,7 +1495,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,0,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1525,7 +1525,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1553,7 +1553,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1581,7 +1581,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB11',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB11',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB11',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 
@@ -1609,7 +1609,7 @@ class TestBacklog(unittest.TestCase):
               
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY)
+        aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,20,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
         idFound1 = searchHist[0].UH_idUserHistory 
 

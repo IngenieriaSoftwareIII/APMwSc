@@ -280,7 +280,7 @@ class TestMeeting(unittest.TestCase):
         tipo2 = 'no presencial'
         aMeeting = meeting()
         aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1',tipo1, idASprint)
-        aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo2, idASprint)
+        aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo2, idASprint,1)
         # Eliminamos los datos insertados.
         aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
@@ -305,12 +305,12 @@ class TestMeeting(unittest.TestCase):
         tipo1 = 'presencial'
         aMeeting = meeting()
         aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', tipo1,idASprint)
-        result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo1, idASprint)
+        result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo1, idASprint,1)
         # Eliminamos los datos insertados.
         aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
-        self.assertTrue(result)
+        self.assertFalse(result)
 
 #    def testUpdateMeetingsMaxDateFalse(self):
 #        # Creamos el backlog
@@ -355,7 +355,7 @@ class TestMeeting(unittest.TestCase):
         tipo2 = 'no presencial'
         aMeeting = meeting()
         aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1',tipo1, idASprint)
-        result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo2, -1)
+        result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1',tipo2, -1, 1)
         # Eliminamos los datos insertados.
         aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
@@ -382,7 +382,7 @@ class TestMeeting(unittest.TestCase):
         tipo2 = 'no presencial'
         aMeeting = meeting()
         aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1',tipo1, idASprint)
-        result = aMeeting.updateMeeting(date, date1, 0, 2.5, [],tipo2, idASprint)
+        result = aMeeting.updateMeeting(date, date1, 0, 2.5, [],tipo2, idASprint,1)
         # Eliminamos los datos insertados.
         aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
