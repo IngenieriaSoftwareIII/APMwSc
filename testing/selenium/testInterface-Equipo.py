@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
-from time                           import sleep
-import unittest, time, re
 import sys
+import unittest
+from time                           import sleep
+
+from selenium import webdriver
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
+
 # Ruta que permite utilizar el módulo user.py
 sys.path.append('../app/scrum')
 from backLog    import *

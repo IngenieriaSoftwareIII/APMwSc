@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*
+from time                           import sleep
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from time                           import sleep
 
 browser = webdriver.Firefox()
 
