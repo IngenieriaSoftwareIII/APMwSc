@@ -69,6 +69,7 @@
                  <textarea id="fDocumento_introduccion" name="valores" class="form-control" ng-model="fDocumento.valores" placeholder="Valores del Equipo" required></textarea>
                  <p ng-show="fDocumentoSubmitted && fDocumentoForm.valores.$invalid" class="help-block">Error en campo Introduccion.</p>
             </div>
+        <div class="form-group" ng-class="{ 'has-error' :  fDocumentoSubmitted && fDocumentoForm.contenido.$invalid && fDocumentoForm.contenido.$pristine}"><label for="fDocumentoForm_contenido">Contenido</label><input type="file" id="fDocumentoForm_contenido" name="contenido" class="form-control" file-model="myFile" placeholder="Contenido" required/></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear Documento
         </button>

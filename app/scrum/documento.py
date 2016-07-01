@@ -1,9 +1,14 @@
+import os
+
 from flask import request, session, Blueprint, json
 from generateVisionDocument import *
 from visionDocument import *
 
 documento = Blueprint('documento', __name__)
+app = Flask(__name__)
 
+# Where files are going to be uploaded
+app.config['UPLOADED_FILES_DEST'] = 'uploadedFiles/'
 
 @documento.route('/documento/ACrearDocumento', methods=['POST'])
 def ACrearDocumento():
@@ -17,13 +22,13 @@ def ACrearDocumento():
     #Action code goes here, res should be a list with a label and a message
 
     if request.method == 'POST':
-        introduccion   = params['introduccion']
-        proposito      = params['proposito']
-        motivacion     = params['motivacion']
-        estado         = params['estado']
-        alcance        = params['alcance']
-        fundamentacion = params['fundamentacion']
-        valores        = params['valores']
+        introduccion   = request.form['introduccion']
+        proposito      = request.form['proposito']
+        motivacion     = request.form['motivacion']
+        estado         = request.form['estado']
+        alcance        = request.form['alcance']
+        fundamentacion = request.form['fundamentacion']
+        valores        = request.form['valores']
 
         # Guardamos los datos en la base de datos
         oVisionDoc = visionDocument()
@@ -31,6 +36,12 @@ def ACrearDocumento():
             oVisionDoc.updateVisionDocument(idPila,introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores)
         else:
             oVisionDoc.insertVisionDocument(idPila,introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores)
+
+        #Obtenemos la imagen
+        file = request.files['contenido']
+        ## En file ya tienes el archivo, no es necesario incluso guardarlo localmente creo
+        print('Archivo: ' + file.filename)
+        file.save(os.path.join(app.config['UPLOADED_FILES_DEST'], file.filename))
 
         # Generamos el PDF
         pathDocument = "./static/temp/"
