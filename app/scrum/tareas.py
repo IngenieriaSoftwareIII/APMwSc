@@ -14,6 +14,7 @@ from werkzeug import secure_filename
 tareas = Blueprint('tareas', __name__)
 basedir=os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))+"/static"
 
+DATE_FORMAT = '%Y-%m-%d'
 
 @tareas.route('/tareas/ACrearTarea', methods=['POST'])
 def ACrearTarea():
@@ -38,7 +39,7 @@ def ACrearTarea():
     if 'fechaInicio' in params:
             startingDate= params['fechaInicio']
             try:
-                startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+                startingDate_object = datetime.strptime(startingDate, DATE_FORMAT)
             except ValueError:
                 res     = results[1]
                 res['label'] = res['label'] + '/'+str(idHistory)
@@ -54,7 +55,7 @@ def ACrearTarea():
     if 'fechaFin' in params:
             finishingDate = params['fechaFin']
             try:
-                finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
+                finishingDate_object = datetime.strptime(finishingDate, DATE_FORMAT)
             except ValueError:
                 res     = results[1]
                 res['label'] = res['label'] + '/'+str(idHistory)
