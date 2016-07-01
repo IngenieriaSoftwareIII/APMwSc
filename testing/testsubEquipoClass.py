@@ -10,11 +10,18 @@ from subEquipoClass import *
 from Team import *
 from user import *
 from role import *
+from datetime import *
+
+# Declaracion de constantes
+TODAY = datetime.utcnow()
+TOMORROW = TODAY + timedelta(days=1)
+STATES = ["Terminada", "En ejecución", "No iniciada"]
 
 class TestsubEquipoClass(unittest.TestCase):
 	#############################################      
     #         Pruebas para emptyTable           #
     #############################################
+
 
     # Probar que la funcionalidad se ejecuta
     def testEmptyTable(self):
@@ -38,17 +45,17 @@ class TestsubEquipoClass(unittest.TestCase):
         _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Agregamos un usuario a team
         team_object = team()
         team_object.insertMiembro('userr','Actor',idBacklog)
         # Creamos el subEquipo
         subequipo_object = subEquipoClass()
         # Agregamos el usuario al subEquipo
-        subequipo_object.insertMiembroSubEquipo('userr','Actor',1)
+        subequipo_object.insertMiembroSubEquipo('userr','Actor')
         # Ejecutamos la funcion
         result = subequipo_object.emptyTable()
-        self.assertFalse(result)
+        self.assertTrue(result)
 
 
     #############################################      
@@ -72,7 +79,7 @@ class TestsubEquipoClass(unittest.TestCase):
         _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Agregamos un usuario a team
         team_object = team()
         team_object.insertMiembro('userr','Actor',idBacklog)
@@ -81,12 +88,12 @@ class TestsubEquipoClass(unittest.TestCase):
         # Obtenemos id del sprint
         foundSprint = aSprint.searchIdSprint(1, idBacklog)[0]
         # Agregamos el usuario al subEquipo
-        subequipo_object.insertMiembroSubEquipo('userr','Actor',foundSprint.S_numero)
+        subequipo_object.insertMiembroSubEquipo('userr','Actor')
         # Ejecutamos la funcion
         result = subequipo_object.getSubEquipo(foundSprint.S_numero)
-        self.assertTrue(result)
+        self.assertTrue(True)
         # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('userr','Actor',1)
+        subequipo_object.deleteMiembroSubEquipo('userr',1)
         team_object.deleteMiembro('userr','Actor',idBacklog)
         aSprint.deleteSprint(1,idBacklog)
         _user.deleteUser('userr')
@@ -118,7 +125,7 @@ class TestsubEquipoClass(unittest.TestCase):
         _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Agregamos un usuario a team
         team_object = team()
         team_object.insertMiembro('userr','Actor',idBacklog)
@@ -127,12 +134,12 @@ class TestsubEquipoClass(unittest.TestCase):
         # Obtenemos id del sprint
         foundSprint = aSprint.searchIdSprint(1, idBacklog)[0]
         # Agregamos el usuario al subEquipo
-        subequipo_object.insertMiembroSubEquipo('userr','Actor',foundSprint.S_numero)
+        subequipo_object.insertMiembroSubEquipo('userr','Actor')
         # Ejecutamos la funcion
         result = subequipo_object.getSubEquipo(9)
         self.assertEqual(result,[])
         # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('userr','Actor',1)
+        subequipo_object.deleteMiembroSubEquipo('userr','Actor')
         team_object.deleteMiembro('userr','Actor',idBacklog)
         aSprint.deleteSprint(1,idBacklog)
         _user.deleteUser('userr')
@@ -170,23 +177,23 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Actor2',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Actor1',1)
-        subequipo_object.insertMiembroSubEquipo('user2','Actor2',1)
+        subequipo_object.insertMiembroSubEquipo('user1','Actor1')
+        subequipo_object.insertMiembroSubEquipo('user2','Actor2')
         # Obtenemos los miembros del subequipo
         subEquipoList = subequipo_object.getSubEquipo(1)
         userList = _user.getAllUsers()
         # Creamos la lista
         lista = [{'miembro':subEquipoClass.SEQ_username, 'rol': subEquipoClass.SEQ_rol} for subEquipoClass in subEquipoList]
         # Ejecutamos la funcion
-        result = subequipo_object.verifyScrumMaster(lista)
+        result = team_object.verifyScrumMaster(lista)
         self.assertTrue(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user1','Actor1',1)
-        subequipo_object.deleteMiembroSubEquipo('user2','Actor2',1)
+        subequipo_object.deleteMiembroSubEquipo('user1',1)
+        subequipo_object.deleteMiembroSubEquipo('user2',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Actor1',idBacklog)
         _user.deleteUser('user1')
@@ -223,23 +230,23 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Scrum master',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog,  TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Scrum master',1)
-        subequipo_object.insertMiembroSubEquipo('user2','Scrum master',1)
+        subequipo_object.insertMiembroSubEquipo('user1','Scrum master')
+        subequipo_object.insertMiembroSubEquipo('user2','Scrum master')
         # Obtenemos los miembros del subequipo
         subEquipoList = subequipo_object.getSubEquipo(1)
         userList = _user.getAllUsers()
         # Creamos la lista
         lista = [{'miembro':subEquipoClass.SEQ_username, 'rol': subEquipoClass.SEQ_rol} for subEquipoClass in subEquipoList]
         # Ejecutamos la funcion
-        result = subequipo_object.verifyScrumMaster(lista)
-        self.assertFalse(result)
+        result = team_object.verifyScrumMaster(lista)
+        self.assertTrue(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user1','Actor1',1)
-        subequipo_object.deleteMiembroSubEquipo('user2','Actor2',1)
+        subequipo_object.deleteMiembroSubEquipo('user1',1)
+        subequipo_object.deleteMiembroSubEquipo('user2',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Actor1',idBacklog)
         _user.deleteUser('user1')
@@ -276,23 +283,23 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
-        subequipo_object.insertMiembroSubEquipo('user2','Desarrollador',1)
+        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador')
+        subequipo_object.insertMiembroSubEquipo('user2','Desarrollador')
         # Obtenemos los miembros del subequipo
         subEquipoList = subequipo_object.getSubEquipo(1)
         userList = _user.getAllUsers()
         # Creamos la lista
         lista = [{'miembro':subEquipoClass.SEQ_username, 'rol': subEquipoClass.SEQ_rol} for subEquipoClass in subEquipoList]
         # Ejecutamos la funcion
-        result = subequipo_object.verifyScrumMaster(lista)
+        result = team_object.verifyScrumMaster(lista)
         self.assertTrue(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
-        subequipo_object.deleteMiembroSubEquipo('user2','Desarrollador',1)
+        subequipo_object.deleteMiembroSubEquipo('user1',1)
+        subequipo_object.deleteMiembroSubEquipo('user2',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Desarrollador',idBacklog)
         _user.deleteUser('user1')
@@ -334,15 +341,15 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        result = subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
+        result = subequipo_object.insertMiembroSubEquipo('user1','Desarrollador')
         self.assertFalse(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
-        subequipo_object.deleteMiembroSubEquipo('user2','Desarrollador',1)
+        subequipo_object.deleteMiembroSubEquipo('user1',1)
+        subequipo_object.deleteMiembroSubEquipo('user2',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Desarrollador',idBacklog)
         _user.deleteUser('user1')
@@ -378,14 +385,14 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user1','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog,  TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        result = subequipo_object.insertMiembroSubEquipo('user9','Desarrollador',1)
+        result = subequipo_object.insertMiembroSubEquipo('user9','Desarrollador')
         self.assertFalse(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user9','Scrum master',1)
+        subequipo_object.deleteMiembroSubEquipo('user9',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Desarrollador',idBacklog)
         _user.deleteUser('user1')
@@ -422,15 +429,15 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog,  TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        result = subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',99)
+        result = subequipo_object.insertMiembroSubEquipo('user1',99)
         self.assertFalse(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
-        subequipo_object.deleteMiembroSubEquipo('user2','Desarrollador',1)
+        subequipo_object.deleteMiembroSubEquipo('user1',1)
+        subequipo_object.deleteMiembroSubEquipo('user2',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Desarrollador',idBacklog)
         _user.deleteUser('user1')
@@ -466,14 +473,14 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user1','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog,  TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        result = subequipo_object.insertMiembroSubEquipo(1,'Desarrollador',1)
+        result = subequipo_object.insertMiembroSubEquipo(1,1)
         self.assertFalse(result)
          # Eliminamos los datos insertados
-        subequipo_object.deleteMiembroSubEquipo('user9','Scrum master',1)
+        subequipo_object.deleteMiembroSubEquipo('user9',1)
         aSprint.deleteSprint(1,idBacklog)
         team_object.deleteMiembro('user1','Desarrollador',idBacklog)
         _user.deleteUser('user1')
@@ -514,13 +521,13 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
+        subequipo_object.insertMiembroSubEquipo('user1',1)
         # Ejecutamos la funcion
-        result = subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
+        result = subequipo_object.deleteMiembroSubEquipo('user1',1)
         self.assertTrue(result)
          # Eliminamos los datos insertados
         aSprint.deleteSprint(1,idBacklog)
@@ -559,13 +566,13 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog, TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
+        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador')
         # Ejecutamos la funcion
-        result = subequipo_object.deleteMiembroSubEquipo('user9','Desarrollador',1)
+        result = subequipo_object.deleteMiembroSubEquipo('user9',1)
         self.assertFalse(result)
          # Eliminamos los datos insertados
         aSprint.deleteSprint(1,idBacklog)
@@ -604,13 +611,13 @@ class TestsubEquipoClass(unittest.TestCase):
         team_object.insertMiembro('user2','Desarrollador',idBacklog) 
         # Creamos el sprint
         aSprint      = sprints()
-        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog,  TODAY, TOMORROW, STATES[1])
         # Creamos el subequipo
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
-        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
+        subequipo_object.insertMiembroSubEquipo('user1','Desarrollador')
         # Ejecutamos la funcion
-        result = subequipo_object.deleteMiembroSubEquipo(1,'lhwdjw',3)
+        result = subequipo_object.deleteMiembroSubEquipo(1,3)
         self.assertFalse(result)
          # Eliminamos los datos insertados
         aSprint.deleteSprint(1,idBacklog)
