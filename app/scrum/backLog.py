@@ -8,7 +8,11 @@ sys.path.append('app/scrum')
 
 from model import *
 from objective import *
-from actor import *
+from role import *
+from accions import *
+from sprintClass import *
+import userHistory
+import archivos
 
 # Declaracion de constantes.
 CONST_MAX_DESCRIPTION = 140
@@ -295,12 +299,24 @@ class backlog(object):
 
             objectives = oBacklog.objectivesAsociatedToProduct(idBacklog)
             actors = oBacklog.actorsAsociatedToProduct(idBacklog)
+            actions = oBacklog.accionsAsociatedToProduct(idBacklog)
+            carreras = oBacklog.sprintsAsociatedToProduct(idBacklog)
+            historias = oBacklog.userHistoryAsociatedToProduct(idBacklog)
+            files = oBacklog.filesAssociatedToProduct(idBacklog)
 
             oObjective = objective()
             oActor = role()
+            oAction = accions()
+            oSprint = sprints()
+            oUserHistory = userHistory.userHistory()
+            oFiles = archivos.archivos()
 
             jsonProduct['objetivos'] = [oObjective.toJson(objective.O_idObjective) for objective in objectives]
             jsonProduct['actores'] = [oActor.toJson(actor.A_idActor) for actor in actors]
+            jsonProduct['acciones'] = [oAction.toJson(action.AC_idAccion) for action in actions]
+            jsonProduct['sprints'] = [oSprint.toJson(sprint.S_idSprint, idBacklog) for sprint in carreras]
+            jsonProduct['historias'] = [oUserHistory.toJson(history.UH_idUserHistory) for history in historias]
+            jsonProduct['archivos'] = [oFiles.toJson(archivo.AR_idArchivos) for archivo in files]
 
         return json.dumps(jsonProduct)
 
