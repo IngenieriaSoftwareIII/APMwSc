@@ -85,6 +85,10 @@ def ARegistrar():
         checkNewPassword = oLogin.validPassword(newPassword)
         encriptPassword  = oLogin.encript(newPassword)
 
+        if (not checkNewPassword):
+            res = results[1]
+            res['msg'][0] = res['msg'][0] + ": Formato incorrecto para las contraseñas"
+
         if (not checkNewUser) and checkNewPassword and (not checkNewEmail):
             result = oUser.insertUser(newName,newUser,encriptPassword,newEmail,newActor)
             if result:
