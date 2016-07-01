@@ -99,7 +99,7 @@ def ACrearTarea():
 def AElimTarea():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VHistoria', 'msg':['Tarea borrada']}, {'label':'/VHistoria', 'msg':['No se pudo eliminar la tarea']}, ]
+    results = [{'label':'/VHistoria', 'msg':['Tarea eliminada']}, {'label':'/VHistoria', 'msg':['No se pudo eliminar la tarea']}, ]
     res     = results[1]
 
     # Obtenemos los parámetros
