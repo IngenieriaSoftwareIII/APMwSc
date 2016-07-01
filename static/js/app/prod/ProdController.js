@@ -11,7 +11,7 @@ scrumModule.config(function ($routeProvider) {
             });
 });
 
-scrumModule.controller('VProductosController', 
+scrumModule.controller('VProductosController',
    ['$scope', '$location', '$route', 'flash', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
     function ($scope, $location, $route, flash, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
@@ -33,7 +33,7 @@ scrumModule.controller('VProductosController',
                   getData: function($defer, params) {
                       $defer.resolve(VProducto0Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
 
 
       });
@@ -51,15 +51,22 @@ scrumModule.controller('VProductosController',
         $location.path('/VProducto/'+((typeof idPila === 'object')?JSON.stringify(idPila):idPila));
       };
 
+      $scope.ARespaldo = function(idPila) {
+        prodService.ARespaldo(idPila).then(function (object) {
+          console.log('Success')
+          console.log(JSON.parse(object.data.respaldo))
+        })
+      }
+
     }]);
-scrumModule.controller('VProductoController', 
+scrumModule.controller('VProductoController',
    ['$window', '$timeout', '$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
     function ($window, $timeout, $scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 
       prodService.VProducto({"idPila":$routeParams.idPila}).then(function (object) {
-        $scope.res = object.data; 
+        $scope.res = object.data;
         $scope.backlogId = $routeParams.nombrePila;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -77,7 +84,7 @@ scrumModule.controller('VProductoController',
                   getData: function($defer, params) {
                       $defer.resolve(VActor3Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
 
               var VAccion5Data = $scope.res.data5;
               if(typeof VAccion5Data === 'undefined') VAccion5Data=[];
@@ -89,7 +96,7 @@ scrumModule.controller('VProductoController',
                   getData: function($defer, params) {
                       $defer.resolve(VAccion5Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
 
               var VObjetivo7Data = $scope.res.data7;
               if(typeof VObjetivo7Data === 'undefined') VObjetivo7Data=[];
@@ -153,7 +160,7 @@ scrumModule.controller('VProductoController',
       $scope.AModifProducto0 = function(isValid) {
         $scope.fPilaSubmitted = true;
         if (isValid) {
-          
+
           prodService.AModifProducto($scope.fPila).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
@@ -175,7 +182,7 @@ scrumModule.controller('VProductoController',
       };
 
     }]);
-scrumModule.controller('VCrearProductoController', 
+scrumModule.controller('VCrearProductoController',
    ['$scope', '$location', '$route', 'flash', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
     function ($scope, $location, $route, flash, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
@@ -201,7 +208,7 @@ scrumModule.controller('VCrearProductoController',
       $scope.ACrearProducto0 = function(isValid) {
         $scope.fPilaSubmitted = true;
         if (isValid) {
-          
+
           prodService.ACrearProducto($scope.fPila).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
