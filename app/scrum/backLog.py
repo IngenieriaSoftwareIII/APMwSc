@@ -2,10 +2,17 @@
 
 import sys
 import datetime
+import json
 # Ruta que permite utilizar el módulo model.py
 sys.path.append('app/scrum')
 
 from model import *
+from objective import *
+from role import *
+from accions import *
+from sprintClass import *
+import userHistory
+import archivos
 
 # Declaracion de constantes.
 CONST_MAX_DESCRIPTION = 140
@@ -80,7 +87,7 @@ class backlog(object):
     def modifyBacklog(self, name, new_name, new_description, new_scale,new_status):
         '''Permite actualizar los valores de un producto'''
 
-        checkTypeName = type(name) == str 
+        checkTypeName = type(name) == str
         checkTypeNewName = type(new_name) == str
         checkTypeDescription = type(new_description) == str
         checkTypeScale = type(new_scale) == int
@@ -239,7 +246,7 @@ class backlog(object):
         return([])
 
     def updateScaleType(self, idUserHistory, new_scale):
-        """Permite actualizar el volor actual de la escala de una historia de usuario"""
+        """Permite actualizar el valor actual de la escala de una historia de usuario"""
 
         checkTypeId = type(idUserHistory) == int
         checkTypeScale = type(new_scale) == int and new_scale in scale
@@ -268,5 +275,49 @@ class backlog(object):
                         db.session.commit()
                         return True
         return False
+
+    def getProductBackup(self, idBacklog):
+        '''Permite crear un backup en JSON del producto'''
+
+        checkTypeId = type(idBacklog) == int
+        product = None
+        jsonProduct = {}
+
+        oBacklog = backlog()
+
+        if checkTypeId:
+            product = clsBacklog.query.filter_by(BL_idBacklog=idBacklog).first()
+
+        if product:
+            jsonProduct = {
+                "id": product.BL_idBacklog,
+                "nombre": product.BL_name,
+                "decripcion": product.BL_description,
+                "escala": product.BL_scaleType,
+                "estado": product.BL_statusType,
+            }
+
+            objectives = oBacklog.objectivesAsociatedToProduct(idBacklog)
+            actors = oBacklog.actorsAsociatedToProduct(idBacklog)
+            actions = oBacklog.accionsAsociatedToProduct(idBacklog)
+            carreras = oBacklog.sprintsAsociatedToProduct(idBacklog)
+            historias = oBacklog.userHistoryAsociatedToProduct(idBacklog)
+            files = oBacklog.filesAssociatedToProduct(idBacklog)
+
+            oObjective = objective()
+            oActor = role()
+            oAction = accions()
+            oSprint = sprints()
+            oUserHistory = userHistory.userHistory()
+            oFiles = archivos.archivos()
+
+            jsonProduct['objetivos'] = [oObjective.toJson(objective.O_idObjective) for objective in objectives]
+            jsonProduct['actores'] = [oActor.toJson(actor.A_idActor) for actor in actors]
+            jsonProduct['acciones'] = [oAction.toJson(action.AC_idAccion) for action in actions]
+            jsonProduct['sprints'] = [oSprint.toJson(sprint.S_idSprint, idBacklog) for sprint in carreras]
+            jsonProduct['historias'] = [oUserHistory.toJson(history.UH_idUserHistory) for history in historias]
+            jsonProduct['archivos'] = [oFiles.toJson(archivo.AR_idArchivos) for archivo in files]
+
+        return json.dumps(jsonProduct)
 
 # Fin Clase Backlog

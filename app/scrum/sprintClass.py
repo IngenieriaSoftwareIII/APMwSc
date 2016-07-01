@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-.
 
 import sys
+import time
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
 
@@ -36,12 +37,12 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 		dif = estimated_of_day-real_of_day
 		if dif<0 :
 			sprint_time_total_real-=real_of_day
-			rows[x-1]['c'][1]['v'] -=dif 
+			rows[x-1]['c'][1]['v'] -=dif
 			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v'] - real_of_day
 		else:
 			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v']-estimated_of_day
-			
-		
+
+
 	data={"cols":   [ { "id"    : "days"
 	                  , "label" : "Dias del sprint"
 	                  , "type"  : "string"
@@ -60,9 +61,9 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	                ]
 	     }
 	data['rows']=rows
-	
+
 	bdchart =   { "type"    : "ComboChart"
-	            , "options" : 
+	            , "options" :
 	                { "title"      : "Burn down chart del Sprint"
 	                , "vAxis"      : { "title": "Horas por cumplir" }
 	                , "hAxis"      : { "title": "Dias" }
@@ -70,18 +71,18 @@ def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
 	                , "series"     : { 1 : {'type'  : 'line' }
 	                                 , 0 : {'color' : '#000000' }
 	                                 }
-	                }   
+	                }
 	            , "formatters" : {}
 	            }
 	bdchart["data"] = data
 	return bdchart
-		
+
 def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	sprint_time=(sprint_end_date-sprint_start_date).days
 	assert sprint_time >0
 	fun_weight = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight)
 	sprint_index = filter(lambda x: x.HW_iniciado and x.HW_completed, sprint_tasks)
-	sprint_index = map(fun_weight,sprint_index) 
+	sprint_index = map(fun_weight,sprint_index)
 	sprint_index = dict(sprint_index)
 	sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
 	ideal_delta= sprint_tasks_total/sprint_time
@@ -117,9 +118,9 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	                ]
 	     }
 	data['rows']=rows
-	
+
 	bdchart =   { "type"    : "ComboChart"
-	            , "options" : 
+	            , "options" :
 	                { "title"      : "Burn down chart del Sprint"
 	                , "vAxis"      : { "title": "Peso acumulado de las tareas" }
 	                , "hAxis"      : { "title": "Dias" }
@@ -127,7 +128,7 @@ def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
 	                , "series"     : { 1 : {'type'  : 'line' }
 	                                 , 0 : {'color' : '#000000' }
 	                                 }
-	                }   
+	                }
 	            , "formatters" : {}
 	            }
 	bdchart["data"] = data
@@ -377,5 +378,27 @@ class sprints(object):
                 db.session.commit()
                 return True
         return False
+
+    def toJson(self, idSprint, idBacklog):
+        '''Permite buscar sprints por su id'''
+        checkTypeIdSprint = type(idSprint) == int
+        checkTypeBacklog = type(idBacklog) == int
+        foundSprint = None
+        jsonSprint = {}
+
+        if checkTypeIdSprint and checkTypeBacklog:
+            foundSprint = clsSprint.query.filter_by(S_numero=idSprint,S_idBacklog = idBacklog).all()
+
+        if foundSprint:
+            jsonSprint = {
+                "id": foundSprint[0].S_idSprint,
+                "numero": foundSprint[0].S_numero,
+                "descripcion": foundSprint[0].S_sprintDescription,
+                "inicio": time.mktime(foundSprint[0].S_fechini.timetuple()),
+                "fin": time.mktime(foundSprint[0].S_fechfin.timetuple()),
+                "estado": foundSprint[0].S_state
+            }
+
+        return jsonSprint
 
 # Fin Clase Sprint

@@ -2,11 +2,13 @@
 
 import sys
 import datetime
+import time
 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
 
-from userHistory import *
+from backLog import *
+import userHistory
 
 # Declaracion de constantes.
 MIN_ID               = 1
@@ -136,7 +138,7 @@ class task(object):
                     , HW_weight
                     , HW_estimatedTime
                     , HW_interaccion
-                    , HW_reglasNegocio  
+                    , HW_reglasNegocio
                     , HW_usoEntidades
                     , HW_operacionesDB
                     , HW_iniciado
@@ -192,7 +194,7 @@ class task(object):
                         else:
                             oTask.HW_horasEmpleadas = None
                         oTask.HW_interaccion    = HW_interaccion
-                        oTask.HW_reglasNegocio  = HW_reglasNegocio  
+                        oTask.HW_reglasNegocio  = HW_reglasNegocio
                         oTask.HW_usoEntidades   = HW_usoEntidades
                         oTask.HW_operacionesDB  = HW_operacionesDB
 
@@ -212,12 +214,12 @@ class task(object):
         return([])
 
 
-    def historyWeight(self,idUserHistory):
+    def historyWeight(self, idUserHistory):
         ''' Permite obtener la suma de todos los pesos de las tareas correspondientes a una historia de usuario '''
 
         checkTypeId  = type(idUserHistory) == int
         peso         = 0
-        oUserHistory = userHistory()
+        oUserHistory = userHistory.userHistory()
         esEpica      = oUserHistory.isEpic(idUserHistory)
 
         if not esEpica:
@@ -314,6 +316,36 @@ class task(object):
                 db.session.commit()
                 return True
         return False
+
+    def toJson(self, idTask):
+        checkTypeId = type(idTask) == int
+        found = None
+        jsonTask = {}
+
+        if checkTypeId:
+            found = clsTask.query.filter_by(HW_idTask=idTask).first()
+
+        if found:
+            jsonTask = {
+                "id": found.HW_idTask,
+                "descripcion": found.HW_description,
+                "peso": found.HW_weight,
+                "idCategoria": found.HW_idCategory,
+                "idHistoria": found.HW_idUserHistory,
+                "idSprint": found.HW_idSprint,
+                "tiempoEstimado": found.HW_estimatedTime,
+                "horasEmpleadas": found.HW_horasEmpleadas,
+                "interaccion": found.HW_interaccion,
+                "reglas": found.HW_reglasNegocio,
+                "entidades": found.HW_usoEntidades,
+                "operaciones": found.HW_operacionesDB,
+                "iniciado": found.HW_iniciado,
+                "fechaInicio": time.mktime(found.HW_fechaInicio.timetuple()),
+                "completado": found.HW_completed,
+                "fechaFin": time.mktime(found.HW_fechaFin.timetuple())
+            }
+
+        return jsonTask
 
 
 #Fin clase Task

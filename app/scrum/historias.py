@@ -8,7 +8,7 @@ from app.scrum.accions               import *
 from app.scrum.objective             import *
 from app.scrum.objectivesUserHistory import *
 from app.scrum.actorsUserHistory     import *
-from app.scrum.task                  import *
+import app.scrum.task
 from app.scrum.precedence            import *
 from sqlalchemy.ext.baked            import Result
 from datetime                        import datetime
@@ -490,7 +490,7 @@ def VHistoria():
     startingDate_object_new = datetime.strftime(history.UH_fechaInicio, '%d/%m/%Y')
     finishingDate_object_new = datetime.strftime(history.UH_fechaFin, '%d/%m/%Y')
 
-    res['fHistoria'] = { 'super'       : history.UH_idSuperHistory 
+    res['fHistoria'] = { 'super'       : history.UH_idSuperHistory
                        , 'idHistoria'  : idHistory
                        , 'idPila'      : history.UH_idBacklog
                        , 'codigo'      : history.UH_codeUserHistory
@@ -533,7 +533,7 @@ def VHistorias():
     if "actor" in session:
         res['actor'] = session['actor']
 
-    oTask             = task()
+    oTask             = task.task()
     oActor            = role()
     oAccion           = accions()
     oObjective        = objective()
@@ -596,7 +596,7 @@ def VHistorias():
     res['data0']      = [ { 'idHistoria' : hist['idHistory']
                           , 'prioridad'  : hist['priority']
                           , 'peso'       : oTask.lookup(pesos,hist['idHistory'])
-                          , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] + 
+                          , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] +
                                            ' para ' + hist['objectives']
                           } for hist in historiesSortedByPriority
                         ]
