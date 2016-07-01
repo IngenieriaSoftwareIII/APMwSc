@@ -39,13 +39,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
          
@@ -80,13 +80,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -120,13 +120,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -158,13 +158,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -196,13 +196,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
            
@@ -234,13 +234,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -274,13 +274,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -312,13 +312,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -350,13 +350,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -388,13 +388,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -428,13 +428,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -466,13 +466,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -504,13 +504,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -542,13 +542,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -580,13 +580,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -625,13 +625,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -667,13 +667,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -708,13 +708,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -749,13 +749,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -792,13 +792,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -833,13 +833,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -874,13 +874,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -915,13 +915,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
            
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
  
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -963,13 +963,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -1005,13 +1005,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1042,13 +1042,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1079,13 +1079,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1118,13 +1118,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1155,13 +1155,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1192,13 +1192,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
 
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1235,13 +1235,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
           
@@ -1278,13 +1278,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1320,13 +1320,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1362,13 +1362,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1404,13 +1404,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
          
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1446,13 +1446,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1488,13 +1488,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
           
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
         
         # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
             
@@ -1532,13 +1532,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1575,13 +1575,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1617,13 +1617,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1661,13 +1661,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1703,13 +1703,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
@@ -1745,13 +1745,13 @@ class TestObjectivesUserHistory(unittest.TestCase):
                
         # Insertamos la historia
         aHist = userHistory()
-        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY)
+        aHist.insertUserHistory('lllzz',0, 1,idFound, idBacklog,1,True,TODAY,True,TODAY)
         searchHist = aHist.searchUserHistory('lllzz',idBacklog)
         idFound1 = searchHist[0].UH_idUserHistory
          
       # Insertamos la objetivo
         aObj = objective()
-        aObj.insertObjective('Ccc',idBacklog,0)
+        aObj.insertObjective('Ccc',idBacklog,0,0)
         search = aObj.searchObjective('Ccc',idBacklog)
         idFound2 = search[0].O_idObjective
         
