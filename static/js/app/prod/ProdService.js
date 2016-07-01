@@ -65,4 +65,17 @@ scrumModule.service('prodService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.ARespaldo = function(args) {
+      if(typeof args == 'undefined') args={};
+      return $http({
+        url: 'prod/ARespaldo',
+        method: 'GET',
+        params: args
+      });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+  };
+
 }]);
