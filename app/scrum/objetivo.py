@@ -93,7 +93,6 @@ def AModifObjetivo():
     newDescription = params['descripcion'] 
     newType        = params['transversal']
     newFunc        = params['funcional'] 
-    print(newFunc)
         
     # Conseguimos el objetivo a modificar
     oObjetivo    = objective()

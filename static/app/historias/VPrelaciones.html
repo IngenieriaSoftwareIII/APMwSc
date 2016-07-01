@@ -32,8 +32,8 @@
             <div ng-repeat="item_fPrelaciones in fPrelaciones.lista"><ng-form name="fPrelaciones_lista_form">
             <div class="form-group" ng-class="{ 'has-error' :  fPrelacionesSubmitted && fPrelacionesForm.antecedente.$invalid && fPrelacionesForm.antecedente.$pristine && fPrelacionesSubmitted}"><label for="fPrelaciones_antecedente">Antecedente</label>:&nbsp;<select id="fPrelaciones_antecedente" ng-model="item_fPrelaciones.antecedente" required ng-options="item.key as item.value for item in fPrelaciones_listaTareas"></select><p ng-show="fPrelacionesSubmitted && fPrelacionesForm.antecedente.$invalid" class="help-block">Error en campo Antecedente.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fPrelacionesSubmitted && fPrelacionesForm.consecuente.$invalid && fPrelacionesForm.consecuente.$pristine && fPrelacionesSubmitted}"><label for="fPrelaciones_consecuente">Consecuente</label>:&nbsp;<select id="fPrelaciones_consecuente" ng-model="item_fPrelaciones.consecuente" required ng-options="item.key as item.value for item in fPrelaciones_listaTareas"></select><p ng-show="fPrelacionesSubmitted && fPrelacionesForm.consecuente.$invalid" class="help-block">Error en campo Consecuente.</p></div>
-            <a ng-click="elimPrelacion($index)" class="btn btn-primary">-Prelación</a></ng-form></div>
-            <a ng-click="agrPrelacion()" class="btn btn-primary">+Prelación</a>
+            <a style="width:100px" ng-click="elimPrelacion($index)" class="btn btn-primary">-Prelación</a></ng-form></div>
+            <a style="width:100px" ng-click="agrPrelacion()" class="btn btn-primary">+Prelación</a>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Guardar
         </button>

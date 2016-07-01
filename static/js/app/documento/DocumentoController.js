@@ -34,7 +34,7 @@ scrumModule.controller('VCrearDocumentoController',
         $scope.fDocumentoSubmitted = true;
         if (isValid) {
 
-          documentoService.ACrearDocumento($scope.fDocumento).then(function (object) {
+          documentoService.ACrearDocumento($scope.fDocumento,$scope.myFile).then(function (object) {
               window.open("../../../temp/Documento-Vision.pdf")
               // var msg = object.data["msg"];
               // if (msg) flash(msg);
