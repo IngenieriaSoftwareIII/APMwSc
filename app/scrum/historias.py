@@ -667,7 +667,7 @@ def VPrioridades():
 
     #Escala dependiente del proyecto
     res['fPrioridades_opcionesPrioridad'] = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
-    res['fPrioridades'] = {'idPila':idPila,'lista':[{'idHistoria':hist['idHistory'],'prioridad':hist['priority'], 'enunciado':'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']}for hist in historiesSortedByPriority]}
+    res['fPrioridades'] = {'idPila':idPila,'lista':[{'idHistoria':hist['idHistory'],'prioridad':hist['priority'], 'enunciado':'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']}for hist in historiesSortedByPriority]}
     res['idPila']       = idPila
 
     return json.dumps(res)

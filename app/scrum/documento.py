@@ -37,7 +37,7 @@ def ACrearDocumento():
     #     result = generateDocument(idPila,pathDocument)
 
     # Cambiar result dependiendo del resultado
-    if result:
+    if result == '':
         res = results[1]
 
     res['label'] = res['label'] + '/' + str(idPila)

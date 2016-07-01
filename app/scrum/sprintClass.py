@@ -9,6 +9,7 @@ from backLog import *
 from userHistory import *
 from task        import *
 from acceptanceCriteria import *
+from random import randint
 
 # Declaracion de constantes.
 MIN_ID                 = 1
@@ -17,6 +18,120 @@ MAX_SPRINT_DESCRIPTION = 140
 MIN_SPRINT_NUMBER = 1
 MAX_SPRINT_NUMBER = 1000
 
+
+def bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date):
+	sprint_time=(sprint_end_date-sprint_start_date).days
+	assert sprint_time>0
+	fun_time = lambda x: x.HW_estimatedTime
+	sprint_time_total = sum(map(fun_time,sprint_tasks))
+	sprint_time_total_real= sprint_time_total
+	ideal_delta = sprint_time_total/sprint_time
+	fun_time = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_estimatedTime,x.HW_horasEmpleadas)
+	sprint_index=list(map(fun_time,filter(lambda x: x.HW_iniciado and x.HW_completed ,sprint_tasks)))
+	rows = [{"c":[{ "v": "Dia "+str(i)},{"v": sprint_time_total_real,},{"v": sprint_time_total-ideal_delta*i,}]} for i in range(0,sprint_time+1)]
+	for x in range(1,sprint_time+1):
+		tasks = list(filter(lambda y: y[0]==x,sprint_index))
+		estimated_of_day = sum(map(lambda z: z[1],tasks))
+		real_of_day = sum(map(lambda z: z[2],tasks))
+		dif = estimated_of_day-real_of_day
+		if dif<0 :
+			sprint_time_total_real-=real_of_day
+			rows[x-1]['c'][1]['v'] -=dif 
+			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v'] - real_of_day
+		else:
+			rows[x]["c"][1]['v']=rows[x-1]['c'][1]['v']-estimated_of_day
+			
+		
+	data={"cols":   [ { "id"    : "days"
+	                  , "label" : "Dias del sprint"
+	                  , "type"  : "string"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "actual_hours"
+	                  , "label" : "Horas por cumplir"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "ideal_hours"
+	                  , "label" : "Horas estimadas"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                ]
+	     }
+	data['rows']=rows
+	
+	bdchart =   { "type"    : "ComboChart"
+	            , "options" : 
+	                { "title"      : "Burn down chart del Sprint"
+	                , "vAxis"      : { "title": "Horas por cumplir" }
+	                , "hAxis"      : { "title": "Dias" }
+	                , "seriesType" : "bars"
+	                , "series"     : { 1 : {'type'  : 'line' }
+	                                 , 0 : {'color' : '#000000' }
+	                                 }
+	                }   
+	            , "formatters" : {}
+	            }
+	bdchart["data"] = data
+	return bdchart
+		
+def bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date):
+	sprint_time=(sprint_end_date-sprint_start_date).days
+	assert sprint_time >0
+	fun_weight = lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight)
+	sprint_index = filter(lambda x: x.HW_iniciado and x.HW_completed, sprint_tasks)
+	sprint_index = map(fun_weight,sprint_index) 
+	sprint_index = dict(sprint_index)
+	sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
+	ideal_delta= sprint_tasks_total/sprint_time
+	sprint_tasks_total_real=sprint_tasks_total
+	#Building the bdchart
+	rows = [{"c":[{ "v": "Dia 0"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
+	for x in range(1,sprint_time):
+	    sprint_tasks_total-=ideal_delta
+	    sprint_tasks_total_real-=sprint_index.get(x,0)
+	    rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})
+	try:
+		sprint_tasks_total_real-=sprint_index.get(x+1,0)
+	except UnboundLocalError:
+		x = sprint_time
+		sprint_tasks_total_real-=sprint_index.get(x+1,0)
+	rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
+	#Building the JSON to be sent
+	data={"cols":   [ { "id"    : "days"
+	                  , "label" : "Dias del sprint"
+	                  , "type"  : "string"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "actual_hours"
+	                  , "label" : "Peso de las tareas"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                , { "id"    : "ideal_hours"
+	                  , "label" : "Pesos estimados"
+	                  , "type"  : "number"
+	                  , "p"     : {}
+	                  }
+	                ]
+	     }
+	data['rows']=rows
+	
+	bdchart =   { "type"    : "ComboChart"
+	            , "options" : 
+	                { "title"      : "Burn down chart del Sprint"
+	                , "vAxis"      : { "title": "Peso acumulado de las tareas" }
+	                , "hAxis"      : { "title": "Dias" }
+	                , "seriesType" : "bars"
+	                , "series"     : { 1 : {'type'  : 'line' }
+	                                 , 0 : {'color' : '#000000' }
+	                                 }
+	                }   
+	            , "formatters" : {}
+	            }
+	bdchart["data"] = data
+	return bdchart
 
 class sprints(object):
     '''Clase que permite manejar los sprints de manera persistente'''
@@ -221,12 +336,12 @@ class sprints(object):
                 return True
         return False
 
+
     def assignSprintAcceptanceCriteria(self, sprintNumber, idBacklog, idAC):
         ''' Permite asignar a un Sprint una criterio de aceptación asociado a sus historias'''
         checkSprintNumber = type(sprintNumber) == int and MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
         checkidBacklog    = type(idBacklog)    == int and MIN_ID <= idBacklog
         checkidAC = type(idAC) == int and MIN_ID <= idAC
-
         if checkSprintNumber and checkidBacklog and checkidAC:
             oAcceptanceCriteria = acceptanceCriteria()
             criterio = oAcceptanceCriteria.getACById(idAC)

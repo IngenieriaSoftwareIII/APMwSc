@@ -6,6 +6,7 @@ from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.model       import *
 from app.scrum.Team        import *
+from app.scrum.user        import *
 from datetime              import datetime
 
 from werkzeug import secure_filename
@@ -13,6 +14,7 @@ from werkzeug import secure_filename
 tareas = Blueprint('tareas', __name__)
 basedir=os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))+"/static"
 
+DATE_FORMAT = '%Y-%m-%d'
 
 @tareas.route('/tareas/ACrearTarea', methods=['POST'])
 def ACrearTarea():
@@ -37,7 +39,7 @@ def ACrearTarea():
     if 'fechaInicio' in params:
             startingDate= params['fechaInicio']
             try:
-                startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
+                startingDate_object = datetime.strptime(startingDate, DATE_FORMAT)
             except ValueError:
                 res     = results[1]
                 res['label'] = res['label'] + '/'+str(idHistory)
@@ -53,7 +55,7 @@ def ACrearTarea():
     if 'fechaFin' in params:
             finishingDate = params['fechaFin']
             try:
-                finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
+                finishingDate_object = datetime.strptime(finishingDate, DATE_FORMAT)
             except ValueError:
                 res     = results[1]
                 res['label'] = res['label'] + '/'+str(idHistory)
@@ -179,43 +181,57 @@ def AModifTarea():
     new_idCategoria     = params['categoria'  ]
     new_taskPeso        = params['peso'       ]
     new_estimatedTime   = params['tiempo'     ]
+    interaccion         = params['interaccion']
+    reglasNegocio       = params['reglasNegocio']
+    usoEntidades        = params['usoEntidades']
+    operacionesDB       = params['operacionesDB']
     new_miembro         = params['miembro'    ]
     started             = params['iniciado'   ]
     startingDate        = params['fechaInicio']
     completed           = params['completed'  ]
     finishingDate       = params['fechaFin'   ]
-    hours_spent = params['Horas_Trabajadas']
+    hours_spent         = params['Horas_Trabajadas']
 
     try:
-        startingDate_object = datetime.strptime(startingDate, '%d/%m/%Y')
-        finishingDate_object = datetime.strptime(finishingDate, '%d/%m/%Y')
+        startingDate_object = datetime.strptime(startingDate, '%Y-%m-%d')
+    except TypeError:
+        startingDate_object = None
     except ValueError:
         res     = results[1]
         res['label'] = res['label'] + '/'+str(idHistoria)
         return json.dumps(res)
-
+    
+    try:
+        finishingDate_object = datetime.strptime(finishingDate, '%Y-%m-%d')
+    except TypeError:
+        finishingDate_object = None
+    except ValueError:
+        res     = results[1]
+        res['label'] = res['label'] + '/'+str(idHistoria)
+        return json.dumps(res)
+    
     # Buscamos la tarea a modificar
     oTarea   = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     # Modificamos la tarea
-    if startingDate_object.date() <= finishingDate_object.date():
-
-        modify = oTarea.updateTask( result.HW_description
+    modify = oTarea.updateTask( result.HW_description
                                   , new_description
                                   , new_idCategoria
                                   , new_taskPeso
                                   , new_estimatedTime
+                                  , interaccion  
+                                  , reglasNegocio
+                                  , usoEntidades 
+                                  , operacionesDB
                                   , started
                                   , startingDate_object
                                   , completed
                                   , finishingDate_object
                                   ,hours_spent
                                   )
-
-    else:
-        modify = None
+    if not modify:
         res = results[1]
-        res['msg'][0] = res['msg'][0] + ": La fecha de culminación debe ser mayor o igual que la de inicio."
+#        res['msg'][0] = res['msg'][0]  + ": La fecha de culminación debe ser mayor o igual que la de inicio."
 
     if new_miembro == None or new_miembro < 0:
         oTarea.deleteUserTask(int(idTarea))
@@ -298,6 +314,7 @@ def VCrearTarea():
       return json.dumps(res)
 
     # Buscamos la historia actual
+    oUser        = user()
     oUserHistory = userHistory()
     hist         = oUserHistory.searchIdUserHistory(idHistory)
 
@@ -312,7 +329,19 @@ def VCrearTarea():
     cateList    = clsCategory.query.all()
     oTeam       = team()
     found       = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
-    miembroList = oTeam.getTeam(found.UH_idBacklog)
+
+    #Obtenemos los miembros del equipo
+    members     = oTeam.getTeam(found.UH_idBacklog)
+    miembroList = []
+
+    #Quitamos al scrum master y al product owner
+    for m in members:
+
+        if m.EQ_rol == "Team member":
+            u = oUser.searchUser(m.EQ_username)
+
+            miembroList.append({'miembro':u[0].U_fullname + " (" + m.EQ_username + ")",'idEquipo':m.EQ_idEquipo})
+
 
     # Mostramos los datos en la vista
     ListaCompleta = []
@@ -332,8 +361,8 @@ def VCrearTarea():
                                       , 'value' : 'Sin asignacion'
                                       }
                                     ] + [ 
-                                      { 'key'   : miembro.EQ_idEquipo 
-                                      , 'value' : miembro.EQ_username
+                                      { 'key'   : miembro['idEquipo']
+                                      , 'value' : miembro['miembro']
                                       } for miembro in miembroList
                                     ]
 
@@ -388,28 +417,44 @@ def VTarea():
                                       , 'value' : miembro.EQ_username
                                       } for miembro in miembroList
                                     ]
-    try:
-        startingDate_object_new = datetime.strftime(result.HW_fechaInicio, '%d/%m/%Y')
-    except TypeError:
-        startingDate_object_new = datetime.strftime(datetime.now(), '%d/%m/%Y')
-    
-    try:
-        finishingDate_object_new = datetime.strftime(result.HW_fechaFin, '%d/%m/%Y')
-    except TypeError:
-        finishingDate_object_new = datetime.strftime(datetime.now(), '%d/%m/%Y')
 
-    res['fTarea'] = { 'idHistoria'  : idHistoria
-                    , 'idTarea'     : idTarea
-                    , 'descripcion' : result.HW_description
-                    , 'categoria'   : result.HW_idCategory
-                    , 'peso'        : result.HW_weight
-                    , 'miembro'     : result.HW_idEquipo
-                    , 'tiempo'      : result.HW_estimatedTime
-                    , 'iniciado'    : result.HW_iniciado
-                    , 'fechaInicio' : startingDate_object_new
-                    , 'completed'   : result.HW_completed
-                    , 'fechaFin'    : finishingDate_object_new 
-                    ,'Horas_Trabajadas':result.HW_horasEmpleadas 
+    res['fTarea_opcionesComplejidad'] = [ { 'key'   : 1
+                                          , 'value' : "Sencillo"
+                                          }
+                                        ] + [ 
+                                          { 'key'   : 2
+                                          , 'value' : "Promedio"
+                                          }
+                                        ] + [ 
+                                          { 'key'   : 3
+                                          , 'value' : "Complejo"
+                                          } 
+                                        ]
+    try:
+        startingDate_object_new  = datetime.strftime(result.HW_fechaInicio, '%Y-%m-%d')
+    except TypeError:
+        startingDate_object_new = result.HW_fechaInicio
+    try:
+        finishingDate_object_new = datetime.strftime(result.HW_fechaFin,    '%Y-%m-%d')
+    except TypeError:
+        finishingDate_object_new = result.HW_fechaFin
+
+    res['fTarea'] = { 'idHistoria'   : idHistoria
+                    , 'idTarea'      : idTarea
+                    , 'descripcion'  : result.HW_description
+                    , 'categoria'    : result.HW_idCategory
+                    , 'peso'         : result.HW_weight
+                    , 'miembro'      : result.HW_idEquipo
+                    , 'tiempo'       : result.HW_estimatedTime
+                    , 'iniciado'     : result.HW_iniciado
+                    , 'fechaInicio'  : startingDate_object_new
+                    , 'completed'    : result.HW_completed
+                    , 'fechaFin'     : finishingDate_object_new
+                    , 'interaccion'  : result.HW_interaccion
+                    , 'reglasNegocio' : result.HW_reglasNegocio
+                    , 'usoEntidades' : result.HW_usoEntidades
+                    , 'operacionesDB': result.HW_operacionesDB
+                    , 'Horas_Trabajadas': result.HW_horasEmpleadas
                     }
 
     session['idTarea']    = idTarea

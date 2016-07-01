@@ -129,8 +129,22 @@ class task(object):
 
 
 
-    def updateTask(self, HW_description, newDescription, C_idCategory, HW_weight, HW_estimatedTime, HW_iniciado, HW_fechaInicio, HW_completed, HW_fechaFin, HW_horasEmpleadas):
-
+    def updateTask  ( self
+                    , HW_description
+                    , newDescription
+                    , C_idCategory
+                    , HW_weight
+                    , HW_estimatedTime
+                    , HW_interaccion
+                    , HW_reglasNegocio  
+                    , HW_usoEntidades
+                    , HW_operacionesDB
+                    , HW_iniciado
+                    , HW_fechaInicio
+                    , HW_completed
+                    , HW_fechaFin
+                    , HW_horasEmpleadas
+                    ):
         '''Permite actualizar la descripcion de una tarea'''
 
         typedescription    = (type(HW_description)  == str)
@@ -149,9 +163,9 @@ class task(object):
             min_C_idCategory    = C_idCategory >= MIN_ID
             min_HW_weight       = HW_weight >= MIN_WEIGHT
             hours_spent_positive =HW_horasEmpleadas is None  or  HW_horasEmpleadas>0
-            
+            hours_estimaed_positive = HW_estimatedTime>0
 
-            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive ):
+            if (long_HW_description and long_newDescription and min_C_idCategory and min_HW_weight and hours_spent_positive and hours_estimaed_positive):
                 foundTask = self.searchTask(HW_description)
                 foundNew  = self.searchTask(newDescription)
                 foundCat  = clsCategory.query.filter_by(C_idCategory = C_idCategory).all()
@@ -163,7 +177,7 @@ class task(object):
                         oTask.HW_idCategory  = C_idCategory
                         oTask.HW_weight      = HW_weight
                         oTask.HW_estimatedTime  = HW_estimatedTime
-                        oTask.HW_iniciado   = HW_iniciado
+                        oTask.HW_iniciado       = HW_iniciado
                         if HW_iniciado:
                             oTask.HW_fechaInicio = HW_fechaInicio
                         else:
@@ -177,6 +191,11 @@ class task(object):
                             oTask.HW_horasEmpleadas = HW_horasEmpleadas
                         else:
                             oTask.HW_horasEmpleadas = None
+                        oTask.HW_interaccion    = HW_interaccion
+                        oTask.HW_reglasNegocio  = HW_reglasNegocio  
+                        oTask.HW_usoEntidades   = HW_usoEntidades
+                        oTask.HW_operacionesDB  = HW_operacionesDB
+
                         db.session.commit()
                         return True
         return False

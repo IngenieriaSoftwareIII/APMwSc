@@ -22,19 +22,21 @@ def AActualizarEquipoSprint():
     results = [{'label':'/VEquipoSprint', 'msg':['Sub Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar el Sub equipo']}, ]
     res     = results[1]
     
+    members = params['miembros']
+
     #Action code goes here, res should be a list with a label and a message
     idSprint  = int(session['idSprint'])
     idPila    = int(session['idPila'])
-    obTeam    = team()
-    idEquipo  = obTeam.getTeamId(idPila)
-    lista     = params['lista']    
-    oTeam     = subEquipoClass()
-    exito     = oTeam.actualizar(lista,idSprint)
+
+    oSubTeam  = subEquipoClass()  
+    
+    exito     = oSubTeam.actualizar(members,idSprint)
 
     if exito:
         res = results[0]
+        
     res['label'] = res['label'] + '/' + repr(1)
-    #Action code ends here
+    
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -46,40 +48,43 @@ def AActualizarEquipoSprint():
 @sprint.route('/sprint/VEquipoSprint')
 def VEquipoSprint():
     #GET parameter
-    idSprint = int(session['idSprint'])
-    idPila  = int(session['idPila'])
     res = {}
-    #Action code goes here, res should be a JSON structure
-    if "actor" in session:
-        res['actor'] = session['actor']
-   # #Action code goes here, res should be a JSON structure
-    if 'usuario' not in session:
-        res['logout'] = '/'
-        return json.dumps(res)
-   
-    obTeam      = team()
-    teamList    = obTeam.getTeamDevs(idPila)
-    oTeam       = subEquipoClass()
-    SubteamList = oTeam.getSubEquipo(idSprint)
 
-    res['fEquipo']  =   { 'lista' : [ { 'miembro' : team.SEQ_username
-                                      , 'rol'     : team.SEQ_rol
-                                      } for team in SubteamList
-                                    ]
-                        }
+    idSprint = int(session['idSprint'])
+    idPila   = int(session['idPila'])
+    
+    oTeam    = team()
+    oUser    = user()
+    oSubTeam = subEquipoClass()
+
+    #Obtenemos los desarrolladores asociados al producto.
+    teamList = oTeam.getTeamDevs(idPila)
+
+    #Obtenemos los desarrolladores asociados al sprint.
+    subteamList = oSubTeam.getSubEquipo(idSprint)
+
+    miembros = []
+    for s in subteamList:
+        miembros.append(s.SEQ_username)
+
+    members = []
+    for s in subteamList:
+        u = oUser.searchUser(s.SEQ_username)
+        members.append({'miembro':u[0].U_fullname + " (" + s.SEQ_username + ")",'usuario':s.SEQ_username})
+
+    res['fEquipo'] = {'miembros': miembros, 'id':idSprint}
+
+    res['fEquipo_opcionesMiembros'] = [{'key': user['usuario'],'value': user['miembro']} for user in members]
+
     res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
+    
+    if "actor" in session:
+        res['actor'] = session['actor']
 
-    res['fEquipo_opcionesRol'] =[
-        {'key':'Desarrollador', 'value':'Desarrollador'}
-      ]
-
-    res['fEquipo_opcionesMiembros'] = [ { 'key'   : user.EQ_username
-                                        , 'value' : user.EQ_username
-                                        } for user in teamList
-                                      ]
-
-    #Action code ends here
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        
     return json.dumps(res)
 
 
@@ -94,7 +99,6 @@ def ACrearElementoMeeting():
     #Action code goes here, res should be a list with a label and a message
     usuario = session['usuario']['username']
     oUser = user()
-    #print(usuario)
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
@@ -194,7 +198,7 @@ def ACrearSprint():
         idSprint = oSprint.getSprintId(newNumero,idPila)
 
         for member in teamList:
-            oSubTeam.insertMiembroSubEquipo(member.EQ_username,member.EQ_rol,idSprint)
+            oSubTeam.insertMiembroSubEquipo(member.EQ_username,idSprint)
 
     res['label'] = res['label'] + '/' + str(idPila)
 
@@ -728,8 +732,6 @@ def VSprint():
 
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
-    print("Argumentos: ")
-    print(request.args)
     idSprint = int(request.args.get('idSprint',1))
     if "actor" in session:
         res['actor']=session['actor']
@@ -779,7 +781,7 @@ def VSprint():
     #Lista de Historias
     res['data6'] =  [ { 'idHistoria' : hist['idHistory']
                       , 'prioridad'  : hist['priority']
-                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']
+                      , 'enunciado'  : 'En tanto ' + hist['actors'] + hist['actions'] + ' para ' + hist['objectives']
                       , 'resumen'    : hist['resume']
                       } for hist in userHistories
                     ]
@@ -1003,7 +1005,6 @@ def AElimCriterioHistoria():
     return json.dumps(res)
 
 
-
 @sprint.route('/sprint/VCriterioHistoria')
 def VCriterioHistoria():
     #GET parameter
@@ -1054,60 +1055,18 @@ def VDesempeno():
     #Calculate duration (in days)
     sprint_start_date=asociated_sprint.S_fechini
     sprint_end_date=asociated_sprint.S_fechfin
-    sprint_time=(sprint_end_date-sprint_start_date).days
+    print(sprint_start_date,sprint_end_date)
     
     #Sprint
     sprint_tasks = oSprint.getAssignedSprintTask(int(idSprint),idPila)
-    sprint_index = map(lambda x: ((x.HW_fechaFin-sprint_start_date).days+1,x.HW_weight),sprint_tasks) 
-    sprint_index = dict(sprint_index)
-    print(sprint_index,sprint_time)
-    sprint_tasks_total= sum(map(lambda x: x.HW_weight ,sprint_tasks))
-    ideal_delta= sprint_tasks_total//sprint_time
-    sprint_tasks_total_real=sprint_tasks_total
-    #Building the bdchart
-    rows = [{"c":[{ "v": "Dia 1"},{"v": sprint_tasks_total,},{"v": sprint_tasks_total,}]}]
-    for x in range(2,sprint_time):
-        sprint_tasks_total-=ideal_delta
-        sprint_tasks_total_real-=sprint_index.get(x,0)
-        rows.append({"c":[{ "v": "Dia %s"%x},{"v":sprint_tasks_total_real, },{"v": sprint_tasks_total,}]})
-    sprint_tasks_total_real-=sprint_index.get(x+1,0)
-    rows.append({"c":[{ "v": "Dia %s"%(x+1)},{"v":sprint_tasks_total_real, },{"v": 0,}]})
-    #Building the JSON to be sent
-    data={"cols":   [ { "id"    : "days"
-                      , "label" : "Dias del sprint"
-                      , "type"  : "string"
-                      , "p"     : {}
-                      }
-                    , { "id"    : "actual_hours"
-                      , "label" : "Peso de las tareas"
-                      , "type"  : "number"
-                      , "p"     : {}
-                      }
-                    , { "id"    : "ideal_hours"
-                      , "label" : "Pesos estimados"
-                      , "type"  : "number"
-                      , "p"     : {}
-                      }
-                    ]
-         }
-    data['rows']=rows
-    
-    bdchart =   { "type"    : "ComboChart"
-                , "options" : 
-                    { "title"      : "Burn down chart del Sprint"
-                    , "vAxis"      : { "title": "Peso acumulado de las tareas" }
-                    , "hAxis"      : { "title": "Dias" }
-                    , "seriesType" : "bars"
-                    , "series"     : { 1 : {'type'  : 'line' }
-                                     , 0 : {'color' : '#000000' }
-                                     }
-                    }   
-                , "formatters" : {}
-                }
-    bdchart["data"] = data
+    for x in sprint_tasks:
+        print(x.HW_fechaInicio,x.HW_fechaFin)
+    bdchart = bdchart_time(sprint_tasks,sprint_start_date,sprint_end_date)
+    bdchart_points = bdchart_weight(sprint_tasks,sprint_start_date,sprint_end_date)
     res['usuario']  = session['usuario']
     res['idSprint'] = idSprint
-    res['bdchart']  = bdchart
+    res['bdchart_points']  = bdchart_points
+    res['bdchart_time']=bdchart
 
     #Action code ends here
     return json.dumps(res)

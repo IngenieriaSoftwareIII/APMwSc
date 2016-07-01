@@ -43,7 +43,7 @@ class precedence(object):
     def existPrecedence(self, idFirstTask, idSecondTask):
         '''Permite saber si existe una precedencia'''
 
-        typeFirst   = (type(idFirstTask) == int)
+        typeFirst   = (type(idFirstTask)  == int)
         typeSecond  = (type(idSecondTask) == int)
 
         if (typeFirst and typeSecond):
@@ -74,7 +74,7 @@ class precedence(object):
     def doesNotMakeLoops(self, idFirstTask, idSecondTask):
         '''Evita los ciclos entre prelaciones'''
 
-        typeFirst   = (type(idFirstTask) == int)
+        typeFirst   = (type(idFirstTask)  == int)
         typeSecond  = (type(idSecondTask) == int)
         noHayCiclo  = True
 
@@ -101,9 +101,9 @@ class precedence(object):
         return result
 
     def taskWithIdAndDescription(self, idPila):
-        otask = task()
-        oHistory = userHistory()
-        result = []
+        otask     = task()
+        oHistory  = userHistory()
+        result    = []
         historias = oHistory.getAllUserHistoryId(idPila)
         for h in historias:
             tareas = otask.getAllTask(h.UH_idUserHistory)
