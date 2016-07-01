@@ -90,7 +90,7 @@ def VAnexo():
         res['actor'] = session['actor']
     # Action code goes here, res should be a JSON structure
 
-    emptyBacklog = backlog()
+    emptyBacklog = backLog.backlog()
 
     # oBacklog = emptyBacklog.findIdProduct(idPila)
     filesList = emptyBacklog.filesAssociatedToProduct(idPila)
