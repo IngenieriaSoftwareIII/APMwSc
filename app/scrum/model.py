@@ -401,7 +401,7 @@ class clsTask(db.Model):
         '''Representacion en string de la Tarea'''
         return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, \
                  HW_iniciado %r, HW_fechaInicio %r, HW_completed %r, HW_fechaFin %r>' % (self.HW_idTask, self.HW_idCategory, \
-                    self.HW_weight, self.HW_idUserHistory, elf.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio, \
+                    self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio, \
                     self.HW_completed, self.HW_fechaFin)
 
 

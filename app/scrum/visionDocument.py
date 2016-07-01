@@ -10,6 +10,7 @@ from model import clsVisionDocument, clsBacklog, db
 class visionDocument(object):
     ''' Clase que permite dado un id backlog asociar los datos del documento vision de manera persistente '''
 
+
     def insertVisionDocument(self,idBacklog,intro,proposito,moti,estado,alcance,fund,valores):
         '''Inserta los datos del documento vision en la base de datos'''
         foundBacklog = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()

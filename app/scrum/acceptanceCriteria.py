@@ -92,3 +92,13 @@ class acceptanceCriteria(object):
         if criterio:
             return criterio.HAC_idAcceptanceCriteria
         return []
+
+    def getAceptanceCriteriaByHistoryAndSprint(self,idUserHistory,idSprint):
+        '''Permite obtner todos los criterios de aceptacion por historia de usuario para un sprint'''
+        criterio = clsAcceptanceCriteria.query.filter_by(HAC_idUserHistory = idUserHistory, HAC_idSprint = idSprint).all()
+        return criterio
+
+    def aceptanceCriteriaEmpty(self,idSprint):
+        '''Permite saber si no hay criterios de aceptacion por historia de usuario para un sprint'''
+        criterio = clsAcceptanceCriteria.query.filter_by(HAC_idUserHistory = idSprint).all()
+        return (criterio == [])

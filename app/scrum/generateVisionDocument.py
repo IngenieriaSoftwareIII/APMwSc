@@ -24,6 +24,10 @@ from precedence               import *
 from sprintClass              import * 
 from app.scrum.subEquipoClass import *
 from Team                     import *
+from visionDocument           import *
+from category                 import *
+from acceptanceCriteria       import *
+from acceptanceTest           import *
 
 #Importaciones necesarias para dar formato al documento.
 from reportlab.pdfbase            import pdfmetrics
@@ -99,7 +103,7 @@ styles['tittle'] = ParagraphStyle('tittle',
     parent=styles['default'],
     fontName  = 'Arial Bold',
     fontSize  = 14,
-    alignment = TA_CENTER,
+    alignment = TA_LEFT,
     )
 
 styles['subtittle'] = ParagraphStyle('subtittle',
@@ -108,13 +112,13 @@ styles['subtittle'] = ParagraphStyle('subtittle',
     alignment = TA_LEFT,
     )
 
-styles['header'] = ParagraphStyle('subtittle',
+styles['header'] = ParagraphStyle('header',
     parent=styles['default'],
     fontName  = 'Arial Bold',
     alignment = TA_CENTER,
     )
 
-styles['tittlePage'] = ParagraphStyle('tittle',
+styles['tittlePage'] = ParagraphStyle('tittlePage',
     parent=styles['default'],
     fontName  = 'Arial Bold',
     fontSize  = 18,
@@ -126,6 +130,13 @@ styles['content'] = ParagraphStyle('content',
     parent=styles['default'],
     fontName  = 'Arial',
     alignment = TA_JUSTIFY,
+    )
+
+styles['note'] = ParagraphStyle('note',
+    parent=styles['default'],
+    fontName  = 'Arial',
+    alignment = TA_LEFT,
+    textColor = 'grey',
     )
 
 styles['jumpLine'] = ParagraphStyle('jumpLine',
@@ -203,6 +214,33 @@ stylesTable8 = [('ALIGN',(0,0),(-1,-1),'LEFT'),
                 ('BOX',(0,0),(-1,-1),1,black),
                 ('GRID',(0,0),(-1,-1),1,black),
                 ('BACKGROUND',(0,0),(0,0),lightgrey)]
+
+#Para la primera tarea que se muestra en sprint planificado.
+stylesTable9 = [('ALIGN',(0,0),(-1,-1),'LEFT'),    
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEABOVE',(0,0),(-1,0),1,black),
+                ('LINEBEFORE',(0,0),(-1,-1),1,black),
+                ('LINEAFTER',(0,0),(-1,-1),1,black),
+                ('GRID',(1,1),(-1,-1),1,black)
+                ]
+
+#Para las otras tarea que se muestra en sprint planificado.
+#Para los criterios de aceptacion y pruebas de aceptacion.
+stylesTable10 = [('ALIGN',(0,0),(-1,-1),'LEFT'),    
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEBEFORE',(0,0),(-1,-1),1,black),
+                ('LINEAFTER',(0,0),(-1,-1),1,black),
+                ('GRID',(1,1),(-1,-1),1,black)
+                ]
+
+#Para el ultimo criterio de aceptacion o prueba de aceptacion.
+stylesTable11 = [('ALIGN',(0,0),(-1,-1),'LEFT'),    
+                ('VALIGN', (0,0),(-1,-1),'MIDDLE'),
+                ('LINEBELOW',(0,0),(-1,-1),1,black), 
+                ('LINEBEFORE',(0,0),(-1,-1),1,black),
+                ('LINEAFTER',(0,0),(-1,-1),1,black),
+                ('GRID',(1,1),(-1,-1),1,black)
+                ]
 
 
 #----------------------- Generar Documento Vision -----------------------------
@@ -284,7 +322,7 @@ def generateDocument(idProduct,path):
 
             for i in range(0,n+1,1):
                 if i == acum:
-                    statement = statement[:i] + "\n" + statement[i+1:]
+                    statement = statement[:i] + "\n" + statement[i:]
                     acum += interval
 
         return statement
@@ -308,6 +346,10 @@ def generateDocument(idProduct,path):
     oActUserHist = actorsUserHistory()
     oObjUserHist = objectivesUserHistory()
     oSubTeam     = subEquipoClass()  
+    oDocument    = visionDocument()
+    oCategory    = category()
+    oACriteria   = acceptanceCriteria()
+    oTCriteria   = acceptanceTest()
 
 
     #------------------------------ Fecha actual ------------------------------
@@ -324,6 +366,8 @@ def generateDocument(idProduct,path):
     projectName        = result.BL_name
     projectDescription = result.BL_description
     projectScaleType   = result.BL_scaleType
+
+    information = oDocument.searchVisionDocument(idProduct)
 
 
     #------------------ Datos de las historias de usuario ---------------------
@@ -353,30 +397,47 @@ def generateDocument(idProduct,path):
             result['code'] = hist.UH_codeUserHistory
             userHistories.append(result)
 
-            tupla  = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
-            weights.append(tupla)
-
     if projectScaleType == 1:
         for hist in userHistories:
             hist['priority'] = priorities[hist['priority']]
+
+
+    #--------------------- Secciones del proyecto -----------------------------
+    section_num = 1
+    section1  = ".  Descripción de la metodología"
+    section2  = ".  Descripción General del Método de Desarrollo de Software"
+    section3  = ".  Personas y roles del proyecto"
+    section4  = ".  Artefactos"
+
+    #--------------------- Subsecciones del proyecto --------------------------
+    subsection11 = "1.1  Introducción"
+    subsection12 = "1.2  Propósito de este documento"
+    subsection13 = "1.3  Motivación"
+    subsection14 = "1.4  Estado del Proyecto"
+    subsection15 = "1.5  Alcance"
+
+    subsection21 = "2.1  Fundamentación"
+    subsection22 = "2.2  Valores del equipo"
+
+    subsection_num = 2
+    subsection41 = ".1  Pila del producto"
+    subsection42 = ".2  Objetivos"
 
 
     #------------------ Personas y roles del proyecto -------------------------
     teamList  = oTeam.getTeam(idProduct)
 
 
-    #------------------ Descripcion de la metodologia -------------------------
-    section1      = "Descripción de la metodología"
-    introduction  = "Este documento describe la implementación del método de desarrollo de software scrum para la gerencia del desarrollo el proyecto APMwSc."
-    porpose       = ""       
-    motivation    = ""
-    projectStatus = ""
-    scope         = ""
+    #--------------------- Descripcion de la metodologia ----------------------
+    introduction  = information.VD_introduccion
+    porpose       = information.VD_proposito      
+    motivation    = information.VD_motivacion
+    projectStatus = information.VD_estado
+    scope         = information.VD_alcance
 
-    #-------- Descripción General del Método de Desarrollo de Software ----
-    section2   = "Descripción General del Método de Desarrollo de Software"
-    groundwork = ""
-    teamworkValues = ""
+    #-------- Descripción General del Método de Desarrollo del Software -------
+    groundwork     = information.VD_fundamentacion
+    teamworkValues = information.VD_valores
 
 
     #-------------------- Construccion del Documento --------------------------
@@ -388,21 +449,62 @@ def generateDocument(idProduct,path):
     story.append(PageBreak())
 
     #-------------------------- Introduccion ----------------------------------
-    story.append(Spacer(0,5))
-    story.append(Paragraph(section1, styles['tittle']))
+    story.append(Spacer(0,6))
+    story.append(Paragraph(str(section_num) + section1, styles['tittle']))
     story.append(Spacer(0,15))
-    story.append(Paragraph("1. Introducción", styles['subtittle'])) 
+    story.append(Paragraph(subsection11, styles['subtittle'])) 
     story.append(Spacer(0,10))
     story.append(Paragraph(introduction, styles['content']))   
 
-    story.append(PageBreak()) 
+    #---------------------------- Proposito -----------------------------------
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection12, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(porpose, styles['content']))   
+
+    #--------------------------- Motivacion -----------------------------------
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection13, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(motivation, styles['content']))  
+
+    #------------------------ Estado del proyecto -----------------------------
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection14, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(projectStatus, styles['content']))  
+
+    #------------------------------- Alcance ----------------------------------
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection15, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(scope, styles['content']))  
+
+    #---------------------------- Fundamentacion ------------------------------
+    story.append(Spacer(0,20))
+    section_num += 1
+    story.append(Paragraph(str(section_num) + section2, styles['tittle']))
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection21, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(groundwork, styles['content']))  
+
+    #------------------------------- Valores ----------------------------------
+    story.append(Spacer(0,15))
+    story.append(Paragraph(subsection22, styles['subtittle'])) 
+    story.append(Spacer(0,10))
+    story.append(Paragraph(teamworkValues, styles['content']))  
+
+    story.append(Spacer(0,20))
 
     #------------------- Personas y Roles del proyecto ------------------------
 
     if teamList != []:
     
-        story.append(Paragraph("2. Personas y roles del proyecto", styles['subtittle']))
-        story.append(Spacer(0,10))
+        section_num += 1
+
+        story.append(Paragraph(str(section_num) + section3, styles['tittle']))
+        story.append(Spacer(0,15))
         
         #Cabecera de la tabla.
         t1 = Paragraph("Persona", styles['header'])
@@ -424,6 +526,9 @@ def generateDocument(idProduct,path):
                 t_roles_persons = Table(dataTable,tam_colums,style=stylesTable1,hAlign='CENTER')
                 story.append(t_roles_persons)
 
+        for e in teamList:
+            u = oUser.searchUser(e.EQ_username)
+
             if e.EQ_rol == "Scrum master":
                 dataTable = [[u[0].U_fullname,u[0].U_email,"Maestro Scrum"]]
                 t_roles_persons = Table(dataTable,tam_colums,style=stylesTable1,hAlign='CENTER')
@@ -443,7 +548,6 @@ def generateDocument(idProduct,path):
                 story.append(t_roles_persons)
 
         story.append(Spacer(0,25))
-        #story.append(PageBreak())
 
     #---------------------------- Pila del producto ---------------------------
 
@@ -451,9 +555,10 @@ def generateDocument(idProduct,path):
     historiesListId = []
     
     if userHistories != [] or epics != []:
-        story.append(Paragraph("4. Artefactos", styles['subtittle']))
+        section_num += 1
+        story.append(Paragraph(str(section_num) + section4, styles['tittle']))
         story.append(Spacer(0,10))
-        story.append(Paragraph("Pila del producto", styles['content'])) 
+        story.append(Paragraph(str(section_num) + subsection41, styles['subtittle'])) 
 
         #Cabecera de la tabla.
         t1 = Paragraph("ID", styles['header'])
@@ -465,7 +570,7 @@ def generateDocument(idProduct,path):
         t_user_histories = Table(dataTableHist,tam_colums,style=stylesTable2,hAlign='CENTER')
         story.append(t_user_histories)
 
-        tam_colums1 = [2.3*cm,14.5*cm]
+        tam_colums1 = [2.2*cm,14.6*cm]
 
         #Mostramos las epicas.
         for e in epics:
@@ -529,14 +634,14 @@ def generateDocument(idProduct,path):
             story.append(t_user_histories)
 
         story.append(Spacer(0,25))
-        #story.append(PageBreak())
+
 
     #-------------------------------- Objetivos -------------------------------
     #Obtenemos todos los objetivos asociados al producto.
     objsList = oObjective.getAllObjectives(idProduct)
 
     if objsList != []:
-        story.append(Paragraph("4.2 Objetivos", styles['content'])) 
+        story.append(Paragraph(str(section_num) + subsection42, styles['subtittle'])) 
 
         #Cabecera de la tabla.
         t1 = Paragraph("ID", styles['header'])
@@ -595,7 +700,6 @@ def generateDocument(idProduct,path):
             story.append(t_user_obj)
 
         story.append(Spacer(0,25))
-        #story.append(PageBreak())
 
     #------------------------------ Pila del sprint ---------------------------
    
@@ -604,118 +708,479 @@ def generateDocument(idProduct,path):
 
     if sprintsList != []:
 
-        story.append(Paragraph("4.3 Pila del sprint", styles['content'])) 
-
-        #Cabecera de la tabla.
-        t1 = Paragraph("ID", styles['header'])
-        t2 = Paragraph("Historia de Usuario", styles['header'])
-        t3 = Paragraph("T/E", styles['header'])
+        story.append(Paragraph("4.3 Pila del sprint", styles['subtittle'])) 
 
         for s in sprintsList:
 
-            estimatedTime = oSprint.getEstimatedTime(s.S_numero, idProduct)
-
-            tam_colums       = [2.7*cm,12.6*cm,1.5*cm]
-            dataTableSprint  = [[t1,t2,t3]]
-            t_user_sprints   = Table(dataTableSprint,tam_colums,style=stylesTable0,hAlign='CENTER')
-            story.append(t_user_sprints)
-            
-            t4 = Paragraph("Sprint " + str(s.S_numero),styles['subtittle'])
-
-            tam_colums1      = [16.8*cm]
-            tam_row          = [0.6*cm]
-            dataTableSprint  = [[t4]] 
-            t_user_sprints   = Table(dataTableSprint,tam_colums1,tam_row,style=stylesTable7,hAlign='CENTER')
-            story.append(t_user_sprints)
+            #Cabecera de la tabla.
+            t1 = Paragraph("ID", styles['header'])
+            t2 = Paragraph("Historia de Usuario", styles['header'])
+            t3 = Paragraph("T/E", styles['header'])
 
             #Obtenemos las historias asociadas al sprint.
             userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
 
-            for uH in userHistoryList:
-                hist      = oUserHistory.transformUserHistory(uH.UH_idUserHistory)
-                code      = uH.UH_codeUserHistory 
-                statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
+            if userHistoryList != []:
+                tam_colums       = [2.7*cm,12.6*cm,1.5*cm]
+                dataTableSprint  = [[t1,t2,t3]]
+                t_user_sprints   = Table(dataTableSprint,tam_colums,style=stylesTable0,hAlign='CENTER')
+                story.append(t_user_sprints)
+                
+                t4 = Paragraph("Sprint " + str(s.S_numero),styles['subtittle'])
 
-                #Establecemos saltos de linea para que el contenido no se salga de la tabla.
-                statement = insertJumpLine(statement,77)
-             
-                dataTableSprint = [[code,statement, str(estimatedTime) + "h"]]
-                t_user_sprints  = Table(dataTableSprint,tam_colums,style=stylesTable7,hAlign='CENTER')
+                tam_colums1      = [16.8*cm]
+                tam_row          = [0.6*cm]
+                dataTableSprint  = [[t4]] 
+                t_user_sprints   = Table(dataTableSprint,tam_colums1,tam_row,style=stylesTable7,hAlign='CENTER')
                 story.append(t_user_sprints)
 
-            #Obtenemos el subequipo del sprint.
-            subTeamList = oSubTeam.getSubEquipo(s.S_idSprint)
+                for uH in userHistoryList:
+                    hist      = oUserHistory.transformUserHistory(uH.UH_idUserHistory)
+                    code      = uH.UH_codeUserHistory 
+                    statement = "En tanto" + hist['actors'] + hist['actions'] + "para" + hist['objectives']
 
-            if subTeamList != []:
-                n = len(subTeamList)
+                    #Establecemos saltos de linea para que el contenido no se salga de la tabla.
+                    statement = insertJumpLine(statement,77)
 
-                memberSubTeam = ""
+                    estimatedTime = oTask.historyEstimatedTime(uH.UH_idUserHistory)
+                 
+                    dataTableSprint = [[code,statement, str(estimatedTime) + "h"]]
+                    t_user_sprints  = Table(dataTableSprint,tam_colums,style=stylesTable7,hAlign='CENTER')
+                    story.append(t_user_sprints)
 
-                for s in subTeamList:
-                    member = s.SEQ_username
-                    member = oUser.searchUser(member)
-                    member = member[0].U_fullname
-                    memberSubTeam += member 
-                    n -= 1
+                #Obtenemos el subequipo del sprint.
+                subTeamList = oSubTeam.getSubEquipo(s.S_idSprint)
 
-                    if n != 0:
-                        memberSubTeam += ", "
-                    if n == 0:
-                        memberSubTeam += "."
+                if subTeamList != []:
+                    n = len(subTeamList)
 
-                t5 = Paragraph("Responsables", styles['content'])
-                tam_colums2 = [2.7*cm,14.1*cm]
+                    memberSubTeam = ""
 
-                members = insertJumpLine(memberSubTeam,90)
+                    for s in subTeamList:
+                        member = s.SEQ_username
+                        member = oUser.searchUser(member)
+                        member = member[0].U_fullname
+                        memberSubTeam += member 
+                        n -= 1
 
-                dataTableSprint = [[t5,members]]
-                t_user_sprints  = Table(dataTableSprint,tam_colums2,style=stylesTable8,hAlign='CENTER')
-                story.append(t_user_sprints)
-            story.append(Spacer(0,20))
+                        if n != 0:
+                            memberSubTeam += ", "
+                        if n == 0:
+                            memberSubTeam += "."
 
-        story.append(Spacer(0,25))
-        #story.append(PageBreak())
+                    t5 = Paragraph("Responsables", styles['content'])
+                    tam_colums2 = [2.7*cm,14.1*cm]
+
+                    members = insertJumpLine(memberSubTeam,90)
+
+                    dataTableSprint = [[t5,members]]
+                    t_user_sprints  = Table(dataTableSprint,tam_colums2,style=stylesTable8,hAlign='CENTER')
+                    story.append(t_user_sprints)
+            
+                story.append(Spacer(0,5))
+                story.append(Paragraph("T/E es tiempo estimado.",styles['note']))
+                story.append(Spacer(0,20))
 
 
     #--------------------------- Sprint planificado ---------------------------
+    #Obtenemos la lista de desarrolladores de un producto.
+    teamMemberList = oTeam.getTeamDevs(idProduct)
 
     if sprintsList != []:
 
-        for s in sprintsList:
+        story.append(Paragraph("4.4 Sprint planificado", styles['subtittle'])) 
 
-            story.append(Paragraph("4.4 Sprint planificado", styles['content'])) 
+        for s in sprintsList:
 
             #Obtenemos las historias asociadas al sprint.
             userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
 
-            fini =s.S_fechini
-            dayIni   = fini.day
-            monthIni = fini.month
-            yearIni  = fini.year
+            #Obtenemos las tareas asociadas a cada sprint.
+            taskList = oSprint.getAssignedSprintTask(s.S_numero,idProduct)
 
-            fchini = str(dayIni) + "/" + str(monthIni) + "/" + str(yearIni)
+            if userHistoryList != []:
 
-            ffin =s.S_fechfin
-            dayFin   = ffin.day
-            monthFin = ffin.month
-            yearFin  = ffin.year
+                fini     = s.S_fechini
+                dayIni   = fini.day
+                monthIni = fini.month
+                yearIni  = fini.year
 
-            fchfin = str(dayFin) + "/" + str(monthFin) + "/" + str(yearFin)
+                fchini = str(dayIni) + "/" + str(monthIni) + "/" + str(yearIni)
 
-            duration = days_between(fini,ffin)
+                ffin     = s.S_fechfin
+                dayFin   = ffin.day
+                monthFin = ffin.month
+                yearFin  = ffin.year
 
-            #Cabecera de la tabla.
-            t1 = Paragraph("Sprint "  + str(s.S_numero), styles['subtittle'])
-            t2 = Paragraph("Duración:  "  + str(duration) + " d", styles['subtittle'])
-            t3 = Paragraph("Inicio:  " + fchini, styles['subtittle'])
-            t4 = Paragraph("Cierre:  " + fchfin, styles['subtittle'])
+                fchfin = str(dayFin) + "/" + str(monthFin) + "/" + str(yearFin)
 
-            tam_colums = [4.8*cm,4*cm,4*cm,4*cm]
+                duration = days_between(fini,ffin)
 
-            dataTableSprintPlan = [[t1,t2,t3,t4]]
-            t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums,style=stylesTable0,hAlign='CENTER')
-            story.append(t_user_sprintsPlan)
+                #Cabecera de la tabla.
+                t1 = Paragraph("Sprint "  + str(s.S_numero), styles['subtittle'])
+                t2 = Paragraph("Duración:  "  + str(duration) + " d", styles['content'])
+                t3 = Paragraph("Inicio:  " + fchini, styles['content'])
+                t4 = Paragraph("Cierre:  " + fchfin, styles['content'])
 
+                tam_colums = [4.8*cm,4*cm,4*cm,4*cm]
+
+                dataTableSprintPlan = [[t1,t2,t3,t4]]
+                t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums,style=stylesTable0,hAlign='CENTER')
+                story.append(t_user_sprintsPlan)
+
+                t5 = Paragraph("Pila del Sprint", styles['header'])
+                tam_colums1 = [16.8*cm]
+
+                dataTableSprintPlan = [[t5]]
+                t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums1,style=stylesTable0,hAlign='CENTER')
+                story.append(t_user_sprintsPlan)
+
+                t6 = Paragraph("ID", styles['header'])
+                t7 = Paragraph("Tarea", styles['header'])
+                t8 = Paragraph("Categoría", styles['header'])
+                t9 = Paragraph("Estado", styles['header'])
+                t10 = Paragraph("T/E", styles['header'])
+                t11 = Paragraph("Responsable", styles['header'])
+
+                tam_colums2 = [1.4*cm,6.5*cm,2.9*cm,2*cm,1*cm,3*cm]
+
+                dataTableSprintPlan = [[t6,t7,t8,t9,t10,t11]]
+                t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums2,style=stylesTable0,hAlign='CENTER')
+                story.append(t_user_sprintsPlan)
+
+
+                for h in userHistoryList:
+                    
+                    #codigo de la historia
+                    histCode = h.UH_codeUserHistory
+
+                    #Obtenemos todas las tareas asociadas a la historia de la que se obtuvo el codigo.
+                    taskListCurrent = []
+
+                    for i in taskList:
+                        if h.UH_idUserHistory == i.HW_idUserHistory:
+                            taskListCurrent.append(i)
+
+
+                    if taskListCurrent != []:
+
+                        firstTask = taskListCurrent[0]
+
+                        #Obtenemos el estado de la realizacion de la tarea.
+                        statusCompleted = taskListCurrent[0].HW_completed
+                        statusInitiated = taskListCurrent[0].HW_iniciado 
+
+                        status = ''
+                        if statusCompleted: 
+                            status = "Culminada"
+                        elif not statusCompleted and statusInitiated: 
+                            status = "Iniciada"
+                        else:
+                            status = "Por iniciar"
+    
+                        #Buscamos la categoria asiciada a la tarea
+                        cat = oCategory.searchIdCategory(taskListCurrent[0].HW_idCategory)
+                        cat = cat[0].C_nameCate
+                        cat = insertJumpLine(cat,13)
+
+                        #Obtenemos el tiempo estimado de la tarea.
+                        estimatedTime = taskListCurrent[0].HW_estimatedTime
+
+                        #Obtenemos el miembro encargado de la tarea.
+                        memberAssigned = ''
+                        for i in teamMemberList:
+                            if i.EQ_idEquipo == taskListCurrent[0].HW_idEquipo:
+                                memberAssigned = oUser.searchUser(i.EQ_username)
+                                memberAssigned = memberAssigned[0].U_fullname
+                                memberAssigned = insertJumpLine(memberAssigned,17)
+
+                        descTask = taskListCurrent[0].HW_description
+                        descTask = insertJumpLine(descTask,35)
+
+                        dataTableSprintPlan = [[histCode,descTask,cat,status,estimatedTime,memberAssigned]]
+                        t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums2,style=stylesTable9,hAlign='CENTER')
+                        story.append(t_user_sprintsPlan)
+
+                        n = len(taskListCurrent)
+                        
+                        for t in range(1,n):
+
+                            statusCompleted = taskListCurrent[t].HW_completed
+                            statusInitiated = taskListCurrent[t].HW_iniciado 
+
+                            status = ''
+                            if statusCompleted: 
+                                status = "Culminada"
+                            elif not statusCompleted and statusInitiated: 
+                                status = "Iniciada"
+                            else:
+                                status = "Por iniciar"
+
+                            #Buscamos la categoria asiciada a la tarea
+                            cat = oCategory.searchIdCategory(taskListCurrent[t].HW_idCategory)
+                            cat = cat[0].C_nameCate
+                            cat = insertJumpLine(cat,13)
+
+                            estimatedTime = taskListCurrent[t].HW_estimatedTime
+
+                            #Obtenemos el miembro asignado al desarrollo de la tarea.
+                            teamMemberList = oTeam.getTeamDevs(idProduct)
+
+                            memberAssigned = ''
+                            for i in teamMemberList:
+                                if i.EQ_idEquipo == taskListCurrent[t].HW_idEquipo:
+                                    memberAssigned = oUser.searchUser(i.EQ_username)
+                                    memberAssigned = memberAssigned[0].U_fullname
+                                    memberAssigned = insertJumpLine(memberAssigned,17)
+
+                            descTask = taskListCurrent[t].HW_description
+                            descTask = insertJumpLine(descTask,35)
+
+                            dataTableSprintPlan = [["",descTask,cat,status,estimatedTime,memberAssigned]]
+                            t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums2,style=stylesTable10,hAlign='CENTER')
+                            story.append(t_user_sprintsPlan)
+
+
+                num = insertJumpLine(str(oSprint.getEstimatedTime(s.S_numero,idProduct)),4)
+                t12 = Paragraph("Total de Tiempo Estimado", styles['header'])
+                t13 = Paragraph(num, styles['header'])
+
+                tam_colums3 = [12.8*cm,4*cm]
+
+                dataTableSprintPlan = [[t12,t13]]
+                t_user_sprintsPlan  = Table(dataTableSprintPlan,tam_colums3,style=stylesTable1,hAlign='CENTER')
+                story.append(t_user_sprintsPlan)
+
+            story.append(Spacer(0,20))
+
+
+    #------------------------------- Entregables ------------------------------
+
+    if sprintsList != []:
+
+        story.append(Paragraph("4.5 Entregables", styles['subtittle'])) 
+        story.append(Spacer(0,15))
+
+    #------------------------ Criterios de Aceptacion -------------------------
+    if sprintsList != []:
+
+        story.append(Paragraph("4.5.1 Criterios de Aceptación de los Entregables", styles['subtittle'])) 
+        story.append(Spacer(0,10))
+
+        idAceptanceCriteria = 1
+
+        for s in sprintsList:
+
+            if oACriteria.aceptanceCriteriaEmpty(s.S_idSprint) != []:
+            
+                #Obtenemos las historias asociadas al sprint.
+                userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
+
+                if userHistoryList != []:
+
+                    t1 = Paragraph("ID", styles['header'])
+                    t2 = Paragraph("Productos", styles['header'])
+                    t3 = Paragraph("ID Historias", styles['header'])
+
+                    tam_colums = [2*cm,10.8*cm,4*cm]
+
+                    dataTableAcceptanCriteria = [[t1,t2,t3]]
+                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums,style=stylesTable0,hAlign='CENTER')
+                    story.append(t_user_acceptanCriteria)
+
+                    t4 = Paragraph("Sprint " + str(s.S_numero),styles['subtittle'])
+                    tam_colums1 = [16.8*cm]
+
+                    dataTableAcceptanCriteria = [[t4]]
+                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable0,hAlign='CENTER')
+                    story.append(t_user_acceptanCriteria)
+
+
+                    #Obtenemos primero las epicas y las almacenamos en un arreglo.
+                    epics = []
+
+                    for hist in userHistoryList:
+                        if oUserHistory.isEpic(hist.UH_idUserHistory):
+                            result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+                            result['code'] = hist.UH_codeUserHistory
+                            epics.append(result)
+
+                    #Obtenemos los valores de las historias de usuario.
+                    userHistories = []
+
+                    for hist in userHistoryList:
+                        if not oUserHistory.isEpic(hist.UH_idUserHistory):
+                            result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+                            result['code'] = hist.UH_codeUserHistory
+                            userHistories.append(result)
+
+                    n = len(epics)
+                    #Mostramos las epicas.
+                    for e in epics:
+
+                        #Obtenemos los criterios de aceptacion asociados a la epica.
+                        aceptanceCriteriaList = oACriteria.getAceptanceCriteriaByHistoryAndSprint(e['idHistory'],s.S_idSprint)
+
+                        if aceptanceCriteriaList != []:
+
+                            #Construimos el enunciado
+                            statement = "En tanto" + e['actors'] + e['actions'] + "para" + e['objectives']
+                            statement = insertJumpLine(statement,67)
+
+                            codes = e['code']
+                            sucessors = oUserHistory.succesors(e['idHistory'])
+
+                            #Obtenemos las historias hijas.
+                            for i in sucessors:
+                                result = oUserHistory.searchIdUserHistory(i)
+                                result = result[0].UH_codeUserHistory
+                                codes += ", " + result
+
+                            dataTableAcceptanCriteria = [[idAceptanceCriteria,statement,codes]]
+                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums,style=stylesTable9,hAlign='CENTER')
+                            story.append(t_user_acceptanCriteria)
+
+                            idAceptanceCriteria += 1
+
+                            t5 = Paragraph("Criterios de aceptación:",styles['subtittle'])
+                            tam_colums1 = [2*cm,14.8*cm]
+
+                            dataTableAcceptanCriteria = [["",t5]]
+
+                            if n > 0:
+                                t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                            else:
+                                t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable1,hAlign='CENTER')
+                                n -= 1
+                            story.append(t_user_acceptanCriteria)
+
+                            #Mostramos los criterios de aceptacion.
+                            for c in aceptanceCriteriaList:
+                                criteria = c.HAC_enunciado
+                                criteria = insertJumpLine(criteria,80)
+                                
+                                dataTableAcceptanCriteria = [["",criteria]]
+
+                                if n > 0:
+                                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                                else: 
+                                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable11,hAlign='CENTER')
+                                print(codes,n,criteria)
+                                n -= 1
+                                story.append(t_user_acceptanCriteria)
+
+                            statement = ''
+                            n = len(sucessors)
+                            #Mostramos las historias hijas.
+                            for suc in sucessors:
+
+                                #Obtenemos los criterios de aceptacion asociados a la historia.
+                                aceptanceCriteriaList = oACriteria.getAceptanceCriteriaByHistoryAndSprint(suc,s.S_idSprint)
+
+                                if aceptanceCriteriaList != []:
+                                
+                                    for h in userHistories:
+                                        if suc == h['idHistory']:
+                                            #Construimos el enunciado
+                                            statement = "En tanto" + h['actors'] + h['actions'] + "para" + h['objectives']
+                                            statement = insertJumpLine(statement,67)
+                                            code = h['code']
+
+                                            dataTableAcceptanCriteria = [[idAceptanceCriteria,statement,code]]
+                                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums,style=stylesTable9,hAlign='CENTER')
+                                            story.append(t_user_acceptanCriteria)
+
+                                            idAceptanceCriteria += 1
+                                            userHistories.remove(h)
+
+                                    t5 = Paragraph("Criterios de aceptación:",styles['subtittle'])
+                                    tam_colums1 = [2*cm,14.8*cm]
+
+                                    dataTableAcceptanCriteria = [["",t5]]
+                                    if n > 0:
+                                        t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                                    else:
+                                        t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable11,hAlign='CENTER')
+                                    story.append(t_user_acceptanCriteria)
+
+                                    #Mostramos los criterios de aceptacion.
+                                    for c in aceptanceCriteriaList:
+                                        criteria = c.HAC_enunciado
+                                        criteria = insertJumpLine(criteria,80)
+                                        
+                                        dataTableAcceptanCriteria = [["",criteria]]
+
+                                        if n > 0:
+                                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                                        else:
+                                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable11,hAlign='CENTER')
+                                        n -= 1
+                                        print(code,n,criteria)
+                                        story.append(t_user_acceptanCriteria)
+
+
+                    n = len(userHistories)
+                    #Mostramos las historias que no pertenenecen a ninguna epica.
+                    for h in userHistories:
+
+                        #Obtenemos los criterios de aceptacion asociados a la epica.
+                        aceptanceCriteriaList = oACriteria.getAceptanceCriteriaByHistoryAndSprint(h['idHistory'],s.S_idSprint)
+
+                        if aceptanceCriteriaList != []:
+
+                            #Construimos el enunciado
+                            statement = "En tanto" + h['actors'] + h['actions'] + "para" + h['objectives']
+                            statement = insertJumpLine(statement,67)
+                            code = h['code']
+
+                            dataTableAcceptanCriteria = [[idAceptanceCriteria,statement,code]]
+                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums,style=stylesTable9,hAlign='CENTER')
+                            story.append(t_user_acceptanCriteria)
+
+                            idAceptanceCriteria += 1
+
+                            t5 = Paragraph("Criterios de aceptación:",styles['subtittle'])
+                            tam_colums1 = [2*cm,14.8*cm]
+
+                            dataTableAcceptanCriteria = [["",t5]]
+                            t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                            story.append(t_user_acceptanCriteria)
+
+                            #Mostramos los criterios de aceptacion.
+                            for c in aceptanceCriteriaList:
+                                criteria = c.HAC_enunciado
+                                criteria = insertJumpLine(criteria,80)
+                                                
+                                dataTableAcceptanCriteria = [["",criteria]]
+
+                                if n > 0:
+                                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable10,hAlign='CENTER')
+                                else:
+                                    t_user_acceptanCriteria  = Table(dataTableAcceptanCriteria,tam_colums1,style=stylesTable11,hAlign='CENTER')
+                                n -= 1
+                                print(code,n,criteria)
+                                story.append(t_user_acceptanCriteria)
+            story.append(Spacer(0,20))
+
+    #------------------------ Pruebas de Aceptacion -------------------------
+    if sprintsList != []:
+
+        story.append(Paragraph("4.5.2 Pruebas de Aceptación de los Entregables", styles['subtittle'])) 
+        story.append(Spacer(0,10))
+
+        idTestCriteria = 1
+
+        #for s in sprintsList:
+
+            #Obtenemos las pruebas de aceptacion almacenadas por historia.
+
+         #   if True:
+            
+                #Obtenemos las historias asociadas al sprint.
+        #        userHistoryList = oSprint.getAssignedSprintHistory(s.S_numero,idProduct)
+
+         #       if userHistoryList != []:
+          #          oTCriteria.getAllAcceptanceTestByUserHistory
 
 	#--------------------------- Estructura Documento -------------------------
 	#==========================================================================

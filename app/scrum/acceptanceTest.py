@@ -9,14 +9,21 @@ from userHistory import *
 class acceptanceTest(object):
     '''Clase que permite manejar las pruebas de aceptacion de manera persistente'''
 
-    def findIdAcceptanceTest(self, idAT):
-            '''Permite encontrar una prueba de aceptacion dado un id'''
-            checkTypeIdAT = type(idAT) == int
-            found = None
+    def getAllAcceptanceTestByUserHistory(self, idUserHistory):
+        '''Permite obtener las pruebas de aceptacion asociadas a una historia de usuario'''
+        found = clsAcceptanceTest.query.filter_by(AT_idUserHistory = idUserHistory).all()
 
-            if checkTypeIdAT:
-                found = clsAcceptanceTest.query.filter_by(AT_idAT=idAT).first()
-            return found
+        return found
+
+
+    def findIdAcceptanceTest(self, idAT):
+        '''Permite encontrar una prueba de aceptacion dado un id'''
+        checkTypeIdAT = type(idAT) == int
+        found = None
+
+        if checkTypeIdAT:
+            found = clsAcceptanceTest.query.filter_by(AT_idAT=idAT).first()
+        return found
 
     def insertAcceptanceTest(self,idUserHistory,description,urlScript):
         '''Permite insertar una nueva prueba de aceptacion'''
