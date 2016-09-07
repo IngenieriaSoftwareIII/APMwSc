@@ -1,6 +1,6 @@
 from flask import request, session, Blueprint, json
 from app.scrum.backLog import *
-from app.scrum.user import *
+from app.scrum.usuarioClase import *
 from app.scrum.Team import *
 
 equipo = Blueprint('equipo', __name__)

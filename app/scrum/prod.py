@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask             import request, session, Blueprint, json
-from app.scrum.backLog import *
+
+from app.scrum.backLog               import *
+from app.scrum.usuariosProductoClase import *
 
 
 prod = Blueprint('prod', __name__)
@@ -10,31 +12,76 @@ prod = Blueprint('prod', __name__)
 def ACrearProducto():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Producto creado']}, {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
-    res     = results[1]
+    results = [{'label':'/VProductos', 'msg':['Producto creado']}, 
+               {'label':'/VCrearProducto', 'msg':['Error al crear producto']}]
+
+    # Asignamos un mensaje a mostrar por defecto
+    res = results[1]
 
     if params != {}:
         # Extraemos los parámetros
-        prodName  = params['nombre']
-        prodDesc  = params['descripcion']
-        prodScale = params['escala']
+        nombreProducto = params['nombre']
+        descProducto   = params['descripcion']
+        escalaProducto = params['escala']
 
-        oBacklog = backlog()
-        inserted = oBacklog.insertBacklog(prodName,prodDesc,prodScale)
+        # Obtenemos el usuario que esta creando el producto
+        nombreUsuario = session['usuario']['username']
 
-        if inserted:
-            # Obtenemos el producto insertado
-            result = oBacklog.findName(prodName)
-            res['idPila'] = result[0].BL_idBacklog
+        oProducto = backlog()
+        oUsuarioProducto = usuariosProducto()
 
-            if result:
-                res = results[0]
+        # Buscamos si el nombre del producto existe
+        listaProductos = oProducto.buscarProductosPorNombre(nombreProducto)
+
+        estaAsociado = False
+
+        # Buscamos si esos productos estan asociados al usuario actual
+        for prod in listaProductos:
+
+            # Buscamos los usuarios asociados al producto
+            listaNombres = oUsuarioProducto.obtenerNombresUsuariosAsociadosAProducto(prod.BL_idBacklog)
+            
+            if  nombreUsuario in listaNombres:
+                estaAsociado = True
+                break
+
+        # Si no estan asociados al usuario actual
+        if not estaAsociado:
+            estaInsertado = oProducto.insertarProducto(nombreProducto,descProducto,escalaProducto)
+
+            if estaInsertado:
+                # Obtenemos el producto insertado asociado al usuario actual
+                listaProductos = oProducto.buscarProductosPorNombre(nombreProducto)
+
+                idProducto = listaProductos[0].BL_idBacklog
+
+                for prod in listaProductos:
+
+                    listaNombres = oUsuarioProducto.obtenerNombresUsuariosAsociadosAProducto(prod.BL_idBacklog)
+
+                    if listaNombres == []:
+                        idProducto = prod.BL_idBacklog
+                        break
+                        
+                res['idPila'] = idProducto
+
+                # Registramos que el usuario esta asociado al produccto
+                resultado = oUsuarioProducto.insertarUsuarioAsociadoAProducto(nombreUsuario,idProducto)
+            
+                if listaProductos:
+
+                    if resultado:
+                        res = results[0]
+                    else:
+                        oUsuarioProducto.borrarAsociacionEntreProductoYUsuario(nombreUsuario, idProducto)
 
     if "actor" in res:
+
         if res['actor'] is None:
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+    
     return json.dumps(res)
 
 
@@ -43,23 +90,26 @@ def ACrearProducto():
 def AModifProducto():
     #POST/PUT parameters
     params  = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, {'label':'/VProductos', 'msg':['Error al modificar el producto']}]
-    res     = results[1]
+    results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, 
+               {'label':'/VProductos', 'msg':['Error al modificar el producto']}]
+
+    # Asignamos un mensaje a mostrar por defecto
+    res = results[1]
 
     # Obtenemos los parámetros
-    newname        = params['nombre']
-    newdescription = params['descripcion']
-    newscale       = params['escala']
-    idPila         = params['idPila']
-    newstatus      = params['Estado']
+    nuevoNombre      = params['nombre']
+    nuevaDescripcion = params['descripcion']
+    nuevaEscala      = params['escala']
+    nuevoEstado      = params['Estado']
+    idPila           = params['idPila']
 
     oBacklog = backlog()
 
     # Buscamos el producto a modificar
-    result = oBacklog.findIdProduct(idPila)
-    result = oBacklog.modifyBacklog(result.BL_name, newname, newdescription, newscale, newstatus)
+    producto = oBacklog.buscarProductoPorId(idPila)
+    estaModificado = oBacklog.modifyBacklog(result.BL_name, nuevoNombre, nuevaDescripcion, nuevaEscala, nuevoEstado)
 
-    if result:
+    if estaModificado:
         res = results[0]
 
     if "actor" in res:
@@ -67,6 +117,7 @@ def AModifProducto():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+
     return json.dumps(res)
 
 
@@ -74,6 +125,7 @@ def AModifProducto():
 @prod.route('/prod/VCrearProducto')
 def VCrearProducto():
     res = {}
+
     # Buscamos el id del producto.
     idPila = int(request.args.get('idPila',1))
 
@@ -83,17 +135,12 @@ def VCrearProducto():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
 
-    res['fPila_opcionesEscala'] = [ { 'key'   : 1
-                                    , 'value' : 'Alta/Media/Baja'
-                                    }
-                                  , { 'key'   : 2
-                                    , 'value' : 'Entre 1 y 20'
-                                    }
-                                  , { 'key'   : 0
-                                    , 'value' : 'Seleccione un tipo de escala'
-                                    }
+    res['fPila_opcionesEscala'] = [ {'key': 1, 'value': 'Alta/Media/Baja'}
+                                  , {'key': 2, 'value': 'Entre 1 y 20'}
+                                  , {'key': 0, 'value': 'Seleccione un tipo de escala'}
                                   ]
     res['fPila'] = {'escala':0}
 
@@ -105,14 +152,17 @@ def VCrearProducto():
 def VProducto():
     #GET parameter
     res = {}
+
     # Obtenemos el id del producto
     idPila = int(request.args.get('idPila', 1))
+
     if "actor" in session:
         res['actor']=session['actor']
 
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
 
     # Obtenemos los datos asociados al producto
@@ -127,7 +177,7 @@ def VProducto():
     res['data7'] = [{'idObjetivo':obj.O_idObjective, 'descripcion':obj.O_descObjective } for obj in objectList]
 
     # Buscamos el producto actual
-    result = oBacklog.findIdProduct(idPila)
+    result = oBacklog.buscarProductoPorId(idPila)
 
     # Mostramos los valores seleccionados
     res['fPila'] = {'idPila':idPila,'nombre': result.BL_name,'descripcion':result.BL_description,'escala':result.BL_scaleType, 'Estado' : result.BL_statusType}
@@ -145,21 +195,37 @@ def VProducto():
 @prod.route('/prod/VProductos')
 def VProductos():
     res = {}
+
     if "actor" in session:
         res['actor']=session['actor']
 
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
 
-    # Obtenemos la lista de productos
-    oBacklog    = backlog()
-    productList = oBacklog.getAllProducts()
+    # Obtenemos el nombre de usuario
+    nombreUsuario = session['usuario']['username']
 
-    res['data0'] = [{'idPila':prod.BL_idBacklog,'nombre':prod.BL_name, 'descripcion': prod.BL_description, 'prioridad': prod.BL_scaleType}for prod in productList]
+    # Obtenemos la lista de productos a mostrar para este usuario
+    oBacklog         = backlog()
+    oUsuarioProducto = usuariosProducto()
+
+    listaIds = oUsuarioProducto.obtenerIdProductosAsociadosAUsuario(nombreUsuario)
+
+    listaIds.sort()
+
+    listaProductos = []
+
+    for id in listaIds:
+        listaProductos.append(oBacklog.buscarProductoPorId(id))
+
+    res['data0'] = [{'idPila':prod.BL_idBacklog,'nombre':prod.BL_name, 'descripcion': prod.BL_description, 'prioridad': prod.BL_scaleType}for prod in listaProductos]
 
     return json.dumps(res)
+
+
 
 @prod.route('/prod/ARespaldo')
 def VRespaldo():

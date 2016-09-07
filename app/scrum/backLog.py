@@ -3,86 +3,100 @@
 import sys
 import datetime
 import json
+
 # Ruta que permite utilizar el módulo model.py
 sys.path.append('app/scrum')
 
 from model import *
-from objective import *
-from role import *
-from accions import *
+
+from objective   import *
+from role        import *
+from accions     import *
 from sprintClass import *
 import userHistory
 import archivos
 
 # Declaracion de constantes.
-CONST_MAX_DESCRIPTION = 140
-CONST_MIN_DESCRIPTION = 1
-CONST_MAX_NAME = 50
-CONST_MIN_NAME = 1
-CONST_MIN_ID = 1
+DESC_TAM_MAX   = 140
+DESC_TAM_MIN   = 1
+NOMBRE_TAM_MAX = 50
+NOMBRE_TAM_MIN = 1
+ID_MIN = 1
 
-# Estructuras relacionadas a ;as escalas de los productos.
-scale_type = [1, 2]
-scale_alta = [i for i in range(1, 7)]
+# Estructuras relacionadas a las escalas de los productos.
+scale_type  = [1, 2]
+scale_alta  = [i for i in range(1, 7)]
 scale_media = [i for i in range(7, 13)]
-scale_baja = [i for i in range(13, 21)]
+scale_baja  = [i for i in range(13, 21)]
 scale_type1 = [i for i in range(0, 4)]
-scale = {0: 0, 1: 1, 2: 10, 3: 20}
+scale       = {0: 0, 1: 1, 2: 10, 3: 20}
 
 class backlog(object):
     '''Clase que permite (completar)'''
 
-    def getAllProducts(self):
+    def obtenerTodosLosProductos(self):
         '''Permite obtener todos los productos de la tabla'''
 
-        result = clsBacklog.query.all()
-        return result
+        productos = clsBacklog.query.all()
+        return productos
 
-    def findName(self, name):
-        '''Permite buscar un nombre'''
 
-        checkTypeName = type(name) == str
 
-        if checkTypeName:
-            checkLongName = CONST_MIN_NAME <= len(name) <= CONST_MAX_NAME
+    def buscarProductosPorNombre(self, nombre):
+        '''Permite buscar los productos con el nombre dado'''
 
-            if checkLongName:
-                oBacklog = clsBacklog.query.filter_by(BL_name=name).all()
-                return oBacklog
+        # Verificamos que el tipo de los datos es correcto
+        verificarNombre = type(nombre) == str
+
+        if verificarNombre:
+            # Verificamos que la longitud de los datos sea correcta
+            verificarNombre = NOMBRE_TAM_MIN <= len(nombre) <= NOMBRE_TAM_MAX
+
+            if verificarNombre:
+                oProducto = clsBacklog.query.filter_by(BL_name = nombre).all()
+                return oProducto
         return []
 
-    def findIdProduct(self, idBacklog):
-        '''Permite buscar un elemento por su id'''
 
-        checkTypeId = type(idBacklog) == int
-        found = None
 
-        if checkTypeId:
-            found = clsBacklog.query.filter_by(BL_idBacklog=idBacklog).first()
-        return found
+    def buscarProductoPorId(self, idProducto):
+        '''Permite buscar un producto por su id'''
 
-    def insertBacklog(self, name, description, scale):
+        verificarProducto = type(idProducto) == int
+        encontrado = None
+
+        if verificarProducto:
+            encontrado = clsBacklog.query.filter_by(BL_idBacklog = idProducto).first()
+        return encontrado
+
+
+
+    def insertarProducto(self, nombre, descripcion, escala):
         '''Permite insertar un producto'''
 
-        checkTypeName = type(name) == str
-        checkTypeDesc = type(description) == str
-        checkTypeScale = type(scale) == int
+        # Verificamos que el tipo de los datos es correcto
+        verificarNombre = type(nombre)      == str
+        verificarDesc   = type(descripcion) == str
+        verificarEscala = type(escala)      == int
 
-        if checkTypeName and checkTypeDesc and checkTypeScale:
-            checkLongName = CONST_MIN_NAME <= len(name) <= CONST_MAX_NAME
-            checkLongDescription = CONST_MIN_DESCRIPTION <= len(
-                description) <= CONST_MAX_DESCRIPTION
-            checkScale = scale in scale_type
+        if verificarNombre and verificarDesc and verificarEscala:
 
-            if checkLongName and checkLongDescription and checkScale:
-                found = self.findName(name)
+            # Verificamos que la longitud de los datos sea correcta
+            verificarNombre = NOMBRE_TAM_MIN <= len(nombre)      <= NOMBRE_TAM_MAX
+            verificarDesc   = DESC_TAM_MIN   <= len(descripcion) <= DESC_TAM_MAX
 
-                if found == []:
-                    newProd = clsBacklog(name, description, scale)
-                    db.session.add(newProd)
-                    db.session.commit()
-                    return True
+            # Verificamos que la escala es correcta
+            verificarEscala = escala in scale_type
+
+            if verificarNombre and verificarDesc and verificarEscala:
+
+                nuevoProducto = clsBacklog(nombre, descripcion, escala)
+                db.session.add(nuevoProducto)
+                db.session.commit()
+                return True
         return False
+
+
 
     def modifyBacklog(self, name, new_name, new_description, new_scale,new_status):
         '''Permite actualizar los valores de un producto'''
@@ -94,11 +108,11 @@ class backlog(object):
         checkTypeStatus = isinstance(new_status, int)
 
         if checkTypeName and checkTypeNewName and checkTypeDescription and checkTypeScale and checkTypeStatus:
-            checkLongName = CONST_MIN_NAME <= len(name) <= CONST_MAX_NAME
-            checkLongNewName = CONST_MIN_NAME <= len(
-                new_name) <= CONST_MAX_NAME
-            checkLongNewDesc = CONST_MIN_DESCRIPTION <= len(
-                new_description) <= CONST_MAX_DESCRIPTION
+            checkLongName = NOMBRE_TAM_MIN <= len(name) <= NOMBRE_TAM_MAX
+            checkLongNewName = NOMBRE_TAM_MIN <= len(
+                new_name) <= NOMBRE_TAM_MAX
+            checkLongNewDesc = DESC_TAM_MIN <= len(
+                new_description) <= DESC_TAM_MAX
             checkNewScale = new_scale in scale_type
             checkNewStatus = new_status in (1,2,3)
 
@@ -135,13 +149,15 @@ class backlog(object):
                         return True
         return False
 
+
+
     def deleteProduct(self, name):
         '''Permite eliminar un producto de la tabla'''
 
         checkTypeName = type(name) == str
 
         if checkTypeName:
-            checkLongName = CONST_MIN_NAME <= len(name) <= CONST_MAX_NAME
+            checkLongName = NOMBRE_TAM_MIN <= len(name) <= NOMBRE_TAM_MAX
             foundName = self.findName(name)
 
             if foundName != []:
@@ -150,6 +166,8 @@ class backlog(object):
                 db.session.commit()
                 return True
         return False
+
+
 
     def scaleType(self, idBacklog):
         '''Permite obtener el tipo de escala seleccionado para un producto'''
@@ -164,6 +182,8 @@ class backlog(object):
                 return scale
         return ([])
 
+
+
     def actorsAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los Actores asociados a una pila de Producto'''
 
@@ -173,6 +193,8 @@ class backlog(object):
             found = clsActor.query.filter_by(A_idBacklog=idBacklog).all()
             return found
         return([])
+
+
 
     def accionsAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de las acciones asociados a una pila de Producto'''
@@ -184,6 +206,8 @@ class backlog(object):
             return found
         return([])
 
+
+
     def filesAssociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los archivos asociados a una pila de Producto'''
 
@@ -194,6 +218,8 @@ class backlog(object):
                 AR_idBacklog=idBacklog).all()
             return found
         return([])
+
+
 
     def searchFile(self, idBacklog, nameArchive):
         ''' Permite revisar si hay un archivo en el mismo backlog con el mismo nombre'''
@@ -214,6 +240,8 @@ class backlog(object):
 
         return False
 
+
+
     def objectivesAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los Objetivos asociados a una pila de Producto'''
 
@@ -223,6 +251,8 @@ class backlog(object):
             found = clsObjective.query.filter_by(O_idBacklog=idBacklog).all()
             return found
         return([])
+
+
 
     def sprintsAsociatedToProduct(self,idBacklog):
         ''' Permite obtener una lista de los Sprints asociados a una pila de Producto'''
@@ -234,6 +264,8 @@ class backlog(object):
             return found
         return([])
 
+
+
     def userHistoryAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los historias de usuario asociadas a una pila de Producto'''
 
@@ -244,6 +276,8 @@ class backlog(object):
                 UH_idBacklog=idBacklog).all()
             return found
         return([])
+
+
 
     def updateScaleType(self, idUserHistory, new_scale):
         """Permite actualizar el valor actual de la escala de una historia de usuario"""
@@ -275,6 +309,8 @@ class backlog(object):
                         db.session.commit()
                         return True
         return False
+
+
 
     def getProductBackup(self, idBacklog):
         '''Permite crear un backup en JSON del producto'''
@@ -319,5 +355,6 @@ class backlog(object):
             jsonProduct['archivos'] = [oFiles.toJson(archivo.AR_idArchivos) for archivo in files]
 
         return json.dumps(jsonProduct)
+
 
 # Fin Clase Backlog

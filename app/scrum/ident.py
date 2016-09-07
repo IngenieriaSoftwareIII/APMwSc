@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from flask                  import request, session, Blueprint, json
+
+from app.scrum.usuarioClase import *
+from app.scrum.loginClase   import *
+
 from app.scrum.role         import *
-from app.scrum.accions      import *
-from app.scrum.objective    import *
-from app.scrum.user         import *
-from app.scrum.login        import *
 from app.scrum.category     import *
-from app.scrum.task         import *
-from app.scrum.userHistory  import *
 
 ident = Blueprint('ident', __name__)
+
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
 def AIdentificar():
@@ -21,40 +20,45 @@ def AIdentificar():
                {'label':'/VProductos', 'msg':['Bienvenido Maestro Scrum'], "actor":"maestroScrum"},
                {'label':'/VProductos', 'msg':['Bienvenido Desarrollador'], "actor":"desarrollador"},
                {'label':'/VLogin',     'msg':['Datos de identificación incorrectos']}]
-    res     = results[3]
+
+    # Asignamos un mensaje a mostrar por defecto
+    res = results[3]
 
     if request.method == 'POST':
-        userName     = params['usuario']
-        userPassword = params['clave']
+        nombreUsuario = params['usuario']
+        clave         = params['clave']
 
         # Buscamos el usuario en la base de datos
-        oUser     = user()
-        userLogin = oUser.searchUser(userName)
+        oUsuario          = usuario()
+        usuarioEncontrado = oUsuario.buscarUsuario(nombreUsuario)
 
-        if userLogin:
-            encriptPassword = userLogin[0].U_password
-            # Chequeamos el password
+        if usuarioEncontrado:
+            claveCifrada = usuarioEncontrado[0].U_clave
+
+            # Chequeamos la clave
             oLogin  = login();
-            isValid = oLogin.check_password(encriptPassword, userPassword)
+            esClaveValida = oLogin.verificarClave(claveCifrada, clave)
 
-            if isValid:
-                # Mostramos el nombre en la aplicación
-                fullname = userLogin[0].U_fullname
-                username = userLogin[0].U_username 
-                session['usuario'] = {'nombre': fullname.title(),'username': username}
+            if esClaveValida:
+                # Mostramos el nombre de usuario en la aplicación
+                nombre        = usuarioEncontrado[0].U_nombreCompleto
+                nombreUsuario = usuarioEncontrado[0].U_nombreUsuario
+                session['usuario'] = {'nombre': nombre.title(),'username': nombreUsuario}
 
                 # Verificamos el rol del usuario
-                rolUser = userLogin[0].U_idActor
+                rolUsuario = usuarioEncontrado[0].U_idRol
 
-                if rolUser == 1: res = results[0]
-                if rolUser == 2: res = results[1]
-                if rolUser == 3: res = results[2]
+                if rolUsuario == 1: res = results[0]
+                if rolUsuario == 2: res = results[1]
+                if rolUsuario == 3: res = results[2]
 
     if "actor" in res:
+
         if res['actor'] is None:
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+
     return json.dumps(res)
 
 
@@ -63,35 +67,40 @@ def AIdentificar():
 def ARegistrar():
     #POST/PUT parameters
     params  = request.get_json()
+
     results = [{'label':'/VLogin'   , 'msg':['Felicitaciones, Ya estás registrado en la aplicación']},
                {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']} ]
-    res     = results[1]
 
+    # Asignamos un mensaje a mostrar por defecto
+    res = results[1]
 
     if request.method == 'POST':
 
         # Extraemos los datos
-        newName     = params['nombre']
-        newUser     = params['usuario']
-        newPassword = params['clave']
-        newEmail    = params['correo']
-        newActor    = params['actorScrum']
+        nuevoNombreUsuario = params['nombre']
+        nuevoNombre        = params['usuario']
+        nuevaClave         = params['clave']
+        nuevoCorreo        = params['correo']
+        nuevoRol           = params['actorScrum']
 
-        oLogin = login() 
-        oUser  = user()
+        oLogin   = login() 
+        oUsuario = usuario()
 
-        checkNewUser     = oUser.isFound(newUser)
-        checkNewEmail    = oUser.findEmail(newEmail)
-        checkNewPassword = oLogin.validPassword(newPassword)
-        encriptPassword  = oLogin.encript(newPassword)
+        #Verificamos si el tipo de rol es correcto
+        esRolValido = nuevoRol in [1,2,3]
 
-        if (not checkNewPassword):
-            res = results[1]
-            res['msg'][0] = res['msg'][0] + ": Formato inválido para la contraseña"
+        estaNuevoNombreUsuario = oUsuario.estaNombreUsuario(nuevoNombreUsuario)
+        esClaveCorrecta        = oLogin.claveValida(nuevaClave)
+        claveCifrada           = oLogin.encriptarClave(nuevaClave)
 
-        if (not checkNewUser) and checkNewPassword and (not checkNewEmail):
-            result = oUser.insertUser(newName,newUser,encriptPassword,newEmail,newActor)
-            if result:
+        if not esClaveCorrecta:
+            res           = results[1]
+            res['msg'][0] = res['msg'][0] + ": Formato inválido para la contraseña."
+
+        if not estaNuevoNombreUsuario and esClaveCorrecta and esRolValido:
+            estaInsertado = oUsuario.insertarUsuario(nuevoNombreUsuario,nuevoNombre,claveCifrada,nuevoCorreo,nuevoRol)
+
+            if estaInsertado:
                 res = results[0]
 
     if "actor" in res:
@@ -103,9 +112,12 @@ def ARegistrar():
 
 
 
+
 @ident.route('/ident/VLogin')
 def VLogin():
+
     res = {}
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -118,7 +130,8 @@ def VLogin():
 
     if isEmpty:
         print('Cargando datos de prueba...')
-        #Se crean categorias para las tareas
+
+        # Se crean categorias para las tareas
         result1  = oCate.insertCategory('Implementar una acción',2)
         result2  = oCate.insertCategory('Implementar una vista',2)
         result3  = oCate.insertCategory('Implementar una regla de negocio o un método de una clase',2)
@@ -130,22 +143,7 @@ def VLogin():
         result9  = oCate.insertCategory('Actualizar un elemento implementado en otra tarea',1)
         result10 = oCate.insertCategory('Escribir el manual en línea de una página',1)
 
-        oLogin = login()
-        oUser  = user()
-        #Creamos usuarios con los tres posibles roles
-        password         = 'Sabeys.2008'
-        encriptPassword  = oLogin.encript(password)
-
-        oActor.insertActor('Dueno','Dueño del Producto',0)
-        oActor.insertActor('Maestro Scrum','Maestro Scrum',0)
-        oActor.insertActor('Miembro del Equipo','Miembro del Equipo',0)
-
-        #Corregido error de los actores por defecto, deberian ir en la tabla de Actores
-        #result = oUser.insertUser('Dueno','admin',encriptPassword,'productOwner@gmail.com',1)
-        #result = oUser.insertUser('Maestro Scrum','scrum',encriptPassword,'scrumMaster@gmail.com',2)
-        #result = oUser.insertUser('Equipo de Trabajo','team',encriptPassword,'teamMember@gmail.com',3)
-
-        print('Se cargaron los datos.')
+        print('Se cargaron las categorias.')
 
     return json.dumps(res)
 
@@ -153,21 +151,15 @@ def VLogin():
 
 @ident.route('/ident/VRegistro')
 def VRegistro():
+
     res = {}
+
     if "actor" in session:
         res['actor'] = session['actor']
 
-    res['fUsuario_opcionesActorScrum'] = [
-      {'key':2,'value':'Maestro Scrum'},
-      {'key':1,'value':'Dueño de producto'},
-      {'key':3,'value':'Miembro del equipo de desarrollo'},
-      {'key':0,'value':'Seleccione un rol'}
-    ]
+    res['fUsuario_opcionesActorScrum'] = [{'key':0,'value':'Seleccione un rol'},
+                                          {'key':1,'value':'Dueño de producto'},
+                                          {'key':2,'value':'Maestro Scrum'},
+                                          {'key':3,'value':'Miembro del equipo de desarrollo'}] 
 
     return json.dumps(res)
-
-
-#Use case code starts here
-
-
-#Use case code ends here

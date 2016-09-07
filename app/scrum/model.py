@@ -23,7 +23,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']  = True
 
 # Instancia de la base de datos.
 db = SQLAlchemy(app)
@@ -37,21 +37,22 @@ manager.add_command('db', MigrateCommand)
 
 
 class clsBacklog(db.Model):
-    '''Clase que define el modelo Backlog'''
+    '''Clase que define el modelo Backlog que representa un producto a desarrollar en la aplicacion'''
 
     __tablename__ = 'backlog'
     BL_idBacklog    = db.Column(db.Integer, primary_key=True, index=True)
-    BL_name         = db.Column(db.String(50), unique=True)
+    BL_name         = db.Column(db.String(50))
     BL_description  = db.Column(db.String(140))
     BL_scaleType    = db.Column(db.Integer)
     BL_statusType   = db.Column(db.Integer)
-    BL_refObjective = db.relationship('clsObjective', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refActor     = db.relationship('clsActor', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refAccion    = db.relationship('clsAccion', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refSprint    = db.relationship('clsSprint',backref = 'backlog',lazy = 'dynamic',cascade = "all, delete, delete-orphan")
-    BL_refUserHist  = db.relationship('clsUserHistory', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refArchivos  = db.relationship('clsArchivos', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refVisionDoc = db.relationship('clsVisionDocument', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
+    BL_refUser      = db.relationship('clsUsuariosProducto', backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refObjective = db.relationship('clsObjective',        backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refActor     = db.relationship('clsActor',            backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refAccion    = db.relationship('clsAccion',           backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refSprint    = db.relationship('clsSprint',           backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refUserHist  = db.relationship('clsUserHistory',      backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refArchivos  = db.relationship('clsArchivos',         backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
+    BL_refVisionDoc = db.relationship('clsVisionDocument',   backref='backlog', lazy='dynamic', cascade='all, delete, delete-orphan')
 
     def __init__(self, name, description, scaleType):
         '''Constructor del modelo Backlog'''
@@ -64,84 +65,59 @@ class clsBacklog(db.Model):
         return '<idBacklog %r, name %r, scaleType %r>' % (self.BL_idBacklog, self.BL_name, self.BL_scaleType)
 
 
-class clsArchivos(db.Model):
-    '''Clase que define los archivos de cada proyecto '''
 
-    __tablename__ = 'archivos'
-    AR_idArchivos = db.Column(db.Integer, primary_key=True, index=True)
-    AR_nameArch   = db.Column(db.String(50), unique=False)
-    AR_url        = db.Column(db.String(200), nullable=False)
-    AR_dateArch   = db.Column(db.DateTime, default=datetime.datetime.now())
-    AR_idBacklog  = db.Column(db.String(50), db.ForeignKey('backlog.BL_idBacklog'))
-    AR_etiqueta   = db.Column(db.String(100))
+class clsUsuario(db.Model):
+    '''Clase que define el modelo Usuario que representa los usuarios registrados en la aplicacion'''
 
-    def __init__(self, nameArch, url, dateArch, idBacklog, etiqueta):
-        '''Constructor del modelo Archivos'''
-        self.AR_nameArch  = nameArch
-        self.AR_url       = url
-        self.AR_dateArch  = dateArch
-        self.AR_idBacklog = idBacklog
-        self.AR_etiqueta  = etiqueta
+    __tablename__ = 'usuario'
+    U_nombreUsuario   = db.Column(db.String(16), primary_key=True, index=True)
+    U_nombreCompleto  = db.Column(db.String(50))
+    U_clave           = db.Column(db.String(200))
+    U_correo          = db.Column(db.String(30))
+    U_idRol           = db.Column(db.Integer)
+    U_refUsersBacklog = db.relationship('clsUsuariosProducto', backref='usuario', lazy='dynamic', cascade='all, delete, delete-orphan')
 
-    def __repr__(self):
-        '''Representacion en string del modelo Archivo'''
-        return '<idArchive %r, name %r, url %r, date %r, idBacklog %r, etiqueta %r >' % (self.AR_idArchivos, self.AR_nameArch, self.AR_url, self.AR_dateArch, self.AR_idBacklog, self.AR_etiqueta)
-
-
-class clsActor(db.Model):
-    '''Clase que define el modelo Actor'''
-
-    __tablename__ = 'actors'
-    A_idActor = db.Column(db.Integer, primary_key=True)
-    A_nameActor = db.Column(db.String(50))
-    A_actorDescription = db.Column(db.String(140))
-    A_idBacklog = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
-    A_refUser = db.relationship(
-        'clsUser', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
-    A_refActorsUserHist = db.relationship(
-        'clsActorsUserHistory', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
-
-    def __init__(self, nameActor, actorDescription, idBacklog):
-        '''Constructor del modelo Actor'''
-        self.A_nameActor = nameActor
-        self.A_actorDescription = actorDescription
-        self.A_idBacklog = idBacklog
-
-    def __repr__(self):
-        '''Respresentacion en string del modelo Actor'''
-        return '<IdActor %r, Nombre %r, Descripcion %r, IdBacklog %r>' % (self.A_idActor, self.A_nameActor, self.A_actorDescription, self.A_idBacklog)
-
-class clsUser(db.Model):
-    '''Clase que define el modelo Usuario'''
-
-    __tablename__ = 'user'
-    U_fullname = db.Column(db.String(50))
-    U_username = db.Column(db.String(16), primary_key=True, index=True)
-    U_password = db.Column(db.String(200))
-    U_email = db.Column(db.String(30), unique=True)
-    U_idActor = db.Column(db.Integer, db.ForeignKey('actors.A_idActor'))
-
-    def __init__(self, fullname, username, password, email, idActor):
+    def __init__(self, nombreCompleto, nombreUsuario, clave, correo, idRol):
         '''Constructor del modelo usuario'''
-        self.U_fullname = fullname
-        self.U_username = username
-        self.U_password = password
-        self.U_email = email
-        self.U_idActor = idActor
+        self.U_nombreCompleto = nombreCompleto
+        self.U_nombreUsuario  = nombreUsuario
+        self.U_clave          = clave
+        self.U_correo         = correo
+        self.U_idRol          = idRol
 
     def __repr__(self):
         '''Representacion en string del modelo Usuario'''
-        return '<fullname %r, username %r, email %r>' % (self.U_fullname, self.U_username, self.U_email)
+        return '<nombreCompleto %r, nombreUsuario %r, correo %r, idRol %r>' % (self.U_nombreCompleto, self.U_nombreUsuario, self.U_correo, self.idRol)
+
+
+
+class clsUsuariosProducto(db.Model):
+    '''Clase que define el modelo de tabla usersBacklog que representa los usuarios que estan asociados a un producto creado'''
+
+    __tablename__ = 'usuarioProducto'
+    UP_idUsuarioProducto = db.Column(db.Integer, primary_key=True, index=True)
+    UP_nombreUsuario     = db.Column(db.String(16), db.ForeignKey('usuario.U_nombreUsuario'))
+    UP_idProducto        = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+
+    def __init__(self, nombreUsuario, idProducto):
+        '''Constructor del modelo usuarioProducto'''
+        self.UP_nombreUsuario = nombreUsuario
+        self.UP_idProducto    = idProducto
+
+    def __repr__(self):
+        '''Representacion en string de los id's de los usuarios y sus productos'''
+        return '<nombreUsuario %r, idProducto %r>' % (self.UP_nombreUsuario, self.UP_idProducto)
+
 
 
 class clsEquipo(db.Model):
-    '''Clase que define el modelo Equipo'''
+    '''Clase que define el modelo Equipo que representa el equipo asociado al desarrollo de un producto'''
 
     __tablename__ = 'equipo'
-    EQ_idEquipo         = db.Column(db.Integer, primary_key = True)
-    EQ_username         = db.Column(db.String(16), db.ForeignKey('user.U_username'))
-    EQ_rol              = db.Column(db.String(140))
-    EQ_idBacklog         = db.Column(db.Integer,db.ForeignKey('backlog.BL_idBacklog'))
+    EQ_idEquipo  = db.Column(db.Integer, primary_key = True)
+    EQ_username  = db.Column(db.String(16), db.ForeignKey('usuario.U_nombreUsuario'))
+    EQ_rol       = db.Column(db.String(140))
+    EQ_idBacklog = db.Column(db.Integer,db.ForeignKey('backlog.BL_idBacklog'))
 
     def __init__(self, username,rol,idBacklog):
         '''Constructor del modelo Equipo'''
@@ -153,34 +129,60 @@ class clsEquipo(db.Model):
         '''Respresentacion en string del modelo Equipo'''
         return '<IdEquipo %r, Nombre de Usuario %r, Rol %r, IdBacklog %r>' %(self.EQ_idEquipo, self.EQ_username , self.EQ_rol, self.EQ_idBacklog)
 
-class clsSubEquipo(db.Model):
-    '''Clase que define el modelo Sub Equipo'''
 
-    __tablename__ = 'SubEquipo'
-    SEQ_idSubEquipo  = db.Column(db.Integer, primary_key = True)
-    SEQ_username     = db.Column(db.String(16), db.ForeignKey('user.U_username'))
-    SEQ_idSprint     = db.Column(db.Integer,db.ForeignKey('sprint.S_idSprint'))
 
-    def __init__(self, username,idSprint):
-        '''Constructor del modelo Equipo'''
-        self.SEQ_username = username
-        self.SEQ_idSprint = idSprint
+class clsActor(db.Model):
+    '''Clase que define el modelo Actor que representa los actores involucrados en el desarrollo de un producto'''
+
+    __tablename__ = 'actor'
+    A_idActor           = db.Column(db.Integer, primary_key=True)
+    A_nameActor         = db.Column(db.String(50))
+    A_actorDescription  = db.Column(db.String(140))
+    A_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    A_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='actor', lazy='dynamic', cascade='all, delete, delete-orphan')
+
+    def __init__(self, nameActor, actorDescription, idBacklog):
+        '''Constructor del modelo Actor'''
+        self.A_nameActor        = nameActor
+        self.A_actorDescription = actorDescription
+        self.A_idBacklog        = idBacklog
 
     def __repr__(self):
-        '''Respresentacion en string del modelo Sub Equipo'''
-        return '<IdSubEquipo %r, Nombre de Usuario %r, IdSprint %r>' %(self.SEQ_idSubEquipo, self.SEQ_username , self.SEQ_idSprint)
+        '''Respresentacion en string del modelo Actor'''
+        return '<IdActor %r, Nombre %r, Descripcion %r, IdBacklog %r>' % (self.A_idActor, self.A_nameActor, self.A_actorDescription, self.A_idBacklog)
+
+
+
+class clsAccion(db.Model):
+    '''Clase que define el modelo Accion que representa las acciones involucradas en el desarrollo de un producto'''
+
+    __tablename__ = 'accion'
+    AC_idAccion          = db.Column(db.Integer, primary_key=True)
+    AC_accionDescription = db.Column(db.String(140))
+    AC_idBacklog        = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    AC_refUserHistory    = db.relationship('clsUserHistory', backref='accion', lazy='dynamic', cascade="all, delete, delete-orphan")
+
+    def __init__(self, accionDescription, idBacklog):
+        '''Constructor del modelo accion'''
+        self.AC_accionDescription = accionDescription
+        self.AC_idBacklog         = idBacklog
+
+    def __repr__(self):
+        '''Respresentación en string del modelo accion'''
+        return '<IdAccion %r, Descripcion %r, IdBacklog %r>' % (self.AC_idAccion, self.AC_accionDescription, self.AC_idBacklog)
+
 
 
 class clsObjective(db.Model):
-    '''Clase que define el modelo Objective'''
+    '''Clase que define el modelo Objective que representa los objetivos involucrados en el desarrollo de un producto'''
 
-    __tablename__ = 'objectives'
+    __tablename__ = 'objective'
     O_idObjective    = db.Column(db.Integer, primary_key=True)
     O_descObjective  = db.Column(db.String(140))
     O_idBacklog      = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
     O_objType        = db.Column(db.String(5))
     O_objFunc        = db.Column(db.Boolean)
-    O_refObjUserHist = db.relationship('clsObjectivesUserHistory', backref='objectives', lazy='dynamic', cascade="all, delete, delete-orphan")
+    O_refObjUserHist = db.relationship('clsObjectivesUserHistory', backref='objective', lazy='dynamic', cascade='all, delete, delete-orphan')
 
     def __init__(self, descObjective, idBacklog,objFunc, objType):
         '''Constructor del modelo Objective'''
@@ -194,48 +196,31 @@ class clsObjective(db.Model):
         return '<IdObjetivo %r, Descripcion %r, IdBacklog %r>' % (self.O_idObjective, self.O_descObjective, self.O_idBacklog)
 
 
-class clsAccion(db.Model):
-    '''Clase que define el modelo Accion'''
-
-    __tablename__ = 'accions'
-    AC_idAccion          = db.Column(db.Integer, primary_key=True)
-    AC_accionDescription = db.Column(db.String(140))
-    AC_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
-    AC_refUserHistory    = db.relationship('clsUserHistory', backref='accions', lazy='dynamic', cascade="all, delete, delete-orphan")
-
-    def __init__(self, accionDescription, idBacklog):
-        '''Constructor del modelo Accion'''
-        self.AC_accionDescription = accionDescription
-        self.AC_idBacklog         = idBacklog
-
-    def __repr__(self):
-        '''Respresentación en string del modelo accion'''
-        return '<IdAccion %r, Descripcion %r, IdBacklog %r>' % (self.AC_idAccion, self.AC_accionDescription, self.AC_idBacklog)
-
 
 class clsUserHistory(db.Model):
-    '''Clase que define el modelo de tabla userHistory'''
+    '''Clase que define el modelo de tabla userHistory que representa las historias de usuario asoociadas al desarrollo de un producto'''
 
     __tablename__ = 'userHistory'
     UH_idUserHistory     = db.Column(db.Integer, primary_key=True, index=True)
     UH_codeUserHistory   = db.Column(db.String(11), index=True)
     UH_idSuperHistory    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'), nullable=True)
     UH_accionType        = db.Column(db.Integer)
-    UH_idAccion          = db.Column(db.Integer, db.ForeignKey('accions.AC_idAccion'))
+    UH_idAccion          = db.Column(db.Integer, db.ForeignKey('accion.AC_idAccion'))
     UH_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
     UH_scale             = db.Column(db.Integer, index=True)
-    UH_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
-    UH_refTareaUserHist  = db.relationship('clsTask', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
-    UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_resume            = db.Column(db.String(200), nullable=True)
     UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
     UH_iniciado          = db.Column(db.Boolean,  default = False)
     UH_fechaInicio       = db.Column(db.DateTime, default = datetime.datetime.now())
     UH_completed         = db.Column(db.Boolean,  default = False)
     UH_fechaFin          = db.Column(db.DateTime, default = datetime.datetime.now())
+    UH_refActorsUserHist = db.relationship('clsActorsUserHistory',     backref='userHistory', lazy='dynamic', cascade='all, delete, delete-orphan')
+    UH_refTareaUserHist  = db.relationship('clsTask',                  backref='userHistory', lazy='dynamic', cascade='all, delete, delete-orphan')
+    UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade='all, delete, delete-orphan')
 
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale, iniciado, fechaInicio, completed, fechaFin):
+        '''Constructor del modelo userHistory'''
         self.UH_codeUserHistory = codeUserHistory
         self.UH_idSuperHistory  = idSuperHistory
         self.UH_accionType      = accionType
@@ -251,8 +236,8 @@ class clsUserHistory(db.Model):
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
-        return ( '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r'+
-                 ', resume %r, iniciado %r, fechaInicio %r, completed %r, fechaFin %r >') %\
+        return ( '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r, idSPrint %r, '+
+                 ' resume %r, iniciado %r, fechaInicio %r, completed %r, fechaFin %r >') %\
                    ( self.UH_idUserHistory
                    , self.UH_codeUserHistory
                    , self.UH_idSuperHistory
@@ -264,6 +249,207 @@ class clsUserHistory(db.Model):
                    , self.UH_completed
                    , self.UH_fechaFin
                    )
+
+
+
+class clsActorsUserHistory(db.Model):
+    '''Clase que define el modelo de tabla actorsUserHistory que representa los actores asociados a una historia de usuario'''
+
+    __tablename__ = 'actorUserHistory'
+    AUH_idActorsUserHist = db.Column(db.Integer, primary_key=True, index=True)
+    AUH_idActor          = db.Column(db.Integer, db.ForeignKey('actor.A_idActor'))
+    AUH_idUserHistory    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+
+    def __init__(self, idActor, idUserHistory):
+        '''Constructor del modelo actorUserHistory'''
+        self.AUH_idActor       = idActor
+        self.AUH_idUserHistory = idUserHistory
+
+    def __repr__(self):
+        '''Representacion en string de los id's de los actores y sus historias'''
+        return '<idActor %r, idUserHistory %r>' % (self.AUH_idActor, self.AUH_idUserHistory)
+
+
+
+class clsObjectivesUserHistory(db.Model):
+    '''Clase que define el modelo de tabla ObjectivesUserHistory'''
+
+    __tablename__ = 'objectiveUserHistory'
+    OUH_idObjectivesUserHist = db.Column(db.Integer, primary_key=True, index=True)
+    OUH_idObjective          = db.Column(db.Integer, db.ForeignKey('objective.O_idObjective'))
+    OUH_idUserHistory        = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+
+    def __init__(self, idObjective, idUserHistory):
+        '''Constructor del modelo objectiveUserHistory'''
+        self.OUH_idObjective   = idObjective
+        self.OUH_idUserHistory = idUserHistory
+
+    def __repr__(self):
+        '''Representacion en string de los id's de los objetivos y sus historias'''
+        return '<idObjective %r, idUserHistory %r>' % (self.OUH_idObjective, self.OUH_idUserHistory)
+
+
+
+class clsSprint(db.Model):
+    '''Clase que define el modelo de la tabla Sprint que representa los sprint asociados al desarrollo de un producto'''
+
+    __tablename__ = 'sprint'
+    S_idSprint          = db.Column(db.Integer, primary_key = True, index = True)
+    S_numero            = db.Column(db.Integer)
+    S_sprintDescription = db.Column(db.String(140))
+    S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    S_fechini           = db.Column(db.DateTime, default=datetime.datetime.now())
+    S_fechfin           = db.Column(db.DateTime, default=datetime.datetime.now())
+    S_state             = db.Column(db.String(30))
+    S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade='all, delete, delete-orphan')
+    S_refTask           = db.relationship('clsTask'       , backref='sprint', lazy='dynamic', cascade='all, delete, delete-orphan')
+
+    def __init__(self, numero, sprintDescription, idBacklog, fechini, fechfin, state):
+        '''Constructor del modelo sprint'''
+        self.S_numero            = numero
+        self.S_sprintDescription = sprintDescription
+        self.S_idBacklog         = idBacklog
+        self.S_fechini           = fechini
+        self.S_fechfin           = fechfin
+        self.S_state             = state
+
+    def __repr__(self):
+        '''Representacion en string del Sprint'''
+        return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r, S_fechini %r, S_fechfin %r, S_state %r>' % \
+                ( self.S_idSprint
+                , self.S_numero
+                , self.S_sprintDescription
+                , self.S_idBacklog
+                , self.S_fechini
+                , self.S_fechfin
+                , self.S_state
+                )
+
+
+
+class clsSubEquipo(db.Model):
+    '''Clase que define el modelo SubEquipo que representa el subequipo de trabajo asociado a un sprint'''
+
+    __tablename__ = 'subEquipo'
+    SEQ_idSubEquipo  = db.Column(db.Integer, primary_key = True)
+    SEQ_username     = db.Column(db.String(16), db.ForeignKey('usuario.U_nombreUsuario'))
+    SEQ_idSprint     = db.Column(db.Integer,db.ForeignKey('sprint.S_idSprint'))
+
+    def __init__(self, username,idSprint):
+        '''Constructor del modelo Equipo'''
+        self.SEQ_username = username
+        self.SEQ_idSprint = idSprint
+
+    def __repr__(self):
+        '''Respresentacion en string del modelo SubEquipo'''
+        return '<IdSubEquipo %r, Nombre de Usuario %r, IdSprint %r>' %(self.SEQ_idSubEquipo, self.SEQ_username , self.SEQ_idSprint)
+
+
+
+class clsCategory(db.Model):
+    '''Clase que define el modelo de la tabla Category que representa los tipos de categoria que puede ser una tarea'''
+
+    __tablename__ = 'category'
+    C_idCategory      = db.Column(db.Integer, primary_key=True, index=True)
+    C_nameCate        = db.Column(db.String(50), unique=True, index=True)
+    C_weight          = db.Column(db.Integer, index=True)
+    C_refTaskCategory = db.relationship('clsTask', backref='category', lazy='dynamic', cascade="all, delete, delete-orphan")
+
+    def __init__(self, nameCate, weight):
+        '''Constructor del modelo category'''
+        self.C_nameCate = nameCate
+        self.C_weight   = weight
+
+    def __repr__(self):
+        '''Representacion en string de la Categoria'''
+        return '<C_idCategory  %r, C_nameCate %r, C_weight %r>' % (self.C_idCategory, self.C_nameCate, self.C_weight)
+
+
+
+class clsTask(db.Model):
+    '''Clase que define el modelo de la tabla Task que representa las tareas asociadas a una historia de usuario'''
+
+    __tablename__ = 'task'
+    HW_idTask             = db.Column(db.Integer, primary_key=True, index=True)
+    HW_description        = db.Column(db.String(140), unique=True, index=True)
+    HW_weight             = db.Column(db.Integer)
+    HW_idCategory         = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
+    HW_idUserHistory      = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HW_idEquipo           = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
+    HW_idSprint           = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    HW_estimatedTime      = db.Column(db.Integer)
+    HW_horasEmpleadas     = db.Column(db.Integer)
+    HW_interaccion        = db.Column(db.Integer)
+    HW_reglasNegocio      = db.Column(db.Integer)
+    HW_usoEntidades       = db.Column(db.Integer)
+    HW_operacionesDB      = db.Column(db.Integer)
+    HW_iniciado           = db.Column(db.Boolean,  default=False)
+    HW_fechaInicio        = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_completed          = db.Column(db.Boolean,  default=False)
+    HW_fechaFin           = db.Column(db.DateTime, default=datetime.datetime.now())
+    HW_refPrecedenceFirst = db.relationship('clsPrecedence',  backref='FirstTask', lazy='dynamic', cascade='all, delete, delete-orphan'
+                                                           ,  foreign_keys="clsPrecedence.P_idFirstTask")
+    HW_refPrecedenceSecond = db.relationship('clsPrecedence', backref='SecondTask',lazy='dynamic', cascade='all, delete, delete-orphan'
+                                                            , foreign_keys="clsPrecedence.P_idSecondTask")
+
+    
+    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
+        '''Constructor del modelo task'''
+        self.HW_description   = description
+        self.HW_idCategory    = idCategory
+        self.HW_weight        = weight
+        self.HW_idUserHistory = idUserHistory
+        self.HW_idSprint      = None
+        self.HW_iniciado      = iniciado
+        self.HW_fechaInicio   = fechaInicio
+        self.HW_completed     = completed
+        self.HW_fechaFin      = fechaFin
+        self.HW_estimatedTime = 1
+        self.HW_horasEmpleadas= None
+        self.HW_interaccion   = 1
+        self.HW_reglasNegocio = 1
+        self.HW_usoEntidades  = 1
+        self.HW_operacionesDB = 1
+
+    def getCompleted(self):
+        return self.HW_completed
+
+    def __repr__(self):
+        '''Representacion en string de una tarea'''
+        return '<HW_ idTask %r, HW_idCategory %r, HW_weight %r, HW_idUserHistory %r, HW_idEquipo %r, \
+                 HW_idSprint %r, HW_iniciado %r, HW_fechaInicio %r, HW_completed %r, HW_fechaFin %r>' % \
+                 ( self.HW_idTask
+                 , self.HW_idCategory 
+                 , self.HW_weight
+                 , self.HW_idUserHistory 
+                 , self.HW_idEquipo
+                 , self.HW_idSprint 
+                 , self.HW_iniciado 
+                 , self.HW_fechaInicio
+                 , self.HW_completed
+                 , self.HW_fechaFin
+                 )
+
+
+
+class clsPrecedence(db.Model):
+    '''Clase que define el modelo de la tabla Precedence que representa las prelaciones entre tareas'''
+
+    __tablename__ = 'precedence'
+    P_idPrecedence = db.Column(db.Integer, primary_key=True, index=True)
+    P_idFirstTask  = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    P_idSecondTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+    P_idBacklog    = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog')) 
+
+    def __init__(self, firstTask, secondTask, idBacklog):
+        self.P_idFirstTask  = firstTask
+        self.P_idSecondTask = secondTask
+        self.P_idBacklog    = idBacklog
+
+    def __repr__(self):
+        '''Representacion en string de la precedencia'''
+        return '<P_idPrecedence %r, P_idFirstTask %r, P_idSecondTask %r>' % (self.P_idPrecedence, self.P_idFirstTask, self.P_idSecondTask)
+
 
 
 class clsAcceptanceTest(db.Model):
@@ -287,39 +473,6 @@ class clsAcceptanceTest(db.Model):
 
 
 
-class clsActorsUserHistory(db.Model):
-    '''Clase que define el modelo de tabla actorsUserHistory'''
-
-    __tablename__ = 'actorsUserHistory'
-    AUH_idActorsUserHist = db.Column(db.Integer, primary_key=True, index=True)
-    AUH_idActor          = db.Column(db.Integer, db.ForeignKey('actors.A_idActor'))
-    AUH_idUserHistory    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-
-    def __init__(self, idActor, idUserHistory):
-        self.AUH_idActor       = idActor
-        self.AUH_idUserHistory = idUserHistory
-
-    def __repr__(self):
-        '''Representacion en string de los id's a los actores y sus historias'''
-        return '<idActor %r, idUserHistory %r>' % (self.AUH_idActor, self.AUH_idUserHistory)
-
-
-class clsObjectivesUserHistory(db.Model):
-    '''Clase que define el modelo de tabla ObjectivesUserHistory'''
-
-    __tablename__ = 'objectivesUserHistory'
-    OUH_idObjectivesUserHist = db.Column(db.Integer, primary_key=True, index=True)
-    OUH_idObjective          = db.Column(db.Integer, db.ForeignKey('objectives.O_idObjective'))
-    OUH_idUserHistory        = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-
-    def __init__(self, idObjective, idUserHistory):
-        self.OUH_idObjective   = idObjective
-        self.OUH_idUserHistory = idUserHistory
-
-    def __repr__(self):
-        '''Representacion en string de los id's a los roles y sus historias'''
-        return '<idObjective %r, idUserHistory %r>' % (self.OUH_idObjective, self.OUH_idUserHistory)
-
 class clsAcceptanceCriteria(db.Model):
     '''Clase que representa los criterios de aceptacion para las historia de usuario'''
 
@@ -331,6 +484,7 @@ class clsAcceptanceCriteria(db.Model):
     HAC_idSprint             = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, idUserHistory, description, enunciado):
+        '''Constructor del modelo acceptanceCriteria'''
         self.HAC_description   = description
         self.HAC_enunciado     = enunciado
         self.HAC_idUserHistory = idUserHistory
@@ -341,112 +495,6 @@ class clsAcceptanceCriteria(db.Model):
         return '<HAC_idAcceptanceCriteria %r, HAC_idUserHistory %r, HAC_idSprint %r>' %\
                (self.HAC_idAcceptanceCriteria, self.HAC_idUserHistory, self.HAC_idSprint)
 
-class clsTask(db.Model):
-    '''Clase que define el modelo de la tabla Task'''
-
-    __tablename__ = 'task'
-    HW_idTask        = db.Column(db.Integer, primary_key=True, index=True)
-    HW_description   = db.Column(db.String(140), unique=True, index=True)
-    HW_weight        = db.Column(db.Integer)
-    HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
-    HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HW_idEquipo      = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
-    HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
-    HW_estimatedTime = db.Column(db.Integer)
-    HW_horasEmpleadas= db.Column(db.Integer)
-    HW_interaccion   = db.Column(db.Integer)
-    HW_reglasNegocio = db.Column(db.Integer)
-    HW_usoEntidades  = db.Column(db.Integer)
-    HW_operacionesDB = db.Column(db.Integer)
-    HW_iniciado      = db.Column(db.Boolean, default=False)
-    HW_fechaInicio   = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_completed     = db.Column(db.Boolean, default = False)
-    HW_fechaFin      = db.Column(db.DateTime, default=datetime.datetime.now())
-    HW_refPrecedenceFirst  = db.relationship( 'clsPrecedence'
-                                            , backref      = 'FirstTask'
-                                            , lazy         = 'dynamic'
-                                            , cascade      = "all, delete, delete-orphan"
-                                            , foreign_keys = "clsPrecedence.P_idFirstTask"
-                                            )
-
-    HW_refPrecedenceSecond = db.relationship('clsPrecedence'
-                                            , backref      = 'SecondTask'
-                                            , lazy         = 'dynamic'
-                                            , cascade      = "all, delete, delete-orphan"
-                                            , foreign_keys = "clsPrecedence.P_idSecondTask"
-                                            )
-    
-    def __init__(self, description, idCategory, weight, idUserHistory, iniciado, fechaInicio, completed, fechaFin):
-        self.HW_description   = description
-        self.HW_idCategory    = idCategory
-        self.HW_weight        = weight
-        self.HW_idUserHistory = idUserHistory
-        self.HW_idSprint      = None
-        self.HW_iniciado      = iniciado
-        self.HW_fechaInicio   = fechaInicio
-        self.HW_completed     = completed
-        self.HW_fechaFin      = fechaFin
-        self.HW_estimatedTime = 1
-        self.HW_horasEmpleadas= None
-        self.HW_interaccion   = 1
-        self.HW_reglasNegocio = 1
-        self.HW_usoEntidades  = 1
-        self.HW_operacionesDB = 1
-
-
-    def getCompleted(self):
-        return self.HW_completed
-
-    def __repr__(self):
-        '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r, HW_idSprint %r, \
-                 HW_iniciado %r, HW_fechaInicio %r, HW_completed %r, HW_fechaFin %r>' % (self.HW_idTask, self.HW_idCategory, \
-                    self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo, self.HW_idSprint, self.HW_iniciado, self.HW_fechaInicio, \
-                    self.HW_completed, self.HW_fechaFin)
-
-
-class clsCategory(db.Model):
-    '''Clase que define el modelo de la tabla Category'''
-
-    __tablename__ = 'category'
-    C_idCategory      = db.Column(db.Integer, primary_key=True, index=True)
-    C_nameCate        = db.Column(db.String(50), unique=True, index=True)
-    C_weight          = db.Column(db.Integer, index=True)
-    C_refTaskCategory = db.relationship('clsTask', backref='category', lazy='dynamic', cascade="all, delete, delete-orphan")
-
-    def __init__(self, nameCate, weight):
-        self.C_nameCate = nameCate
-        self.C_weight   = weight
-
-    def __repr__(self):
-        '''Representacion en string de la Categoria'''
-        return '<C_idCategory  %r, C_nameCate %r, C_weight %r>' % (self.C_idCategory, self.C_nameCate, self.C_weight)
-
-class clsSprint(db.Model):
-    '''Clase que define el modelo de la tabla Sprint'''
-
-    __tablename__ = 'sprint'
-    S_idSprint          = db.Column(db.Integer, primary_key = True, index = True)
-    S_numero            = db.Column(db.Integer)
-    S_sprintDescription = db.Column(db.String(140))
-    S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
-    S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
-    S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
-    S_fechini           = db.Column(db.DateTime, default=datetime.datetime.now())
-    S_fechfin           = db.Column(db.DateTime, default=datetime.datetime.now())
-    S_state             = db.Column(db.String(30))
-
-    def __init__(self, numero, sprintDescription, idBacklog, fechini, fechfin, state):
-        self.S_numero            = numero
-        self.S_sprintDescription = sprintDescription
-        self.S_idBacklog         = idBacklog
-        self.S_fechini           = fechini
-        self.S_fechfin           = fechfin
-        self.S_state             = state
-
-    def __repr__(self):
-        '''Representacion en string del Sprint'''
-        return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r, S_fechini %r, S_fechfin %r, S_state %r>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog, self.S_fechini, self.S_fechfin, self.S_state)
 
 
 class clsSprintMeeting(db.Model):
@@ -459,18 +507,27 @@ class clsSprintMeeting(db.Model):
     SM_challenges       = db.Column(db.String(300))
     SM_typeMeeting      = db.Column(db.String(300))
     SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+
     def __init__(self, meetingDate, activities, suggestions, challenges, idSprint, typeM):
-        self.SM_meetingDate     = meetingDate
-        self.SM_activities      = activities
-        self.SM_suggestions     = suggestions
-        self.SM_challenges      = challenges
-        self.SM_idSprint        = idSprint
-        self.SM_typeMeeting     = typeM
+        '''Constructor del modelo meeting'''
+        self.SM_meetingDate = meetingDate
+        self.SM_activities  = activities
+        self.SM_suggestions = suggestions
+        self.SM_challenges  = challenges
+        self.SM_idSprint    = idSprint
+        self.SM_typeMeeting = typeM
 
 
     def __repr__(self):
         '''Representacion en string del Meeting'''
-        return '<SM_idSprintMeeting %r, SM_meetingDate %r,  SM_activities %r, SM_idSprint %r, SM_typeMeeting %r>' % (self.SM_idSprintMeeting, self.SM_meetingDate, self.SM_activities, self.SM_idSprint, self.SM_typeMeeting)
+        return '<SM_idSprintMeeting %r, SM_meetingDate %r,  SM_activities %r, SM_idSprint %r, SM_typeMeeting %r>' % \
+                ( self.SM_idSprintMeeting
+                , self.SM_meetingDate
+                , self.SM_activities
+                , self.SM_idSprint
+                , self.SM_typeMeeting
+                )
+
 
 
 class clsElementMeeting(db.Model):
@@ -492,27 +549,46 @@ class clsElementMeeting(db.Model):
 
     def __repr__(self):
         '''Representacion en string del ElementMeeting'''
-        return '<EM_idElementMeeting %r, EM_challenges %r,  EM_planned %r, EM_done %r, EM_meeting %r, EM_user %r>' % (self.EM_idElementMeeting, self.EM_challenges, self.EM_planned, self.EM_done, self.EM_meeting, self.EM_user)
+        return '<EM_idElementMeeting %r, EM_challenges %r,  EM_planned %r, EM_done %r, EM_meeting %r, EM_user %r>' % \
+                ( self.EM_idElementMeeting
+                , self.EM_challenges
+                , self.EM_planned
+                , self.EM_done
+                , self.EM_meeting
+                , self.EM_user
+                )
 
 
-class clsPrecedence(db.Model):
-    '''Clase que define el modelo de la tabla Precedence'''
 
-    __tablename__ = 'precedence'
-    P_idPrecedence = db.Column(db.Integer, primary_key=True, index=True)
-    P_idFirstTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
-    P_idSecondTask = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
-    P_idPila = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+class clsArchivos(db.Model):
+    '''Clase que define los archivos de cada proyecto '''
 
-    def __init__(self, firstTask, secondTask, idPila):
-        self.P_idFirstTask = firstTask
-        self.P_idSecondTask = secondTask
-        self.P_idPila = idPila
+    __tablename__ = 'archivos'
+    AR_idArchivos = db.Column(db.Integer, primary_key=True, index=True)
+    AR_nameArch   = db.Column(db.String(50), unique=False)
+    AR_url        = db.Column(db.String(200), nullable=False)
+    AR_dateArch   = db.Column(db.DateTime, default=datetime.datetime.now())
+    AR_idBacklog  = db.Column(db.String(50), db.ForeignKey('backlog.BL_idBacklog'))
+    AR_etiqueta   = db.Column(db.String(100))
+
+    def __init__(self, nameArch, url, dateArch, idBacklog, etiqueta):
+        '''Constructor del modelo Archivos'''
+        self.AR_nameArch  = nameArch
+        self.AR_url       = url
+        self.AR_dateArch  = dateArch
+        self.AR_idBacklog = idBacklog
+        self.AR_etiqueta  = etiqueta
 
     def __repr__(self):
-        '''Representacion en string de la Categoria'''
-        return '<P_idPrecedence  %r, P_idFirstTask %r, P_idSecondTask %r>' % (
-            self.P_idPrecedence, self.P_idFirstTask, self.P_idSecondTask)
+        '''Representacion en string del modelo Archivo'''
+        return '<idArchive %r, name %r, url %r, date %r, idBacklog %r, etiqueta %r >' % \
+                ( self.AR_idArchivos
+                , self.AR_nameArch
+                , self.AR_url
+                , self.AR_dateArch
+                , self.AR_idBacklog
+                , self.AR_etiqueta)
+
 
 
 class clsTaskDoc(db.Model):
@@ -525,8 +601,9 @@ class clsTaskDoc(db.Model):
     HWD_docDescription = db.Column(db.String(140), unique=False, index=True)
 
     def __init__(self, idTask, docName, docDescription):
-        self.HWD_idTask = idTask
-        self.HWD_docName = docName
+        ''' Constructor del modelo taskDoc'''
+        self.HWD_idTask         = idTask
+        self.HWD_docName        = docName
         self.HWD_docDescription = docDescription
 
     def getName(self):
@@ -548,8 +625,10 @@ class clsTaskDoc(db.Model):
 def taskDocs_by_taskId(taskID):
     return clsTaskDoc.query.filter(clsTaskDoc.HWD_idTask == taskID).all()
 
+
+
 class clsVisionDocument(db.Model):
-    ''' Clase que define el modelo de tabla de documento Vision '''
+    ''' Clase que define el modelo de tabla de documento Vision que almacena los datos adicionales requeridos para la generacion del documento vision'''
 
     __tablename__ = 'visionDocument'
     VD_idVisionDocument = db.Column(db.Integer, primary_key=True, index=True)
@@ -563,19 +642,23 @@ class clsVisionDocument(db.Model):
     VD_valores          = db.Column(db.Text)
 
     def __init__(self, idBacklog, introduccion,proposito,motivacion,estado,alcance,fundamentacion,valores):
-        self.VD_idBacklog = idBacklog
-        self.VD_introduccion = introduccion
-        self.VD_proposito = proposito
-        self.VD_motivacion = motivacion
-        self.VD_estado = estado
-        self.VD_alcance = alcance
+        '''Constructor del modelo visionDocument'''
+        self.VD_idBacklog      = idBacklog
+        self.VD_introduccion   = introduccion
+        self.VD_proposito      = proposito
+        self.VD_motivacion     = motivacion
+        self.VD_estado         = estado
+        self.VD_alcance        = alcance
         self.VD_fundamentacion = fundamentacion
-        self.VD_valores = valores
+        self.VD_valores        = valores
 
     def __repr__(self):
         '''Representacion en string del documento vision'''
         return '<idVisionDocument %r, idBacklog %r, introduccion %r>' % (self.VD_idVisionDocument, self.VD_idBacklog, self.VD_introduccion)
 
+
+
+# Activamos la migracion
 migrate = Migrate(app, db)
 manager = Manager(app)
 
@@ -584,7 +667,7 @@ db.create_all()  # Creamos la base de datos
 
 try:
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
-    meta = MetaData(engine)
+    meta   = MetaData(engine)
     historiaDeUsuario = Table('userHistory', meta, autoload=True)
     completed = Column('UH_completed', db.Boolean)
     completed.create(historiaDeUsuario)
@@ -593,8 +676,8 @@ except:
 
 try:
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
-    meta = MetaData(engine)
-    tareaTable = Table('task', meta, autoload=True)
+    meta   = MetaData(engine)
+    tareaTable    = Table('task', meta, autoload=True)
     completedTask = Column('HW_completed', db.Boolean)
     completedTask.create(tareaTable)
 except:

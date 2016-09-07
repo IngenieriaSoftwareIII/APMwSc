@@ -5,7 +5,7 @@ from app.scrum.elementMeetingClass  import *
 from app.scrum.backLog              import *
 from app.scrum.subEquipoClass       import *
 from app.scrum.userHistory          import *
-from app.scrum.user                 import *
+from app.scrum.usuarioClase         import *
 from app.scrum.task                 import *
 from app.scrum.acceptanceCriteria   import *
 from datetime                       import datetime, timedelta

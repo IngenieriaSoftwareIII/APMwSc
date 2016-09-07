@@ -6,7 +6,7 @@ from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.model       import *
 from app.scrum.Team        import *
-from app.scrum.user        import *
+from app.scrum.usuarioClase import *
 from datetime              import datetime
 
 from werkzeug import secure_filename

@@ -11,7 +11,7 @@ import ast
 from uuid   import uuid4
 
 #Importaciones necesarias para extraer los datos de la base de datos.
-from user                     import *
+from usuarioClase                     import *
 from backLog                  import *
 from userHistory              import *
 from role                     import *
